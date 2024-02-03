@@ -1,5 +1,5 @@
 
-import '../model/post.dart';
+import '../model/post_model.dart';
 
 abstract class PostEvent {}
 
