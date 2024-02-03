@@ -1,83 +1,13 @@
-import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
+import 'bloc/post_bloc.dart';
+import 'bloc/post_event.dart';
+import 'bloc/post_state.dart';
 import 'db_helper.dart';
+import 'model/post.dart';
 
 void main() {
   runApp(MyApp());
-}
-
-class Post {
-  final String id; // Unique identifier for each post
-  String title;
-  String content;
-  String imageUrl;
-
-  Post(this.id, this.title, this.content, this.imageUrl);
-
-  // Convert Post object to a Map
-  Map<String, dynamic> toMap() {
-    return {
-      'id': id,
-      'title': title,
-      'content': content,
-      'imageUrl': imageUrl,
-    };
-  }
-}
-
-abstract class PostEvent {}
-
-class AddPostEvent extends PostEvent {
-  final Post post;
-
-  AddPostEvent(this.post);
-}
-
-class UpdatePostEvent extends PostEvent {
-  final Post updatedPost;
-
-  UpdatePostEvent(this.updatedPost);
-}
-
-class DeletePostEvent extends PostEvent {
-  final String postId;
-
-  DeletePostEvent(this.postId);
-}
-
-class PostState {
-  final List<Post> posts;
-
-  PostState(this.posts);
-
-  PostState copyWith({List<Post>? posts}) {
-    return PostState(posts ?? this.posts);
-  }
-}
-
-class PostBloc extends Bloc<PostEvent, PostState> {
-  PostBloc() : super(PostState([]));
-
-  @override
-  Stream<PostState> mapEventToState(PostEvent event) async* {
-    if (event is AddPostEvent) {
-      List<Post> updatedPosts = List.from(state.posts)..add(event.post);
-      yield state.copyWith(posts: updatedPosts);
-    } else if (event is UpdatePostEvent) {
-      List<Post> updatedPosts = state.posts.map((post) {
-        if (post.id == event.updatedPost.id) {
-          return event.updatedPost;
-        }
-        return post;
-      }).toList();
-      yield state.copyWith(posts: updatedPosts);
-    } else if (event is DeletePostEvent) {
-      List<Post> updatedPosts = state.posts.where((post) => post.id != event.postId).toList();
-      yield state.copyWith(posts: updatedPosts);
-    }
-  }
 }
 
 class MyApp extends StatelessWidget {
