@@ -1,4 +1,3 @@
-
 import '../model/post_model.dart';
 
 abstract class PostEvent {}
@@ -20,4 +19,3 @@ class DeletePostEvent extends PostEvent {
 
   DeletePostEvent(this.postId);
 }
-

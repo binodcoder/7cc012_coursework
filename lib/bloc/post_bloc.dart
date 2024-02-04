@@ -1,7 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:my_blog_bloc/bloc/post_event.dart';
 import 'package:my_blog_bloc/bloc/post_state.dart';
-
 import '../model/post_model.dart';
 
 class PostBloc extends Bloc<PostEvent, PostState> {
