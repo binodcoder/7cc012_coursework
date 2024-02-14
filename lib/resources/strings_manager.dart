@@ -1,6 +1,6 @@
 class AppStrings {
   static const String noRouteFound = "No Route Found";
-  static const String titleLabel = "Flutter Blog App with BLoC";
+  static const String titleLabel = "Flutter BLoC";
   static const String title = "Title";
   static const String content = "Content";
   static const String imageURL = "Image URL";

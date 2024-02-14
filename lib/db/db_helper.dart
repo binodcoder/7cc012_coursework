@@ -29,7 +29,8 @@ class DatabaseHelper {
             id TEXT PRIMARY KEY,
             title TEXT,
             content TEXT,
-            imageUrl TEXT
+            imageUrl TEXT,
+            isSelected integer
           )
         ''');
     });
@@ -49,6 +50,7 @@ class DatabaseHelper {
         maps[i]['title'],
         maps[i]['content'],
         maps[i]['imageUrl'],
+        maps[i]['isSelected'],
       );
     });
   }

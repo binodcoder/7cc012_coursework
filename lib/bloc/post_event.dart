@@ -19,3 +19,15 @@ class DeletePostEvent extends PostEvent {
 
   DeletePostEvent(this.postId);
 }
+
+class DeletePostEvents extends PostEvent {
+  final List<Post> selectedPosts;
+
+  DeletePostEvents(this.selectedPosts);
+}
+
+class SelectPostEvent extends PostEvent {
+  final Post selectedPost;
+
+  SelectPostEvent(this.selectedPost);
+}

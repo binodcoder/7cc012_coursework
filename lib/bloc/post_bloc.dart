@@ -6,6 +6,8 @@ import '../model/post_model.dart';
 class PostBloc extends Bloc<PostEvent, PostState> {
   PostBloc() : super(PostState([]));
 
+  List<Post> selectedPosts = [];
+
   @override
   Stream<PostState> mapEventToState(PostEvent event) async* {
     if (event is AddPostEvent) {
@@ -21,6 +23,14 @@ class PostBloc extends Bloc<PostEvent, PostState> {
       yield state.copyWith(posts: updatedPosts);
     } else if (event is DeletePostEvent) {
       List<Post> updatedPosts = state.posts.where((post) => post.id != event.postId).toList();
+      yield state.copyWith(posts: updatedPosts);
+    } else if (event is SelectPostEvent) {
+      selectedPosts.add(event.selectedPost);
+    } else if (event is DeletePostEvents) {
+      List<Post>? updatedPosts;
+      for (var element in selectedPosts) {
+        updatedPosts = state.posts.where((post) => post.id != element.id).toList();
+      }
       yield state.copyWith(posts: updatedPosts);
     }
   }

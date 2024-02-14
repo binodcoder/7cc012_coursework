@@ -3,8 +3,9 @@ class Post {
   String title;
   String content;
   String imageUrl;
+  int isSelected;
 
-  Post(this.id, this.title, this.content, this.imageUrl);
+  Post(this.id, this.title, this.content, this.imageUrl, this.isSelected);
 
   // Convert Post object to a Map
   Map<String, dynamic> toMap() {
@@ -13,6 +14,7 @@ class Post {
       'title': title,
       'content': content,
       'imageUrl': imageUrl,
+      'isSelected': isSelected,
     };
   }
 }

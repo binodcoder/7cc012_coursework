@@ -67,6 +67,7 @@ class AddPost extends StatelessWidget {
                   titleController.text,
                   contentController.text,
                   imageController.text,
+                  0,
                 );
                 await dbHelper.updatePost(updatedPost);
                 postBloc.add(UpdatePostEvent(updatedPost));
@@ -78,6 +79,7 @@ class AddPost extends StatelessWidget {
                   title,
                   content,
                   imageUrl,
+                  0,
                 );
                 await dbHelper.insertPost(newPost);
                 postBloc.add(AddPostEvent(newPost));

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:my_blog_bloc/resources/colour_manager.dart';
 import 'package:my_blog_bloc/resources/strings_manager.dart';
 import 'package:my_blog_bloc/ui/post_add.dart';
 import 'package:my_blog_bloc/ui/post_details.dart';
@@ -32,7 +33,27 @@ class HomeScreen extends StatelessWidget {
         },
       ),
       appBar: AppBar(
-        title: const Text(AppStrings.titleLabel),
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            const Text(AppStrings.titleLabel),
+            TextButton(
+              onPressed: () {
+                postBloc.add(DeletePostEvents(postBloc.selectedPosts));
+
+                postBloc.selectedPosts.forEach((element) async {
+                  await dbHelper.deletePost(element.id);
+                });
+              },
+              child: Text(
+                'Delete',
+                style: TextStyle(
+                  color: ColorManager.white,
+                ),
+              ),
+            )
+          ],
+        ),
       ),
       body: BlocBuilder<PostBloc, PostState>(
         builder: (context, state) {
@@ -50,6 +71,14 @@ class HomeScreen extends StatelessWidget {
                   itemBuilder: (context, index) {
                     var post = posts[index];
                     return ListTile(
+                      tileColor: post.isSelected == 0 ? ColorManager.white : ColorManager.grey,
+                      onLongPress: () async {
+                        var updatedPost = post;
+                        updatedPost.isSelected = 1;
+                        await dbHelper.updatePost(updatedPost);
+                        postBloc.add(UpdatePostEvent(updatedPost));
+                        postBloc.add(SelectPostEvent(updatedPost));
+                      },
                       onTap: () {
                         Navigator.push(
                           context,
