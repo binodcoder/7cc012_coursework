@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_blog_bloc/resources/strings_manager.dart';
 import 'package:my_blog_bloc/ui/post.dart';
 import 'bloc/post_bloc.dart';
@@ -15,10 +16,12 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => PostBloc(),
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: AppStrings.titleLabel,
-        home: HomeScreen(),
+      child: ScreenUtilInit(
+        child: MaterialApp(
+          debugShowCheckedModeBanner: false,
+          title: AppStrings.titleLabel,
+          home: HomeScreen(),
+        ),
       ),
     );
   }

@@ -40,6 +40,8 @@ dependencies:
   flutter_bloc: ^7.0.0
   sqflite: ^2.0.0
   path: ^1.8.3
+  flutter_screenutil: ^5.9.0
+  font_awesome_flutter: ^10.7.0
 
 
 dev_dependencies:

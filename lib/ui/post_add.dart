@@ -60,8 +60,8 @@ class AddPost extends StatelessWidget {
             var imageUrl = imageController.text;
 
             if (title.isNotEmpty && content.isNotEmpty) {
-              // Save post to local database
               if (post != null) {
+                // Update post to local database
                 var updatedPost = Post(
                   post!.id,
                   titleController.text,
@@ -72,7 +72,9 @@ class AddPost extends StatelessWidget {
                 postBloc.add(UpdatePostEvent(updatedPost));
               } else {
                 var newPost = Post(
-                  DateTime.now().toString(), // Using timestamp as a unique identifier
+                  //Save post to local database
+                  // Using timestamp as a unique identifier
+                  DateTime.now().toString(),
                   title,
                   content,
                   imageUrl,

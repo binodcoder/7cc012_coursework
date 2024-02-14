@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_blog_bloc/resources/strings_manager.dart';
 import 'package:my_blog_bloc/ui/post_add.dart';
+import 'package:my_blog_bloc/ui/post_details.dart';
 import '../bloc/post_bloc.dart';
 import '../bloc/post_event.dart';
 import '../bloc/post_state.dart';
@@ -39,7 +40,7 @@ class HomeScreen extends StatelessWidget {
             future: dbHelper.getPosts(),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return const CircularProgressIndicator();
+                return const Center(child: CircularProgressIndicator());
               } else if (snapshot.hasError) {
                 return Text('${AppStrings.error}: ${snapshot.error}');
               } else {
@@ -49,6 +50,16 @@ class HomeScreen extends StatelessWidget {
                   itemBuilder: (context, index) {
                     var post = posts[index];
                     return ListTile(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (BuildContext context) => PostDetailsPage(
+                              post: post,
+                            ),
+                          ),
+                        );
+                      },
                       title: Text(post.title),
                       subtitle: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -95,69 +106,6 @@ class HomeScreen extends StatelessWidget {
           );
         },
       ),
-    );  
+    );
   }
-
-  // Function to navigate to Edit Screen
-//   void _navigateToEditScreen(BuildContext context, Post post) {
-//     titleController.text = post.title;
-//     contentController.text = post.content;
-//     imageController.text = post.imageUrl;
-
-//     showDialog(
-//       context: context,
-//       builder: (BuildContext context) {
-//         return AlertDialog(
-//           title: const Text(AppStrings.editPost),
-//           content: Column(
-//             children: [
-//               TextField(
-//                 controller: titleController,
-//                 decoration: const InputDecoration(labelText: AppStrings.title),
-//               ),
-//               TextField(
-//                 controller: contentController,
-//                 decoration: const InputDecoration(labelText: AppStrings.content),
-//               ),
-//               TextField(
-//                 controller: imageController,
-//                 decoration: const InputDecoration(labelText: AppStrings.imageURL),
-//               ),
-//             ],
-//           ),
-//           actions: [
-//             TextButton(
-//               onPressed: () {
-//                 Navigator.pop(context);
-//               },
-//               child: const Text(AppStrings.cancel),
-//             ),
-//             TextButton(
-//               onPressed: () async {
-//                 var updatedPost = Post(
-//                   post.id,
-//                   titleController.text,
-//                   contentController.text,
-//                   imageController.text,
-//                 );
-
-//                 // Update post in local database
-//                 await dbHelper.updatePost(updatedPost);
-
-//                 // Update post in BLoC state
-
-//                 BlocProvider.of<PostBloc>(context).add(UpdatePostEvent(updatedPost));
-
-//                 titleController.clear();
-//                 contentController.clear();
-//                 imageController.clear();
-//                 Navigator.pop(context);
-//               },
-//               child: const Text(AppStrings.save),
-//             ),
-//           ],
-//         );
-//       },
-//     );
-//   }
 }
