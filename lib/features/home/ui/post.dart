@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_blog_bloc/resources/colour_manager.dart';
 import 'package:my_blog_bloc/resources/strings_manager.dart';
-import 'package:my_blog_bloc/ui/post_add.dart';
-import 'package:my_blog_bloc/ui/post_details.dart';
+import '../../../db/db_helper.dart';
 import '../bloc/post_bloc.dart';
 import '../bloc/post_event.dart';
 import '../bloc/post_state.dart';
-import '../db/db_helper.dart';
 import '../model/post_model.dart';
+import 'post_add.dart';
+import 'post_details.dart';
 
 class HomeScreen extends StatelessWidget {
   HomeScreen({super.key});
@@ -38,12 +38,13 @@ class HomeScreen extends StatelessWidget {
           children: [
             const Text(AppStrings.titleLabel),
             TextButton(
-              onPressed: () {
+              onPressed: () async {
                 postBloc.add(DeletePostEvents(postBloc.selectedPosts));
 
-                postBloc.selectedPosts.forEach((element) async {
+                for (var element in postBloc.selectedPosts) {
                   await dbHelper.deletePost(element.id);
-                });
+                  postBloc.add(DeletePostEvent(element.id));
+                }
               },
               child: Text(
                 'Delete',
@@ -66,6 +67,13 @@ class HomeScreen extends StatelessWidget {
                 return Text('${AppStrings.error}: ${snapshot.error}');
               } else {
                 var posts = snapshot.data as List<Post>;
+
+                for (var element in posts) {
+                  if (element.isSelected == 1) {
+                    postBloc.selectedPosts.add(element);
+                  }
+                }
+
                 return ListView.builder(
                   itemCount: posts.length,
                   itemBuilder: (context, index) {
@@ -74,10 +82,15 @@ class HomeScreen extends StatelessWidget {
                       tileColor: post.isSelected == 0 ? ColorManager.white : ColorManager.grey,
                       onLongPress: () async {
                         var updatedPost = post;
-                        updatedPost.isSelected = 1;
+                        if (updatedPost.isSelected == 0) {
+                          updatedPost.isSelected = 1;
+                          postBloc.add(SelectPostEvent(updatedPost));
+                        } else {
+                          updatedPost.isSelected = 0;
+                          postBloc.add(DeSelectPostEvent(updatedPost));
+                        }
                         await dbHelper.updatePost(updatedPost);
-                        postBloc.add(UpdatePostEvent(updatedPost));
-                        postBloc.add(SelectPostEvent(updatedPost));
+                        // postBloc.add(UpdatePostEvent(updatedPost));
                       },
                       onTap: () {
                         Navigator.push(

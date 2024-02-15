@@ -31,3 +31,9 @@ class SelectPostEvent extends PostEvent {
 
   SelectPostEvent(this.selectedPost);
 }
+
+class DeSelectPostEvent extends PostEvent {
+  final Post selectedPost;
+
+  DeSelectPostEvent(this.selectedPost);
+}

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:my_blog_bloc/model/post_model.dart';
-import '../resources/colour_manager.dart';
-import '../resources/font_manager.dart';
-import '../resources/values_manager.dart';
+  import '../../../resources/colour_manager.dart';
+import '../../../resources/font_manager.dart';
+import '../../../resources/values_manager.dart';
+import '../model/post_model.dart';
 
 class PostDetailsPage extends StatefulWidget {
   const PostDetailsPage({

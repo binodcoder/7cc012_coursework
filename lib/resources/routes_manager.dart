@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:my_blog_bloc/resources/strings_manager.dart';
-import 'package:my_blog_bloc/ui/post.dart';
+import 'package:my_blog_bloc/features/home/ui/post.dart';
 
 class Routes {
   static const String homeRoute = "/";

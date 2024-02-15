@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
-import 'package:my_blog_bloc/bloc/post_event.dart';
-import 'package:my_blog_bloc/bloc/post_state.dart';
 import '../model/post_model.dart';
+import 'post_event.dart';
+import 'post_state.dart';
 
 class PostBloc extends Bloc<PostEvent, PostState> {
   PostBloc() : super(PostState([]));
@@ -26,12 +26,31 @@ class PostBloc extends Bloc<PostEvent, PostState> {
       yield state.copyWith(posts: updatedPosts);
     } else if (event is SelectPostEvent) {
       selectedPosts.add(event.selectedPost);
-    } else if (event is DeletePostEvents) {
-      List<Post>? updatedPosts;
-      for (var element in selectedPosts) {
-        updatedPosts = state.posts.where((post) => post.id != element.id).toList();
-      }
+      List<Post> updatedPosts = state.posts.map((post) {
+        if (post.id == event.selectedPost.id) {
+          return event.selectedPost;
+        }
+        return post;
+      }).toList();
       yield state.copyWith(posts: updatedPosts);
+
+      // yield state.copyWith(posts: selectedPosts);
+    } else if (event is DeSelectPostEvent) {
+      selectedPosts.remove(event.selectedPost);
+      List<Post> updatedPosts = state.posts.map((post) {
+        if (post.id == event.selectedPost.id) {
+          return event.selectedPost;
+        }
+        return post;
+      }).toList();
+      yield state.copyWith(posts: updatedPosts);
+      // yield state.copyWith(posts: selectedPosts);
+    } else if (event is DeletePostEvents) {
+      //  List<Post>? updatedPosts;
+      for (var element in selectedPosts) {
+        state.posts.remove(element);
+      }
+      yield state.copyWith(posts: state.posts);
     }
   }
 }

@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../bloc/post_bloc.dart';
 import '../bloc/post_event.dart';
-import '../db/db_helper.dart';
+import '../../../db/db_helper.dart';
+import '../../../resources/strings_manager.dart';
 import '../model/post_model.dart';
-import '../resources/strings_manager.dart';
 
 class AddPost extends StatelessWidget {
   AddPost({
