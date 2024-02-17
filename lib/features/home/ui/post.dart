@@ -1,8 +1,10 @@
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_blog_bloc/resources/colour_manager.dart';
 import 'package:my_blog_bloc/resources/strings_manager.dart';
 import '../../../db/db_helper.dart';
+import '../../../utility.dart';
 import '../bloc/post_bloc.dart';
 import '../bloc/post_event.dart';
 import '../bloc/post_state.dart';
@@ -14,6 +16,18 @@ class HomeScreen extends StatelessWidget {
   HomeScreen({super.key});
 
   final DatabaseHelper dbHelper = DatabaseHelper();
+
+  Widget _imageDisplay(Uint8List _image) {
+    return Container(
+      width: 50,
+      height: 50,
+      decoration: BoxDecoration(
+        border: Border.all(color: Colors.grey),
+      ),
+      child: Image.memory(_image),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     var postBloc = BlocProvider.of<PostBloc>(context);
@@ -40,7 +54,6 @@ class HomeScreen extends StatelessWidget {
             TextButton(
               onPressed: () async {
                 postBloc.add(DeletePostEvents(postBloc.selectedPosts));
-
                 for (var element in postBloc.selectedPosts) {
                   await dbHelper.deletePost(element.id);
                   postBloc.add(DeletePostEvent(element.id));
@@ -67,17 +80,16 @@ class HomeScreen extends StatelessWidget {
                 return Text('${AppStrings.error}: ${snapshot.error}');
               } else {
                 var posts = snapshot.data as List<Post>;
-
                 for (var element in posts) {
                   if (element.isSelected == 1) {
                     postBloc.selectedPosts.add(element);
                   }
                 }
-
                 return ListView.builder(
                   itemCount: posts.length,
                   itemBuilder: (context, index) {
                     var post = posts[index];
+
                     return ListTile(
                       tileColor: post.isSelected == 0 ? ColorManager.white : ColorManager.grey,
                       onLongPress: () async {
@@ -107,11 +119,7 @@ class HomeScreen extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(post.content),
-                          if (post.imageUrl.isNotEmpty)
-                            Image.network(
-                              post.imageUrl,
-                              height: 100,
-                            ),
+                          _imageDisplay(Utility.dataFromBase64String(post.imageUrl)),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-  import '../../../resources/colour_manager.dart';
+import '../../../resources/colour_manager.dart';
 import '../../../resources/font_manager.dart';
 import '../../../resources/values_manager.dart';
 import '../model/post_model.dart';

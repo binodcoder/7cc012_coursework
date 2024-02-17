@@ -17,4 +17,7 @@ class Post {
       'isSelected': isSelected,
     };
   }
+
 }
+
+ 
