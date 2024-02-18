@@ -1,10 +1,10 @@
-import 'dart:typed_data';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_blog_bloc/resources/colour_manager.dart';
 import 'package:my_blog_bloc/resources/strings_manager.dart';
 import '../../../db/db_helper.dart';
-import '../../../utility.dart';
 import '../bloc/post_bloc.dart';
 import '../bloc/post_event.dart';
 import '../bloc/post_state.dart';
@@ -17,21 +17,20 @@ class HomeScreen extends StatelessWidget {
 
   final DatabaseHelper dbHelper = DatabaseHelper();
 
-  Widget _imageDisplay(Uint8List _image) {
+  Widget _imageDisplay(String imagePath) {
     return Container(
       width: 50,
       height: 50,
       decoration: BoxDecoration(
         border: Border.all(color: Colors.grey),
       ),
-      child: Image.memory(_image),
+      child: Image.file(File(imagePath)),
     );
   }
 
   @override
   Widget build(BuildContext context) {
     var postBloc = BlocProvider.of<PostBloc>(context);
-
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.blue,
@@ -40,7 +39,7 @@ class HomeScreen extends StatelessWidget {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (BuildContext context) => AddPost(),
+              builder: (BuildContext context) => const AddPost(),
               fullscreenDialog: true,
             ),
           );
@@ -119,7 +118,7 @@ class HomeScreen extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(post.content),
-                          _imageDisplay(Utility.dataFromBase64String(post.imageUrl)),
+                          _imageDisplay(post.imagePath),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [

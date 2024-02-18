@@ -4,7 +4,6 @@ import 'package:path/path.dart';
 
 import '../features/home/model/post_model.dart';
 
- 
 class DatabaseHelper {
   static final DatabaseHelper _instance = DatabaseHelper._internal();
 
@@ -31,7 +30,7 @@ class DatabaseHelper {
             id TEXT PRIMARY KEY,
             title TEXT,
             content TEXT,
-            imageUrl TEXT,
+            imagePath TEXT,
             isSelected integer
           )
         ''');
@@ -51,7 +50,7 @@ class DatabaseHelper {
         maps[i]['id'],
         maps[i]['title'],
         maps[i]['content'],
-        maps[i]['imageUrl'],
+        maps[i]['imagePath'],
         maps[i]['isSelected'],
       );
     });

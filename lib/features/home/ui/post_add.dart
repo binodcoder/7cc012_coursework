@@ -3,7 +3,7 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
-import '../../../utility.dart';
+import 'package:path_provider/path_provider.dart';
 import '../bloc/post_bloc.dart';
 import '../bloc/post_event.dart';
 import '../../../db/db_helper.dart';
@@ -24,67 +24,58 @@ class AddPost extends StatefulWidget {
 
 class _AddPostState extends State<AddPost> {
   final TextEditingController titleController = TextEditingController();
-
   final TextEditingController contentController = TextEditingController();
-
   final DatabaseHelper dbHelper = DatabaseHelper();
-
-  // Create an instance of the ImagePicker class
   ImagePicker picker = ImagePicker();
+  XFile? pickedFile;
+  String? imagePath;
 
-  File? _image;
-  String? imgString;
-
-// Define a function to pick an image from the gallery
   Future<void> _pickImageFromGallery() async {
-    // Call the pickImage method with the source as ImageSource.gallery
-    final XFile? pickedImage = await picker.pickImage(source: ImageSource.gallery);
-
-    // Check if the user selected an image
-    if (pickedImage != null) {
-      // Update the state with the selected image file
+    final XFile? photo = await picker.pickImage(source: ImageSource.gallery);
+    if (photo != null) {
       setState(() {
-        _image = File(pickedImage.path);
-        _getBytesFromImage();
+        pickedFile = photo;
+        _getBytesFromImage(File(pickedFile!.path));
       });
     }
   }
 
-  // Define a function to pick an image from the camera
-  Future<void> _pickImageFromCamera() async {
-    // Call the pickImage method with the source as ImageSource.camera
-    final XFile? pickedImage = await picker.pickImage(source: ImageSource.camera);
-
-    // Check if the user took a photo
-    if (pickedImage != null) {
-      // Update the state with the selected image file
+  void _pickImageFromCamera() async {
+    final XFile? photo = await picker.pickImage(source: ImageSource.camera);
+    if (photo != null) {
       setState(() {
-        _image = File(pickedImage.path);
-        _getBytesFromImage();
+        pickedFile = photo;
+        _getBytesFromImage(File(pickedFile!.path));
       });
     }
   }
 
-  Uint8List? bytes;
-
-  Future<void> _getBytesFromImage() async {
-    // Check if the image file is not null
-    if (_image != null) {
-      // Call the readAsBytes method to get the bytes as a Uint8List
-      bytes = await _image!.readAsBytes();
-      imgString = Utility.base64String(bytes!);
-      setState(() {});
+  Future<void> _getBytesFromImage(File? image) async {
+    if (image != null) {
+      Uint8List bytes = await image.readAsBytes();
+      saveImage(bytes);
     }
   }
 
-  Widget _imageDisplay(Uint8List image) {
+  Future<void> saveImage(Uint8List imageData) async {
+    final directory = await getApplicationDocumentsDirectory();
+    imagePath = '${directory.path}/image_${DateTime.now().millisecondsSinceEpoch}.png';
+    final File imageFile = File(imagePath!);
+    await imageFile.writeAsBytes(imageData);
+    _imageDisplay(imagePath!);
+
+    // await _imageDatabase.insertImagePath(imagePath);
+    // return imagePath;
+  }
+
+  Widget _imageDisplay(String imagePath) {
     return Container(
       width: 50,
       height: 50,
       decoration: BoxDecoration(
         border: Border.all(color: Colors.grey),
       ),
-      child: Image.memory(image),
+      child: Image.file(File(imagePath)),
     );
   }
 
@@ -120,7 +111,7 @@ class _AddPostState extends State<AddPost> {
     if (widget.post != null) {
       titleController.text = widget.post!.title;
       contentController.text = widget.post!.content;
-      bytes = Utility.dataFromBase64String(widget.post!.imageUrl);
+      imagePath = widget.post!.imagePath;
     }
 
     var postBloc = BlocProvider.of<PostBloc>(context);
@@ -145,12 +136,11 @@ class _AddPostState extends State<AddPost> {
         ),
         _imagePickerButtons(),
         const SizedBox(height: 20),
-        bytes == null ? const Text('no image') : _imageDisplay(bytes!),
+        imagePath == null ? const Text('no image') : _imageDisplay(imagePath!),
         ElevatedButton(
           onPressed: () async {
             var title = titleController.text;
             var content = contentController.text;
-            var imageUrl = imgString;
 
             if (title.isNotEmpty && content.isNotEmpty) {
               if (widget.post != null) {
@@ -159,7 +149,7 @@ class _AddPostState extends State<AddPost> {
                   widget.post!.id,
                   titleController.text,
                   contentController.text,
-                  Utility.base64String(bytes!),
+                  imagePath!,
                   0,
                 );
                 await dbHelper.updatePost(updatedPost);
@@ -171,7 +161,7 @@ class _AddPostState extends State<AddPost> {
                   DateTime.now().toString(),
                   title,
                   content,
-                  imageUrl!,
+                  imagePath!,
                   0,
                 );
                 await dbHelper.insertPost(newPost);
