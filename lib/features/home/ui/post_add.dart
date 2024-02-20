@@ -33,20 +33,16 @@ class _AddPostState extends State<AddPost> {
   Future<void> _pickImageFromGallery() async {
     final XFile? photo = await picker.pickImage(source: ImageSource.gallery);
     if (photo != null) {
-      setState(() {
-        pickedFile = photo;
-        _getBytesFromImage(File(pickedFile!.path));
-      });
+      pickedFile = photo;
+      _getBytesFromImage(File(pickedFile!.path));
     }
   }
 
   void _pickImageFromCamera() async {
     final XFile? photo = await picker.pickImage(source: ImageSource.camera);
     if (photo != null) {
-      setState(() {
-        pickedFile = photo;
-        _getBytesFromImage(File(pickedFile!.path));
-      });
+      pickedFile = photo;
+      _getBytesFromImage(File(pickedFile!.path));
     }
   }
 
@@ -62,10 +58,6 @@ class _AddPostState extends State<AddPost> {
     imagePath = '${directory.path}/image_${DateTime.now().millisecondsSinceEpoch}.png';
     final File imageFile = File(imagePath!);
     await imageFile.writeAsBytes(imageData);
-    _imageDisplay(imagePath!);
-
-    // await _imageDatabase.insertImagePath(imagePath);
-    // return imagePath;
   }
 
   Widget _imageDisplay(String imagePath) {
@@ -78,17 +70,6 @@ class _AddPostState extends State<AddPost> {
       child: Image.file(File(imagePath)),
     );
   }
-
-  // Widget _imageDisplay() {
-  //   return Container(
-  //     width: 100,
-  //     height: 100,
-  //     decoration: BoxDecoration(
-  //       border: Border.all(color: Colors.grey),
-  //     ),
-  //     child: _image != null ? Image.file(_image!) : Center(child: Text('No image selected')),
-  //   );
-  // }
 
   Widget _imagePickerButtons() {
     return Row(

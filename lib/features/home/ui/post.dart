@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_blog_bloc/resources/colour_manager.dart';
@@ -8,13 +7,17 @@ import '../../../db/db_helper.dart';
 import '../bloc/post_bloc.dart';
 import '../bloc/post_event.dart';
 import '../bloc/post_state.dart';
-import '../model/post_model.dart';
 import 'post_add.dart';
 import 'post_details.dart';
 
-class HomeScreen extends StatelessWidget {
-  HomeScreen({super.key});
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
 
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
   final DatabaseHelper dbHelper = DatabaseHelper();
 
   Widget _imageDisplay(String imagePath) {
@@ -29,13 +32,22 @@ class HomeScreen extends StatelessWidget {
   }
 
   @override
+  void initState() {
+    postBloc.add(PostInitialEvent());
+    super.initState();
+  }
+
+  final PostBloc postBloc = PostBloc();
+  // var postBloc = BlocProvider.of<PostBloc>(context);
+
+  @override
   Widget build(BuildContext context) {
-    var postBloc = BlocProvider.of<PostBloc>(context);
-    return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.blue,
-        child: const Icon(Icons.add),
-        onPressed: () {
+    return BlocConsumer<PostBloc, PostState>(
+      bloc: postBloc,
+      listenWhen: (previous, current) => current is PostActionState,
+      buildWhen: (previous, current) => current is! PostActionState,
+      listener: (context, state) {
+        if (state is PostNavigateToAddPostActionState) {
           Navigator.push(
             context,
             MaterialPageRoute(
@@ -43,118 +55,112 @@ class HomeScreen extends StatelessWidget {
               fullscreenDialog: true,
             ),
           );
-        },
-      ),
-      appBar: AppBar(
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            const Text(AppStrings.titleLabel),
-            TextButton(
-              onPressed: () async {
-                postBloc.add(DeletePostEvents(postBloc.selectedPosts));
-                for (var element in postBloc.selectedPosts) {
-                  await dbHelper.deletePost(element.id);
-                  postBloc.add(DeletePostEvent(element.id));
-                }
-              },
-              child: Text(
-                'Delete',
-                style: TextStyle(
-                  color: ColorManager.white,
+        } else if (state is PostNavigateToDetailPageActionState) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (BuildContext context) => AddPost(
+                post: state.post,
+              ),
+              fullscreenDialog: true,
+            ),
+          );
+        } else if (state is PostNavigateToUpdatePageActionState) {
+        } else if (state is PostItemSelectedActionState) {
+        } else if (state is PostItemDeletedActionState) {
+        } else if (state is PostItemsDeletedActionState) {}
+      },
+      builder: (context, state) {
+        switch (state.runtimeType) {
+          case PostLoadingState:
+            return const Scaffold(
+                body: Center(
+              child: CircularProgressIndicator(),
+            ));
+          case PostLoadedSuccessState:
+            final successState = state as PostLoadedSuccessState;
+            return Scaffold(
+              floatingActionButton: FloatingActionButton(
+                backgroundColor: Colors.blue,
+                child: const Icon(Icons.add),
+                onPressed: () {
+                  postBloc.add(PostAddButtonClickedEvent());
+                },
+              ),
+              appBar: AppBar(
+                title: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(AppStrings.titleLabel),
+                    TextButton(
+                      onPressed: () async {
+                        postBloc.add(PostDeleteAllButtonClickedEvent());
+                      },
+                      child: Text(
+                        'Delete',
+                        style: TextStyle(
+                          color: ColorManager.white,
+                        ),
+                      ),
+                    )
+                  ],
                 ),
               ),
-            )
-          ],
-        ),
-      ),
-      body: BlocBuilder<PostBloc, PostState>(
-        builder: (context, state) {
-          return FutureBuilder<List<Post>>(
-            future: dbHelper.getPosts(),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Center(child: CircularProgressIndicator());
-              } else if (snapshot.hasError) {
-                return Text('${AppStrings.error}: ${snapshot.error}');
-              } else {
-                var posts = snapshot.data as List<Post>;
-                for (var element in posts) {
-                  if (element.isSelected == 1) {
-                    postBloc.selectedPosts.add(element);
-                  }
-                }
-                return ListView.builder(
-                  itemCount: posts.length,
-                  itemBuilder: (context, index) {
-                    var post = posts[index];
-
-                    return ListTile(
-                      tileColor: post.isSelected == 0 ? ColorManager.white : ColorManager.grey,
-                      onLongPress: () async {
-                        var updatedPost = post;
-                        if (updatedPost.isSelected == 0) {
-                          updatedPost.isSelected = 1;
-                          postBloc.add(SelectPostEvent(updatedPost));
-                        } else {
-                          updatedPost.isSelected = 0;
-                          postBloc.add(DeSelectPostEvent(updatedPost));
-                        }
-                        await dbHelper.updatePost(updatedPost);
-                        // postBloc.add(UpdatePostEvent(updatedPost));
-                      },
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (BuildContext context) => PostDetailsPage(
-                              post: post,
+              body: ListView.builder(
+                itemCount: successState.posts.length,
+                itemBuilder: (context, index) {
+                  var post = successState.posts[index];
+                  return ListTile(
+                    tileColor: post.isSelected == 0 ? ColorManager.white : ColorManager.grey,
+                    onLongPress: () async {
+                      postBloc.add(PostTileLongPressEvent(post));
+                    },
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (BuildContext context) => PostDetailsPage(
+                            post: post,
+                          ),
+                        ),
+                      );
+                    },
+                    title: Text(post.title),
+                    subtitle: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(post.content),
+                        _imageDisplay(post.imagePath),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            TextButton(
+                              onPressed: () {
+                                postBloc.add(PostTileNavigateEvent(post));
+                              },
+                              child: const Text(AppStrings.edit),
                             ),
-                          ),
-                        );
-                      },
-                      title: Text(post.title),
-                      subtitle: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(post.content),
-                          _imageDisplay(post.imagePath),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              TextButton(
-                                onPressed: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (BuildContext context) => AddPost(
-                                        post: post,
-                                      ),
-                                      fullscreenDialog: true,
-                                    ),
-                                  );
-                                },
-                                child: const Text(AppStrings.edit),
-                              ),
-                              TextButton(
-                                onPressed: () async {
-                                  await dbHelper.deletePost(post.id);
-                                  postBloc.add(DeletePostEvent(post.id));
-                                },
-                                child: const Text(AppStrings.delete),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    );
-                  },
-                );
-              }
-            },
-          );
-        },
-      ),
+                            TextButton(
+                              onPressed: ()  {
+                                postBloc.add(PostDeleteButtonClickedEvent(post));
+                               
+                              },
+                              child: const Text(AppStrings.delete),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  );
+                },
+              ),
+            );
+          case PostErrorState:
+            return const Scaffold(body: Center(child: Text('Error')));
+          default:
+            return const SizedBox();
+        }
+      },
     );
   }
 }
