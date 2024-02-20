@@ -25,38 +25,42 @@ class PostTileLongPressEvent extends PostEvent {
   PostTileLongPressEvent(this.post);
 }
 
-class AddPostEvent extends PostEvent {
-  final Post post;
+ 
 
-  AddPostEvent(this.post);
-}
 
-class UpdatePostEvent extends PostEvent {
-  final Post updatedPost;
 
-  UpdatePostEvent(this.updatedPost);
-}
+// class AddPostEvent extends PostEvent {
+//   final Post post;
 
-class DeletePostEvent extends PostEvent {
-  final String postId;
+//   AddPostEvent(this.post);
+// }
 
-  DeletePostEvent(this.postId);
-}
+// class UpdatePostEvent extends PostEvent {
+//   final Post updatedPost;
 
-class DeletePostEvents extends PostEvent {
-  final List<Post> selectedPosts;
+//   UpdatePostEvent(this.updatedPost);
+// }
 
-  DeletePostEvents(this.selectedPosts);
-}
+// class DeletePostEvent extends PostEvent {
+//   final String postId;
 
-class SelectPostEvent extends PostEvent {
-  final Post selectedPost;
+//   DeletePostEvent(this.postId);
+// }
 
-  SelectPostEvent(this.selectedPost);
-}
+// class DeletePostEvents extends PostEvent {
+//   final List<Post> selectedPosts;
 
-class DeSelectPostEvent extends PostEvent {
-  final Post selectedPost;
+//   DeletePostEvents(this.selectedPosts);
+// }
 
-  DeSelectPostEvent(this.selectedPost);
-}
+// class SelectPostEvent extends PostEvent {
+//   final Post selectedPost;
+
+//   SelectPostEvent(this.selectedPost);
+// }
+
+// class DeSelectPostEvent extends PostEvent {
+//   final Post selectedPost;
+
+//   DeSelectPostEvent(this.selectedPost);
+// }

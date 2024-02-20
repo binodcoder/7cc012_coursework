@@ -7,7 +7,7 @@ import '../../../db/db_helper.dart';
 import '../bloc/post_bloc.dart';
 import '../bloc/post_event.dart';
 import '../bloc/post_state.dart';
-import 'post_add.dart';
+import '../../add_post/ui/post_add.dart';
 import 'post_details.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -141,9 +141,8 @@ class _HomeScreenState extends State<HomeScreen> {
                               child: const Text(AppStrings.edit),
                             ),
                             TextButton(
-                              onPressed: ()  {
+                              onPressed: () {
                                 postBloc.add(PostDeleteButtonClickedEvent(post));
-                               
                               },
                               child: const Text(AppStrings.delete),
                             ),
