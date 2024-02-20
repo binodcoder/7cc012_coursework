@@ -78,11 +78,9 @@ class _PostDetailsPageState extends State<PostDetailsPage> {
             SizedBox(
               height: AppHeight.h20,
             ),
-            //  Image.asset('assets/images/default_food.jpeg'),
             SizedBox(
               height: AppHeight.h20,
             ),
-            //description
             const Align(
               alignment: Alignment.centerLeft,
               child: Text(

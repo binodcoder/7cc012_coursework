@@ -1,5 +1,5 @@
 class Post {
-  final String id; // Unique identifier for each post
+  final String id;
   String title;
   String content;
   String imagePath;

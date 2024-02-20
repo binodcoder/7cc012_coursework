@@ -1,19 +1,26 @@
-abstract class PostAddState {}
+abstract class PostAddState {
+  final String? imagePath;
+  PostAddState({this.imagePath});
+}
 
 abstract class PostAddActionState extends PostAddState {}
 
 class PostAddInitialState extends PostAddState {}
 
-class AddPostImagePickedFromGalaryState extends PostAddActionState {
-  String imagePath;
-  AddPostImagePickedFromGalaryState(this.imagePath);
+class PostAddReadyToUpdateState extends PostAddState {
+  PostAddReadyToUpdateState(imagePath) : super(imagePath: imagePath);
 }
 
-class AddPostImagePickedFromCameraState extends PostAddActionState {
-  String imagePath;
-  AddPostImagePickedFromCameraState(this.imagePath);
+class AddPostImagePickedFromGalaryState extends PostAddState {
+  AddPostImagePickedFromGalaryState(imagePath) : super(imagePath: imagePath);
+}
+
+class AddPostImagePickedFromCameraState extends PostAddState {
+  AddPostImagePickedFromCameraState(imagePath) : super(imagePath: imagePath);
 }
 
 class AddPostSavedState extends PostAddActionState {}
+
+class AddPostUpdatedState extends PostAddActionState {}
 
 class AddPostErrorState extends PostAddActionState {}

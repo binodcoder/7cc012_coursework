@@ -12,10 +12,11 @@ class PostAddBloc extends Bloc<PostAddEvent, PostAddState> {
   final DatabaseHelper dbHelper = DatabaseHelper();
   PostAddBloc() : super(PostAddInitialState()) {
     on<PostAddInitialEvent>(postAddInitialEvent);
-
+    on<PostAddReadyToUpdateEvent>(postAddReadyToUpdateEvent);
     on<PostAddPickFromGalaryButtonPressEvent>(addPostPickFromGalaryButtonPressEvent);
     on<PostAddPickFromCameraButtonPressEvent>(addPostPickFromCameraButtonPressEvent);
     on<PostAddSaveButtonPressEvent>(addPostSaveButtonPressEvent);
+    on<PostAddUpdateButtonPressEvent>(postAddUpdateButtonPressEvent);
   }
 
   FutureOr<void> addPostPickFromGalaryButtonPressEvent(PostAddPickFromGalaryButtonPressEvent event, Emitter<PostAddState> emit) async {
@@ -60,10 +61,22 @@ class PostAddBloc extends Bloc<PostAddEvent, PostAddState> {
     }
   }
 
-  FutureOr<void> addPostSaveButtonPressEvent(PostAddSaveButtonPressEvent event, Emitter<PostAddState> emit) {}
+  FutureOr<void> addPostSaveButtonPressEvent(PostAddSaveButtonPressEvent event, Emitter<PostAddState> emit) async {
+    await dbHelper.insertPost(event.newPost);
+    emit(AddPostSavedState());
+  }
 
   FutureOr<void> postAddInitialEvent(PostAddInitialEvent event, Emitter<PostAddState> emit) {
     emit(PostAddInitialState());
+  }
+
+  FutureOr<void> postAddUpdateButtonPressEvent(PostAddUpdateButtonPressEvent event, Emitter<PostAddState> emit) async {
+    await dbHelper.updatePost(event.updatedPost);
+    emit(AddPostUpdatedState());
+  }
+
+  FutureOr<void> postAddReadyToUpdateEvent(PostAddReadyToUpdateEvent event, Emitter<PostAddState> emit) {
+    emit(PostAddReadyToUpdateState(event.post.imagePath));
   }
 }
 

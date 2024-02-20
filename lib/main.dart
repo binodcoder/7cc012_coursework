@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => PostBloc(),
-      child: ScreenUtilInit(
+      child: const ScreenUtilInit(
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
           title: AppStrings.titleLabel,
