@@ -1,10 +1,10 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:my_blog_bloc/features/home/ui/post.dart';
-import '../../../db/db_helper.dart';
+import 'package:my_blog_bloc/features/home/presentation/ui/post.dart';
+import '../../../core/db/db_helper.dart';
 import '../../../resources/strings_manager.dart';
-import '../../home/model/post_model.dart';
+import '../../home/data/model/post_model.dart';
 import '../bloc/post_add_bloc.dart';
 import '../bloc/post_add_event.dart';
 import '../bloc/post_add_state.dart';
@@ -15,7 +15,7 @@ class AddPost extends StatefulWidget {
     this.post,
   });
 
-  final Post? post;
+  final PostModel? post;
 
   @override
   State<AddPost> createState() => _AddPostState();
@@ -51,7 +51,6 @@ class _AddPostState extends State<AddPost> {
     if (widget.post != null) {
       titleController.text = widget.post!.title;
       contentController.text = widget.post!.content;
-
       postAddBloc.add(PostAddReadyToUpdateEvent(widget.post!));
     } else {
       postAddBloc.add(PostAddInitialEvent());
@@ -129,7 +128,7 @@ class _AddPostState extends State<AddPost> {
                 var imagePath = state.imagePath;
                 if (title.isNotEmpty && content.isNotEmpty) {
                   if (widget.post != null) {
-                    var updatedPost = Post(
+                    var updatedPost = PostModel(
                       widget.post!.id,
                       titleController.text,
                       contentController.text,
@@ -138,7 +137,7 @@ class _AddPostState extends State<AddPost> {
                     );
                     postAddBloc.add(PostAddUpdateButtonPressEvent(updatedPost));
                   } else {
-                    var newPost = Post(
+                    var newPost = PostModel(
                       DateTime.now().toString(),
                       title,
                       content,

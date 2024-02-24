@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
-import '../features/home/model/post_model.dart';
+import '../../features/home/data/model/post_model.dart';
 
 class DatabaseHelper {
   static final DatabaseHelper _instance = DatabaseHelper._internal();
@@ -37,16 +37,16 @@ class DatabaseHelper {
     });
   }
 
-  Future<int> insertPost(Post post) async {
+  Future<int> insertPost(PostModel post) async {
     final db = await database;
     return await db!.insert('posts', post.toMap());
   }
 
-  Future<List<Post>> getPosts() async {
+  Future<List<PostModel>> getPosts() async {
     final db = await database;
     final List<Map<String, dynamic>> maps = await db!.query('posts');
     return List.generate(maps.length, (i) {
-      return Post(
+      return PostModel(
         maps[i]['id'],
         maps[i]['title'],
         maps[i]['content'],
@@ -56,7 +56,7 @@ class DatabaseHelper {
     });
   }
 
-  Future<int> updatePost(Post post) async {
+  Future<int> updatePost(PostModel post) async {
     final db = await database;
     return await db!.update(
       'posts',

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import '../../../resources/colour_manager.dart';
-import '../../../resources/font_manager.dart';
-import '../../../resources/values_manager.dart';
-import '../model/post_model.dart';
+import '../../../../resources/colour_manager.dart';
+import '../../../../resources/font_manager.dart';
+import '../../../../resources/values_manager.dart';
+import '../../data/model/post_model.dart';
 
 class PostDetailsPage extends StatefulWidget {
   const PostDetailsPage({
@@ -10,7 +10,7 @@ class PostDetailsPage extends StatefulWidget {
     this.post,
   }) : super(key: key);
 
-  final Post? post;
+  final PostModel? post;
 
   @override
   State<PostDetailsPage> createState() => _PostDetailsPageState();

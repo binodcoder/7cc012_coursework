@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_blog_bloc/resources/colour_manager.dart';
 import 'package:my_blog_bloc/resources/strings_manager.dart';
-import '../../../db/db_helper.dart';
+import '../../../../core/db/db_helper.dart';
 import '../bloc/post_bloc.dart';
 import '../bloc/post_event.dart';
 import '../bloc/post_state.dart';
-import '../../add_post/ui/post_add.dart';
+import '../../../add_post/ui/post_add.dart';
 import 'post_details.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -32,16 +32,8 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   @override
-  void initState() {
-    postBloc.add(PostInitialEvent());
-    super.initState();
-  }
-
-  final PostBloc postBloc = PostBloc();
-  // var postBloc = BlocProvider.of<PostBloc>(context);
-
-  @override
   Widget build(BuildContext context) {
+    var postBloc = BlocProvider.of<PostBloc>(context);
     return BlocConsumer<PostBloc, PostState>(
       bloc: postBloc,
       listenWhen: (previous, current) => current is PostActionState,
@@ -72,6 +64,17 @@ class _HomeScreenState extends State<HomeScreen> {
       },
       builder: (context, state) {
         switch (state.runtimeType) {
+          case PostInitialState:
+            return Scaffold(
+              body: Center(
+                child: TextButton(
+                  onPressed: () {
+                    postBloc.add(PostInitialEvent());
+                  },
+                  child: const Text('Skip'),
+                ),
+              ),
+            );
           case PostLoadingState:
             return const Scaffold(
                 body: Center(

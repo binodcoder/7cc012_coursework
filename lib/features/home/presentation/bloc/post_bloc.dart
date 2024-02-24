@@ -1,13 +1,13 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
-import '../../../db/db_helper.dart';
-import '../model/post_model.dart';
+import '../../../../core/db/db_helper.dart';
+import '../../data/model/post_model.dart';
 import 'post_event.dart';
 import 'post_state.dart';
 
 class PostBloc extends Bloc<PostEvent, PostState> {
   final DatabaseHelper dbHelper = DatabaseHelper();
-  List<Post> selectedPosts = [];
+  List<PostModel> selectedPosts = [];
   PostBloc() : super(PostInitialState()) {
     on<PostInitialEvent>(postInitialEvent);
     on<PostEditButtonClickedEvent>(postEditButtonClickedEvent);
@@ -20,7 +20,7 @@ class PostBloc extends Bloc<PostEvent, PostState> {
 
   FutureOr<void> postInitialEvent(PostInitialEvent event, Emitter<PostState> emit) async {
     emit(PostLoadingState());
-    List<Post> postList = await dbHelper.getPosts();
+    List<PostModel> postList = await dbHelper.getPosts();
     for (var post in postList) {
       if (post.isSelected == 1) {
         selectedPosts.add(post);
@@ -33,7 +33,7 @@ class PostBloc extends Bloc<PostEvent, PostState> {
 
   FutureOr<void> postDeleteButtonClickedEvent(PostDeleteButtonClickedEvent event, Emitter<PostState> emit) async {
     await dbHelper.deletePost(event.post.id);
-    List<Post> postList = await dbHelper.getPosts();
+    List<PostModel> postList = await dbHelper.getPosts();
     emit(PostLoadedSuccessState(postList));
   }
 
@@ -41,7 +41,7 @@ class PostBloc extends Bloc<PostEvent, PostState> {
     for (var element in selectedPosts) {
       await dbHelper.deletePost(element.id);
     }
-    List<Post> postList = await dbHelper.getPosts();
+    List<PostModel> postList = await dbHelper.getPosts();
     emit(PostLoadedSuccessState(postList));
   }
 
@@ -63,7 +63,7 @@ class PostBloc extends Bloc<PostEvent, PostState> {
       selectedPosts.remove(updatedPost);
     }
     await dbHelper.updatePost(updatedPost);
-    final List<Post> newPosts = await dbHelper.getPosts();
+    final List<PostModel> newPosts = await dbHelper.getPosts();
     emit(PostLoadedSuccessState(newPosts));
   }
 }

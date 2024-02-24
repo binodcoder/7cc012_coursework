@@ -1,4 +1,4 @@
-import 'package:my_blog_bloc/features/home/model/post_model.dart';
+import 'package:my_blog_bloc/features/home/data/model/post_model.dart';
 
 abstract class PostAddEvent {}
 
@@ -9,16 +9,16 @@ class PostAddPickFromGalaryButtonPressEvent extends PostAddEvent {}
 class PostAddPickFromCameraButtonPressEvent extends PostAddEvent {}
 
 class PostAddSaveButtonPressEvent extends PostAddEvent {
-  final Post newPost;
+  final PostModel newPost;
   PostAddSaveButtonPressEvent(this.newPost);
 }
 
 class PostAddUpdateButtonPressEvent extends PostAddEvent {
-  final Post updatedPost;
+  final PostModel updatedPost;
   PostAddUpdateButtonPressEvent(this.updatedPost);
 }
 
 class PostAddReadyToUpdateEvent extends PostAddEvent {
-  final Post post;
+  final PostModel post;
   PostAddReadyToUpdateEvent(this.post);
 }

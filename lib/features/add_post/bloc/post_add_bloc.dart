@@ -4,7 +4,7 @@ import 'dart:typed_data';
 import 'package:bloc/bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
-import '../../../db/db_helper.dart';
+import '../../../core/db/db_helper.dart';
 import 'post_add_event.dart';
 import 'post_add_state.dart';
 
@@ -79,51 +79,3 @@ class PostAddBloc extends Bloc<PostAddEvent, PostAddState> {
     emit(PostAddReadyToUpdateState(event.post.imagePath));
   }
 }
-
-// class PostBloc extends Bloc<PostEvent, PostLoadedSuccessState> {
-//   PostBloc() : super(PostLoadedSuccessState([]));
-
-//   List<Post> selectedPosts = [];
-
-//   @override
-//   Stream<PostLoadedSuccessState> mapEventToState(PostEvent event) async* {
-//     if (event is AddPostEvent) {
-//       List<Post> updatedPosts = List.from(state.posts)..add(event.post);
-//       yield state.copyWith(posts: updatedPosts);
-//     } else if (event is UpdatePostEvent) {
-//       List<Post> updatedPosts = state.posts.map((post) {
-//         if (post.id == event.updatedPost.id) {
-//           return event.updatedPost;
-//         }
-//         return post;
-//       }).toList();
-//       yield state.copyWith(posts: updatedPosts);
-//     } else if (event is DeletePostEvent) {
-//       List<Post> updatedPosts = state.posts.where((post) => post.id != event.postId).toList();
-//       yield state.copyWith(posts: updatedPosts);
-//     } else if (event is SelectPostEvent) {
-//       selectedPosts.add(event.selectedPost);
-//       List<Post> updatedPosts = state.posts.map((post) {
-//         if (post.id == event.selectedPost.id) {
-//           return event.selectedPost;
-//         }
-//         return post;
-//       }).toList();
-//       yield state.copyWith(posts: updatedPosts);
-//     } else if (event is DeSelectPostEvent) {
-//       selectedPosts.remove(event.selectedPost);
-//       List<Post> updatedPosts = state.posts.map((post) {
-//         if (post.id == event.selectedPost.id) {
-//           return event.selectedPost;
-//         }
-//         return post;
-//       }).toList();
-//       yield state.copyWith(posts: updatedPosts);
-//     } else if (event is DeletePostEvents) {
-//       for (var element in selectedPosts) {
-//         state.posts.remove(element);
-//       }
-//       yield state.copyWith(posts: state.posts);
-//     }
-//   }
-// }
