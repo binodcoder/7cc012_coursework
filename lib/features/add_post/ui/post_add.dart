@@ -5,6 +5,7 @@ import 'package:my_blog_bloc/features/home/presentation/ui/post.dart';
 import '../../../core/db/db_helper.dart';
 import '../../../resources/strings_manager.dart';
 import '../../home/data/model/post_model.dart';
+import '../../home/domain/entities/post.dart';
 import '../bloc/post_add_bloc.dart';
 import '../bloc/post_add_event.dart';
 import '../bloc/post_add_state.dart';
@@ -15,7 +16,7 @@ class AddPost extends StatefulWidget {
     this.post,
   });
 
-  final PostModel? post;
+  final Post? post;
 
   @override
   State<AddPost> createState() => _AddPostState();

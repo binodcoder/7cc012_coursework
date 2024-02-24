@@ -1,11 +1,19 @@
-class PostModel {
-  final String id;
-  String title;
-  String content;
-  String imagePath;
-  int isSelected;
+import 'package:my_blog_bloc/features/home/domain/entities/post.dart';
 
-  PostModel(this.id, this.title, this.content, this.imagePath, this.isSelected);
+class PostModel extends Post {
+  PostModel(
+    String id,
+    String title,
+    String content,
+    String imagePath,
+    int isSelected,
+  ) : super(
+          id,
+          title,
+          content,
+          imagePath,
+          isSelected,
+        );
 
   Map<String, dynamic> toMap() {
     return {

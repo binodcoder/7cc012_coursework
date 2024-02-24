@@ -1,4 +1,4 @@
-import '../../data/model/post_model.dart';
+import '../../domain/entities/post.dart';
 
 abstract class PostState {}
 
@@ -9,9 +9,9 @@ class PostInitialState extends PostState {}
 class PostLoadingState extends PostState {}
 
 class PostLoadedSuccessState extends PostState {
-  final List<PostModel> posts;
+  final List<Post> posts;
   PostLoadedSuccessState(this.posts);
-  PostLoadedSuccessState copyWith({List<PostModel>? posts}) {
+  PostLoadedSuccessState copyWith({List<Post>? posts}) {
     return PostLoadedSuccessState(posts ?? this.posts);
   }
 }
@@ -21,7 +21,7 @@ class PostErrorState extends PostState {}
 class PostNavigateToAddPostActionState extends PostActionState {}
 
 class PostNavigateToDetailPageActionState extends PostActionState {
-  final PostModel post;
+  final Post post;
 
   PostNavigateToDetailPageActionState(this.post);
 }

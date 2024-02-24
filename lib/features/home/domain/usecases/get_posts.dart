@@ -10,7 +10,7 @@ class GetPosts implements UseCase<Post, NoParams> {
   GetPosts(this.repository);
 
   @override
-  Future<Either<Failure, Post>?> call(NoParams noParams) async {
+  Future<Either<Failure, List<Post>>?> call(NoParams noParams) async {
     return await repository.getPosts();
   }
 }
