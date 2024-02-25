@@ -1,4 +1,4 @@
-import '../../domain/entities/post.dart';
+import '../../../../core/entities/post.dart';
 
 abstract class PostEvent {}
 

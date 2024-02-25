@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../../../../resources/colour_manager.dart';
 import '../../../../resources/font_manager.dart';
 import '../../../../resources/values_manager.dart';
-import '../../domain/entities/post.dart';
+import '../../../../core/entities/post.dart';
 
 class PostDetailsPage extends StatefulWidget {
   const PostDetailsPage({

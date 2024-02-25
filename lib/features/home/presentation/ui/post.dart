@@ -7,7 +7,7 @@ import '../../../../core/db/db_helper.dart';
 import '../bloc/post_bloc.dart';
 import '../bloc/post_event.dart';
 import '../bloc/post_state.dart';
-import '../../../add_post/ui/post_add.dart';
+import '../../../add_post/presentation/ui/post_add.dart';
 import 'post_details.dart';
 
 class HomeScreen extends StatefulWidget {

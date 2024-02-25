@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_blog_bloc/resources/strings_manager.dart';
-import 'features/add_post/bloc/post_add_bloc.dart';
+import 'features/add_post/presentation/bloc/post_add_bloc.dart';
 import 'features/home/presentation/bloc/post_bloc.dart';
 import 'features/home/presentation/ui/post.dart';
 import 'injection_container.dart';

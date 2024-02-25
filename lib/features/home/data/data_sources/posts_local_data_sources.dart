@@ -1,5 +1,5 @@
 import '../../../../core/db/db_helper.dart';
-import '../model/post_model.dart';
+import '../../../../core/model/post_model.dart';
 
 abstract class PostLocalDataSource {
   Future<List<PostModel>> getPosts();

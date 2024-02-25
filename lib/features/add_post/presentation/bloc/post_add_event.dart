@@ -1,6 +1,6 @@
-import 'package:my_blog_bloc/features/home/data/model/post_model.dart';
+import 'package:my_blog_bloc/core/model/post_model.dart';
 
-import '../../home/domain/entities/post.dart';
+import '../../../../core/entities/post.dart';
 
 abstract class PostAddEvent {}
 

@@ -3,7 +3,7 @@ import 'package:bloc/bloc.dart';
 import 'package:my_blog_bloc/core/usecases/usecase.dart';
 import 'package:my_blog_bloc/features/home/domain/usecases/get_posts.dart';
 import '../../../../core/db/db_helper.dart';
-import '../../data/model/post_model.dart';
+import '../../../../core/model/post_model.dart';
 import 'post_event.dart';
 import 'post_state.dart';
 
