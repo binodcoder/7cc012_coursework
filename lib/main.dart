@@ -25,7 +25,7 @@ class MyApp extends StatelessWidget {
           create: (BuildContext context) => sl<PostBloc>(),
         ),
         BlocProvider<PostAddBloc>(
-          create: (BuildContext context) => PostAddBloc(),
+          create: (BuildContext context) => sl<PostAddBloc>(),
         ),
       ],
       child: const ScreenUtilInit(

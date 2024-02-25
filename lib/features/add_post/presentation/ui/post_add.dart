@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_blog_bloc/features/home/presentation/ui/post.dart';
 import '../../../../core/db/db_helper.dart';
+import '../../../../injection_container.dart';
 import '../../../../resources/strings_manager.dart';
 import '../../../../core/model/post_model.dart';
-import '../../../../core/entities/post.dart';
 import '../bloc/post_add_bloc.dart';
 import '../bloc/post_add_event.dart';
 import '../bloc/post_add_state.dart';
@@ -13,10 +13,10 @@ import '../bloc/post_add_state.dart';
 class AddPost extends StatefulWidget {
   const AddPost({
     super.key,
-    this.post,
+    this.postModel,
   });
 
-  final Post? post;
+  final PostModel? postModel;
 
   @override
   State<AddPost> createState() => _AddPostState();
@@ -49,17 +49,17 @@ class _AddPostState extends State<AddPost> {
 
   @override
   void initState() {
-    if (widget.post != null) {
-      titleController.text = widget.post!.title;
-      contentController.text = widget.post!.content;
-      postAddBloc.add(PostAddReadyToUpdateEvent(widget.post!));
+    if (widget.postModel != null) {
+      titleController.text = widget.postModel!.title;
+      contentController.text = widget.postModel!.content;
+      postAddBloc.add(PostAddReadyToUpdateEvent(widget.postModel!));
     } else {
       postAddBloc.add(PostAddInitialEvent());
     }
     super.initState();
   }
 
-  final PostAddBloc postAddBloc = PostAddBloc();
+  final PostAddBloc postAddBloc = sl<PostAddBloc>();
 
   @override
   Widget build(BuildContext context) {
@@ -71,6 +71,7 @@ class _AddPostState extends State<AddPost> {
         if (state is AddPostSavedState) {
           titleController.clear();
           contentController.clear();
+          Navigator.pop(context);
           Navigator.push(
             context,
             MaterialPageRoute(
@@ -128,9 +129,9 @@ class _AddPostState extends State<AddPost> {
                 var content = contentController.text;
                 var imagePath = state.imagePath;
                 if (title.isNotEmpty && content.isNotEmpty) {
-                  if (widget.post != null) {
+                  if (widget.postModel != null) {
                     var updatedPost = PostModel(
-                      widget.post!.id,
+                      widget.postModel!.id,
                       titleController.text,
                       contentController.text,
                       imagePath!,
@@ -150,7 +151,7 @@ class _AddPostState extends State<AddPost> {
                 }
               },
               child: Text(
-                widget.post == null ? AppStrings.addPost : AppStrings.updatePost,
+                widget.postModel == null ? AppStrings.addPost : AppStrings.updatePost,
               ),
             ),
           ]),

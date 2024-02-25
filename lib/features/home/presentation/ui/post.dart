@@ -9,6 +9,7 @@ import '../bloc/post_event.dart';
 import '../bloc/post_state.dart';
 import '../../../add_post/presentation/ui/post_add.dart';
 import 'post_details.dart';
+import '../../../../injection_container.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -32,8 +33,15 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   @override
+  void initState() {
+    postBloc.add(PostInitialEvent());
+    super.initState();
+  }
+
+  PostBloc postBloc = sl<PostBloc>();
+
+  @override
   Widget build(BuildContext context) {
-    var postBloc = BlocProvider.of<PostBloc>(context);
     return BlocConsumer<PostBloc, PostState>(
       bloc: postBloc,
       listenWhen: (previous, current) => current is PostActionState,
@@ -52,7 +60,7 @@ class _HomeScreenState extends State<HomeScreen> {
             context,
             MaterialPageRoute(
               builder: (BuildContext context) => AddPost(
-                post: state.post,
+                postModel: state.postModel,
               ),
               fullscreenDialog: true,
             ),
@@ -64,17 +72,6 @@ class _HomeScreenState extends State<HomeScreen> {
       },
       builder: (context, state) {
         switch (state.runtimeType) {
-          case PostInitialState:
-            return Scaffold(
-              body: Center(
-                child: TextButton(
-                  onPressed: () {
-                    postBloc.add(PostInitialEvent());
-                  },
-                  child: const Text('Skip'),
-                ),
-              ),
-            );
           case PostLoadingState:
             return const Scaffold(
                 body: Center(
@@ -110,42 +107,42 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
               body: ListView.builder(
-                itemCount: successState.posts.length,
+                itemCount: successState.postModelList.length,
                 itemBuilder: (context, index) {
-                  var post = successState.posts[index];
+                  var postModel = successState.postModelList[index];
                   return ListTile(
-                    tileColor: post.isSelected == 0 ? ColorManager.white : ColorManager.grey,
+                    tileColor: postModel.isSelected == 0 ? ColorManager.white : ColorManager.grey,
                     onLongPress: () async {
-                      postBloc.add(PostTileLongPressEvent(post));
+                      postBloc.add(PostTileLongPressEvent(postModel));
                     },
                     onTap: () {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (BuildContext context) => PostDetailsPage(
-                            post: post,
+                            postModel: postModel,
                           ),
                         ),
                       );
                     },
-                    title: Text(post.title),
+                    title: Text(postModel.title),
                     subtitle: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(post.content),
-                        _imageDisplay(post.imagePath),
+                        Text(postModel.content),
+                        _imageDisplay(postModel.imagePath),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
                             TextButton(
                               onPressed: () {
-                                postBloc.add(PostTileNavigateEvent(post));
+                                postBloc.add(PostTileNavigateEvent(postModel));
                               },
                               child: const Text(AppStrings.edit),
                             ),
                             TextButton(
                               onPressed: () {
-                                postBloc.add(PostDeleteButtonClickedEvent(post));
+                                postBloc.add(PostDeleteButtonClickedEvent(postModel));
                               },
                               child: const Text(AppStrings.delete),
                             ),

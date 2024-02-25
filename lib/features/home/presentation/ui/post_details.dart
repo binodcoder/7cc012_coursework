@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:my_blog_bloc/core/model/post_model.dart';
 import '../../../../resources/colour_manager.dart';
 import '../../../../resources/font_manager.dart';
 import '../../../../resources/values_manager.dart';
-import '../../../../core/entities/post.dart';
 
 class PostDetailsPage extends StatefulWidget {
   const PostDetailsPage({
     Key? key,
-    this.post,
+    this.postModel,
   }) : super(key: key);
 
-  final Post? post;
+  final PostModel? postModel;
 
   @override
   State<PostDetailsPage> createState() => _PostDetailsPageState();
@@ -65,13 +65,13 @@ class _PostDetailsPageState extends State<PostDetailsPage> {
               contentPadding: const EdgeInsets.only(left: 0.0, right: 0.0),
               tileColor: ColorManager.white,
               title: Text(
-                widget.post!.title,
+                widget.postModel!.title,
                 style: const TextStyle(
                   fontSize: FontSize.s20,
                 ),
               ),
               subtitle: Text(
-                widget.post!.title,
+                widget.postModel!.title,
                 style: const TextStyle(fontSize: FontSize.s14),
               ),
             ),

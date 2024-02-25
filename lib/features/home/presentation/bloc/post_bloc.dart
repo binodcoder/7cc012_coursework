@@ -1,17 +1,23 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:my_blog_bloc/core/usecases/usecase.dart';
+import 'package:my_blog_bloc/features/add_post/domain/usecases/update_post.dart';
 import 'package:my_blog_bloc/features/home/domain/usecases/get_posts.dart';
 import '../../../../core/db/db_helper.dart';
+import '../../../../core/entities/post.dart';
 import '../../../../core/model/post_model.dart';
 import 'post_event.dart';
 import 'post_state.dart';
 
 class PostBloc extends Bloc<PostEvent, PostState> {
   final GetPosts getPosts;
+  final UpdatePost updatePost;
   final DatabaseHelper dbHelper = DatabaseHelper();
-  List<PostModel> selectedPosts = [];
-  PostBloc({required this.getPosts}) : super(PostInitialState()) {
+  List<Post> selectedPosts = [];
+  PostBloc({
+    required this.getPosts,
+    required this.updatePost,
+  }) : super(PostInitialState()) {
     on<PostInitialEvent>(postInitialEvent);
     on<PostEditButtonClickedEvent>(postEditButtonClickedEvent);
     on<PostDeleteButtonClickedEvent>(postDeleteButtonClickedEvent);
@@ -23,27 +29,24 @@ class PostBloc extends Bloc<PostEvent, PostState> {
 
   FutureOr<void> postInitialEvent(PostInitialEvent event, Emitter<PostState> emit) async {
     emit(PostLoadingState());
-    // List<PostModel> postList = await dbHelper.getPosts();
-    final postList = await getPosts(NoParams());
+    final postModelList = await getPosts(NoParams());
 
-    postList!.fold((failure) {
+    postModelList!.fold((failure) {
       // emit(Error(message: _mapFailureToMessage(failure)));
-    }, (post) {
-      emit(PostLoadedSuccessState(post));
+    }, (postModelList) {
+      for (var post in postModelList) {
+        if (post.isSelected == 1) {
+          selectedPosts.add(post);
+        }
+      }
+      emit(PostLoadedSuccessState(postModelList));
     });
-
-    // for (var post in postList) {
-    //   if (post.isSelected == 1) {
-    //     selectedPosts.add(post);
-    //   }
-    // }
-    // emit(PostLoadedSuccessState(postList));
   }
 
   FutureOr<void> postEditButtonClickedEvent(PostEditButtonClickedEvent event, Emitter<PostState> emit) {}
 
   FutureOr<void> postDeleteButtonClickedEvent(PostDeleteButtonClickedEvent event, Emitter<PostState> emit) async {
-    await dbHelper.deletePost(event.post.id);
+    await dbHelper.deletePost(event.postModel.id);
     List<PostModel> postList = await dbHelper.getPosts();
     emit(PostLoadedSuccessState(postList));
   }
@@ -61,20 +64,24 @@ class PostBloc extends Bloc<PostEvent, PostState> {
   }
 
   FutureOr<void> postTileNavigateEvent(PostTileNavigateEvent event, Emitter<PostState> emit) {
-    emit(PostNavigateToDetailPageActionState(event.post));
+    emit(PostNavigateToDetailPageActionState(event.postModel));
   }
 
   FutureOr<void> postTileLongPressEvent(PostTileLongPressEvent event, Emitter<PostState> emit) async {
-    var updatedPost = event.post;
+    var updatedPost = event.postModel;
     if (updatedPost.isSelected == 0) {
       updatedPost.isSelected = 1;
-    //  selectedPosts.add(updatedPost);
+      selectedPosts.add(updatedPost);
     } else {
       updatedPost.isSelected = 0;
       selectedPosts.remove(updatedPost);
     }
-   // await dbHelper.updatePost(updatedPost);
-    final List<PostModel> newPosts = await dbHelper.getPosts();
-    emit(PostLoadedSuccessState(newPosts));
+    await updatePost(updatedPost);
+    final postList = await getPosts(NoParams());
+    postList!.fold((failure) {
+      // emit(Error(message: _mapFailureToMessage(failure)));
+    }, (post) {
+      emit(PostLoadedSuccessState(post));
+    });
   }
 }

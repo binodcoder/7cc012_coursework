@@ -1,7 +1,5 @@
 import 'package:my_blog_bloc/core/model/post_model.dart';
 
-import '../../../../core/entities/post.dart';
-
 abstract class PostAddEvent {}
 
 class PostAddInitialEvent extends PostAddEvent {}
@@ -21,6 +19,6 @@ class PostAddUpdateButtonPressEvent extends PostAddEvent {
 }
 
 class PostAddReadyToUpdateEvent extends PostAddEvent {
-  final Post post;
-  PostAddReadyToUpdateEvent(this.post);
+  final PostModel postModel;
+  PostAddReadyToUpdateEvent(this.postModel);
 }
