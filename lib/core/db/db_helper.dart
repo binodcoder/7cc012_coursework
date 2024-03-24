@@ -1,72 +1,60 @@
 import 'dart:async';
-import 'package:sqflite/sqflite.dart';
-import 'package:path/path.dart';
 import '../model/post_model.dart';
+import 'package:sqflite/sqflite.dart' as sql;
 
 class DatabaseHelper {
-  static final DatabaseHelper _instance = DatabaseHelper._internal();
-
-  factory DatabaseHelper() => _instance;
-
-  DatabaseHelper._internal();
-
-  Database? _database;
-
-  Future<Database?> get database async {
-    if (_database != null) return _database;
-
-    _database = await initDatabase();
-    return _database;
-  }
-
-  Future<Database> initDatabase() async {
-    final databasesPath = await getDatabasesPath();
-    final path = join(databasesPath, 'blog.db');
-
-    return await openDatabase(path, version: 1, onCreate: (Database db, int version) async {
-      await db.execute('''
-          CREATE TABLE posts (
-            id TEXT PRIMARY KEY,
-            title TEXT,
-            content TEXT,
-            imagePath TEXT,
-            isSelected integer
-          )
-        ''');
+  static Future<sql.Database> db() async {
+    return sql.openDatabase('blog.db', version: 1, onCreate: (
+      sql.Database database,
+      int version,
+    ) async {
+      await createTables(database);
     });
   }
 
-  Future<int> insertPost(PostModel post) async {
-    final db = await database;
-    return await db!.insert('posts', post.toMap());
+  static Future<void> createTables(sql.Database database) async {
+    await database.execute("""CREATE TABLE post(
+      id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+      title TEXT,
+      content TEXT,
+      imagePath TEXT,
+      isSelected INTEGER,
+      createdAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+    )""");
   }
 
-  Future<List<PostModel>> getPosts() async {
-    final db = await database;
-    final List<Map<String, dynamic>> maps = await db!.query('posts');
+  static Future<int> insertPost(PostModel post) async {
+    final db = await DatabaseHelper.db();
+    return await db.insert('post', post.toMap());
+  }
+
+  static Future<List<PostModel>> getPosts() async {
+    final db = await DatabaseHelper.db();
+    final List<Map<String, dynamic>> maps = await db.query('post');
     return List.generate(maps.length, (i) {
       return PostModel(
-        maps[i]['id'],
-        maps[i]['title'],
-        maps[i]['content'],
-        maps[i]['imagePath'],
-        maps[i]['isSelected'],
+        id: maps[i]['id'],
+        title: maps[i]['title'],
+        content: maps[i]['content'],
+        imagePath: maps[i]['imagePath'],
+        isSelected: maps[i]['isSelected'],
+        createdAt: DateTime.parse(maps[i]['createdAt']),
       );
     });
   }
 
-  Future<int> updatePost(PostModel post) async {
-    final db = await database;
-    return await db!.update(
-      'posts',
+  static Future<int> updatePost(PostModel post) async {
+    final db = await DatabaseHelper.db();
+    return await db.update(
+      'post',
       post.toMap(),
       where: 'id = ?',
       whereArgs: [post.id],
     );
   }
 
-  Future<int> deletePost(String postId) async {
-    final db = await database;
-    return await db!.delete('posts', where: 'id = ?', whereArgs: [postId]);
+  static Future<int> deletePost(int postId) async {
+    final db = await DatabaseHelper.db();
+    return await db.delete('post', where: 'id = ?', whereArgs: [postId]);
   }
 }

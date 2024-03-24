@@ -1,4 +1,5 @@
-import 'package:my_blog_bloc/core/model/post_model.dart';
+ 
+import '../../../../core/entities/post.dart';
 
 abstract class PostEvent {}
 
@@ -7,8 +8,8 @@ class PostInitialEvent extends PostEvent {}
 class PostEditButtonClickedEvent extends PostEvent {}
 
 class PostDeleteButtonClickedEvent extends PostEvent {
-  final PostModel postModel;
-  PostDeleteButtonClickedEvent(this.postModel);
+  final Post post;
+  PostDeleteButtonClickedEvent(this.post);
 }
 
 class PostDeleteAllButtonClickedEvent extends PostEvent {}
@@ -16,11 +17,11 @@ class PostDeleteAllButtonClickedEvent extends PostEvent {}
 class PostAddButtonClickedEvent extends PostEvent {}
 
 class PostTileNavigateEvent extends PostEvent {
-  final PostModel postModel;
-  PostTileNavigateEvent(this.postModel);
+  final Post post;
+  PostTileNavigateEvent(this.post);
 }
 
 class PostTileLongPressEvent extends PostEvent {
-  final PostModel postModel;
-  PostTileLongPressEvent(this.postModel);
+  final Post post;
+  PostTileLongPressEvent(this.post);
 }

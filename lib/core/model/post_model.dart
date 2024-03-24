@@ -1,27 +1,37 @@
 import 'package:my_blog_bloc/core/entities/post.dart';
 
 class PostModel extends Post {
-  PostModel(
-    String id,
-    String title,
-    String content,
-    String imagePath,
-    int isSelected,
-  ) : super(
-          id,
-          title,
-          content,
-          imagePath,
-          isSelected,
+  PostModel({
+    int? id,
+    required String title,
+    required String content,
+    String? imagePath,
+    required int isSelected,
+    DateTime? createdAt,
+  }) : super(
+          id: id,
+          title: title,
+          content: content,
+          imagePath: imagePath,
+          isSelected: isSelected,
+          createdAt: createdAt,
         );
 
   Map<String, dynamic> toMap() {
     return {
-      'id': id,
       'title': title,
       'content': content,
       'imagePath': imagePath,
       'isSelected': isSelected,
     };
   }
+
+  factory PostModel.fromJson(Map<String, dynamic> json) => PostModel(
+        id: json["id"],
+        title: json["title"],
+        content: json["content"],
+        imagePath: json["imagePath"],
+        isSelected: json["isSelected"],
+        createdAt: json["createdAt"],
+      );
 }

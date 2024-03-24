@@ -6,14 +6,12 @@ abstract class PostPostsLocalDataSources {
 }
 
 class PostPostsLocalDataSourcesImpl extends PostPostsLocalDataSources {
-  DatabaseHelper databaseHelper = DatabaseHelper();
-
   PostPostsLocalDataSourcesImpl();
   @override
   Future<int> postPosts(PostModel postModel) => _postPostsToLocal(postModel);
 
   Future<int> _postPostsToLocal(PostModel postModel) async {
-    int response = await databaseHelper.insertPost(postModel);
+    int response = await DatabaseHelper.insertPost(postModel);
     return response;
   }
 }

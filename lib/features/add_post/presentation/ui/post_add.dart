@@ -1,8 +1,8 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:my_blog_bloc/features/home/presentation/ui/post.dart';
 import '../../../../core/db/db_helper.dart';
+import '../../../../core/entities/post.dart';
 import '../../../../injection_container.dart';
 import '../../../../resources/strings_manager.dart';
 import '../../../../core/model/post_model.dart';
@@ -13,10 +13,10 @@ import '../bloc/post_add_state.dart';
 class AddPost extends StatefulWidget {
   const AddPost({
     super.key,
-    this.postModel,
+    this.post,
   });
 
-  final PostModel? postModel;
+  final Post? post;
 
   @override
   State<AddPost> createState() => _AddPostState();
@@ -49,10 +49,10 @@ class _AddPostState extends State<AddPost> {
 
   @override
   void initState() {
-    if (widget.postModel != null) {
-      titleController.text = widget.postModel!.title;
-      contentController.text = widget.postModel!.content;
-      postAddBloc.add(PostAddReadyToUpdateEvent(widget.postModel!));
+    if (widget.post != null) {
+      titleController.text = widget.post!.title;
+      contentController.text = widget.post!.content;
+      postAddBloc.add(PostAddReadyToUpdateEvent(widget.post!));
     } else {
       postAddBloc.add(PostAddInitialEvent());
     }
@@ -72,23 +72,10 @@ class _AddPostState extends State<AddPost> {
           titleController.clear();
           contentController.clear();
           Navigator.pop(context);
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (BuildContext context) => const HomeScreen(),
-              fullscreenDialog: true,
-            ),
-          );
         } else if (state is AddPostUpdatedState) {
           titleController.clear();
           contentController.clear();
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (BuildContext context) => const HomeScreen(),
-              fullscreenDialog: true,
-            ),
-          );
+          Navigator.pop(context);
         }
       },
       builder: (context, state) {
@@ -129,29 +116,28 @@ class _AddPostState extends State<AddPost> {
                 var content = contentController.text;
                 var imagePath = state.imagePath;
                 if (title.isNotEmpty && content.isNotEmpty) {
-                  if (widget.postModel != null) {
+                  if (widget.post != null) {
                     var updatedPost = PostModel(
-                      widget.postModel!.id,
-                      titleController.text,
-                      contentController.text,
-                      imagePath!,
-                      0,
+                      id: widget.post!.id,
+                      title: titleController.text,
+                      content: contentController.text,
+                      imagePath: imagePath!,
+                      isSelected: 0,
                     );
                     postAddBloc.add(PostAddUpdateButtonPressEvent(updatedPost));
                   } else {
                     var newPost = PostModel(
-                      DateTime.now().toString(),
-                      title,
-                      content,
-                      imagePath!,
-                      0,
+                      title: title,
+                      content: content,
+                      imagePath: imagePath,
+                      isSelected: 0,
                     );
                     postAddBloc.add(PostAddSaveButtonPressEvent(newPost));
                   }
                 }
               },
               child: Text(
-                widget.postModel == null ? AppStrings.addPost : AppStrings.updatePost,
+                widget.post == null ? AppStrings.addPost : AppStrings.updatePost,
               ),
             ),
           ]),

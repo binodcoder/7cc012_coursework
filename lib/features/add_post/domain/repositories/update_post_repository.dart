@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
-import 'package:my_blog_bloc/core/model/post_model.dart';
+ import '../../../../core/entities/post.dart';
 import '../../../../core/errors/failures.dart';
 
 abstract class UpdatePostRepository {
-  Future<Either<Failure, int>>? updatePost(PostModel post);
+  Future<Either<Failure, int>>? updatePost(Post post);
 }

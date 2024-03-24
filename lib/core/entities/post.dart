@@ -1,9 +1,17 @@
 class Post {
-  final String id;
+  int? id;
   String title;
   String content;
-  String imagePath;
+  String? imagePath;
   int isSelected;
+  DateTime? createdAt;
 
-  Post(this.id, this.title, this.content, this.imagePath, this.isSelected);
+  Post({
+    this.id,
+    required this.title,
+    required this.content,
+    this.imagePath,
+    required this.isSelected,
+    this.createdAt,
+  });
 }

@@ -33,29 +33,29 @@ class PostBloc extends Bloc<PostEvent, PostState> {
 
     postModelList!.fold((failure) {
       // emit(Error(message: _mapFailureToMessage(failure)));
-    }, (postModelList) {
-      for (var post in postModelList) {
+    }, (postList) {
+      for (var post in postList) {
         if (post.isSelected == 1) {
           selectedPosts.add(post);
         }
       }
-      emit(PostLoadedSuccessState(postModelList));
+      emit(PostLoadedSuccessState(postList));
     });
   }
 
   FutureOr<void> postEditButtonClickedEvent(PostEditButtonClickedEvent event, Emitter<PostState> emit) {}
 
   FutureOr<void> postDeleteButtonClickedEvent(PostDeleteButtonClickedEvent event, Emitter<PostState> emit) async {
-    await dbHelper.deletePost(event.postModel.id);
-    List<PostModel> postList = await dbHelper.getPosts();
+    await DatabaseHelper.deletePost(event.post.id!);
+    List<PostModel> postList = await DatabaseHelper.getPosts();
     emit(PostLoadedSuccessState(postList));
   }
 
   FutureOr<void> postDeleteAllButtonClickedEvent(PostDeleteAllButtonClickedEvent event, Emitter<PostState> emit) async {
     for (var element in selectedPosts) {
-      await dbHelper.deletePost(element.id);
+      await DatabaseHelper.deletePost(element.id!);
     }
-    List<PostModel> postList = await dbHelper.getPosts();
+    List<PostModel> postList = await DatabaseHelper.getPosts();
     emit(PostLoadedSuccessState(postList));
   }
 
@@ -64,11 +64,11 @@ class PostBloc extends Bloc<PostEvent, PostState> {
   }
 
   FutureOr<void> postTileNavigateEvent(PostTileNavigateEvent event, Emitter<PostState> emit) {
-    emit(PostNavigateToDetailPageActionState(event.postModel));
+    emit(PostNavigateToDetailPageActionState(event.post));
   }
 
   FutureOr<void> postTileLongPressEvent(PostTileLongPressEvent event, Emitter<PostState> emit) async {
-    var updatedPost = event.postModel;
+    var updatedPost = event.post;
     if (updatedPost.isSelected == 0) {
       updatedPost.isSelected = 1;
       selectedPosts.add(updatedPost);

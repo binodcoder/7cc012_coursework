@@ -1,4 +1,5 @@
-import 'package:my_blog_bloc/core/model/post_model.dart';
+ 
+import '../../../../core/entities/post.dart';
 
 abstract class PostState {}
 
@@ -9,10 +10,10 @@ class PostInitialState extends PostState {}
 class PostLoadingState extends PostState {}
 
 class PostLoadedSuccessState extends PostState {
-  final List<PostModel> postModelList;
-  PostLoadedSuccessState(this.postModelList);
-  PostLoadedSuccessState copyWith({List<PostModel>? postModelList}) {
-    return PostLoadedSuccessState(postModelList ?? this.postModelList);
+  final List<Post> postList;
+  PostLoadedSuccessState(this.postList);
+  PostLoadedSuccessState copyWith({List<Post>? postList}) {
+    return PostLoadedSuccessState(postList ?? this.postList);
   }
 }
 
@@ -21,9 +22,9 @@ class PostErrorState extends PostState {}
 class PostNavigateToAddPostActionState extends PostActionState {}
 
 class PostNavigateToDetailPageActionState extends PostActionState {
-  final PostModel postModel;
+  final Post post;
 
-  PostNavigateToDetailPageActionState(this.postModel);
+  PostNavigateToDetailPageActionState(this.post);
 }
 
 class PostNavigateToUpdatePageActionState extends PostActionState {}

@@ -5,6 +5,7 @@ import 'package:bloc/bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:my_blog_bloc/features/add_post/domain/usecases/post_post.dart';
 import 'package:my_blog_bloc/features/add_post/domain/usecases/update_post.dart';
+import 'package:my_blog_bloc/features/home/domain/usecases/get_posts.dart';
 import 'package:path_provider/path_provider.dart';
 import '../../../../core/db/db_helper.dart';
 import 'post_add_event.dart';
@@ -13,8 +14,9 @@ import 'post_add_state.dart';
 class PostAddBloc extends Bloc<PostAddEvent, PostAddState> {
   final PostPosts postPosts;
   final UpdatePost updatePost;
+  final GetPosts getPosts;
   final DatabaseHelper dbHelper = DatabaseHelper();
-  PostAddBloc({required this.postPosts, required this.updatePost}) : super(PostAddInitialState()) {
+  PostAddBloc({required this.postPosts, required this.updatePost, required this.getPosts}) : super(PostAddInitialState()) {
     on<PostAddInitialEvent>(postAddInitialEvent);
     on<PostAddReadyToUpdateEvent>(postAddReadyToUpdateEvent);
     on<PostAddPickFromGalaryButtonPressEvent>(addPostPickFromGalaryButtonPressEvent);
@@ -67,7 +69,6 @@ class PostAddBloc extends Bloc<PostAddEvent, PostAddState> {
 
   FutureOr<void> addPostSaveButtonPressEvent(PostAddSaveButtonPressEvent event, Emitter<PostAddState> emit) async {
     await postPosts(event.newPost);
-    // await dbHelper.insertPost(event.newPost);
     emit(AddPostSavedState());
   }
 
@@ -77,11 +78,10 @@ class PostAddBloc extends Bloc<PostAddEvent, PostAddState> {
 
   FutureOr<void> postAddUpdateButtonPressEvent(PostAddUpdateButtonPressEvent event, Emitter<PostAddState> emit) async {
     await updatePost(event.updatedPost);
-    // await dbHelper.updatePost(event.updatedPost);
     emit(AddPostUpdatedState());
   }
 
   FutureOr<void> postAddReadyToUpdateEvent(PostAddReadyToUpdateEvent event, Emitter<PostAddState> emit) {
-    emit(PostAddReadyToUpdateState(event.postModel.imagePath));
+    emit(PostAddReadyToUpdateState(event.post.imagePath));
   }
 }

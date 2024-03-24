@@ -6,14 +6,12 @@ abstract class UpdatePostLocalDataSources {
 }
 
 class UpdatePostLocalDataSourcesImpl implements UpdatePostLocalDataSources {
-  DatabaseHelper databaseHelper = DatabaseHelper();
-
   UpdatePostLocalDataSourcesImpl();
   @override
   Future<int> updatePost(PostModel postModel) => _updatePostToLocal(postModel);
 
   Future<int> _updatePostToLocal(PostModel postModel) async {
-    final int response = await databaseHelper.updatePost(postModel);
+    final int response = await DatabaseHelper.updatePost(postModel);
     return response;
   }
 }

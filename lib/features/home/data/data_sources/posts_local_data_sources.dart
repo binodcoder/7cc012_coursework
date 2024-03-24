@@ -6,14 +6,13 @@ abstract class PostLocalDataSource {
 }
 
 class PostLocalDataSourceImpl implements PostLocalDataSource {
-  final DatabaseHelper dbHelper = DatabaseHelper();
   PostLocalDataSourceImpl();
 
   @override
   Future<List<PostModel>> getPosts() => _getPostsFromLocal();
 
   Future<List<PostModel>> _getPostsFromLocal() async {
-    List<PostModel> postModelList = await dbHelper.getPosts();
+    List<PostModel> postModelList = await DatabaseHelper.getPosts();
     return postModelList;
   }
 }

@@ -21,14 +21,18 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final DatabaseHelper dbHelper = DatabaseHelper();
 
-  Widget _imageDisplay(String imagePath) {
+  Widget _imageDisplay(String? imagePath) {
     return Container(
       width: 50,
       height: 50,
       decoration: BoxDecoration(
         border: Border.all(color: Colors.grey),
       ),
-      child: Image.file(File(imagePath)),
+      child: imagePath == null
+          ? Image.asset('assets/images/noimage.jpg')
+          : Image.file(
+              File(imagePath),
+            ),
     );
   }
 
@@ -36,6 +40,10 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     postBloc.add(PostInitialEvent());
     super.initState();
+  }
+
+  void refreshPage() {
+    postBloc.add(PostInitialEvent());
   }
 
   PostBloc postBloc = sl<PostBloc>();
@@ -54,17 +62,17 @@ class _HomeScreenState extends State<HomeScreen> {
               builder: (BuildContext context) => const AddPost(),
               fullscreenDialog: true,
             ),
-          );
+          ).then((value) => refreshPage());
         } else if (state is PostNavigateToDetailPageActionState) {
           Navigator.push(
             context,
             MaterialPageRoute(
               builder: (BuildContext context) => AddPost(
-                postModel: state.postModel,
+                post: state.post,
               ),
               fullscreenDialog: true,
             ),
-          );
+          ).then((value) => refreshPage());
         } else if (state is PostNavigateToUpdatePageActionState) {
         } else if (state is PostItemSelectedActionState) {
         } else if (state is PostItemDeletedActionState) {
@@ -107,9 +115,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
               body: ListView.builder(
-                itemCount: successState.postModelList.length,
+                itemCount: successState.postList.length,
                 itemBuilder: (context, index) {
-                  var postModel = successState.postModelList[index];
+                  var postModel = successState.postList[index];
                   return ListTile(
                     tileColor: postModel.isSelected == 0 ? ColorManager.white : ColorManager.grey,
                     onLongPress: () async {
@@ -120,7 +128,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         context,
                         MaterialPageRoute(
                           builder: (BuildContext context) => PostDetailsPage(
-                            postModel: postModel,
+                            post: postModel,
                           ),
                         ),
                       );

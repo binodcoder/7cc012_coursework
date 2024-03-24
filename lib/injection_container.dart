@@ -27,7 +27,11 @@ Future<void> init() async {
   );
   sl.registerLazySingleton<PostLocalDataSource>(() => PostLocalDataSourceImpl());
 
-  sl.registerFactory(() => PostAddBloc(postPosts: sl(), updatePost: sl()));
+  sl.registerFactory(() => PostAddBloc(
+        postPosts: sl(),
+        updatePost: sl(),
+        getPosts: sl(),
+      ));
   sl.registerLazySingleton(() => PostPosts(sl()));
   sl.registerLazySingleton<PostPostsRepository>(
     () => PostPostsRepositoriesImpl(
