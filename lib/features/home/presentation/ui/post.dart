@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:my_blog_bloc/resources/colour_manager.dart';
 import 'package:my_blog_bloc/resources/strings_manager.dart';
 import '../../../../core/db/db_helper.dart';
@@ -97,26 +98,31 @@ class _HomeScreenState extends State<HomeScreen> {
                 },
               ),
               appBar: AppBar(
+                iconTheme: IconThemeData(color: ColorManager.primary),
+                elevation: 0,
+                backgroundColor: ColorManager.white,
                 //        title: Obx(() => menuListController.isSearch.value
                 // ?
-                title: TextField(
-                  autofocus: true,
-                  controller: searchMenuController,
-                  style: TextStyle(color: ColorManager.primary),
-                  decoration: InputDecoration(
-                    fillColor: ColorManager.primary,
-                    hintText: 'Search',
-                    focusColor: ColorManager.primary,
-                    hintStyle: TextStyle(
-                      color: ColorManager.primary,
-                    ),
-                  ),
-                  onChanged: (value) => postBloc.add(PostSearchIconClickedEvent(value)),
-                ),
-                //     : Text(
-                //         'Menus',
-                //         style: TextStyle(color: ColorManager.primary, fontWeight: FontWeight.bold),
-                //       )),
+
+                title: state.isSearch
+                    ? TextField(
+                        autofocus: true,
+                        controller: searchMenuController,
+                        style: TextStyle(color: ColorManager.primary),
+                        decoration: InputDecoration(
+                          fillColor: ColorManager.primary,
+                          hintText: 'Search',
+                          focusColor: ColorManager.primary,
+                          hintStyle: TextStyle(
+                            color: ColorManager.primary,
+                          ),
+                        ),
+                        onChanged: (value) => postBloc.add(PostSearchIconClickedEvent(value, true)),
+                      )
+                    : Text(
+                        'Posts',
+                        style: TextStyle(color: ColorManager.primary, fontWeight: FontWeight.bold),
+                      ),
                 centerTitle: true,
                 // title: Row(
                 //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -135,19 +141,19 @@ class _HomeScreenState extends State<HomeScreen> {
                 //     )
                 //   ],
                 // ),
-                //      actions: [
-                // IconButton(
-                //   onPressed: () {
-                //     menuListController.isSearch.value = !menuListController.isSearch.value;
-                //     searchMenuController.clear();
-                //   },
-                //   icon: FaIcon(
-                //     menuListController.isSearch.isFalse ? FontAwesomeIcons.magnifyingGlass : FontAwesomeIcons.xmark,
-                //     color: ColorManager.primary,
-                //     size: 20,
-                //   ),
-                // ),
-                //],
+                actions: [
+                  IconButton(
+                    onPressed: () {
+                      postBloc.add(PostSearchIconClickedEvent("", !state.isSearch));
+                      searchMenuController.clear();
+                    },
+                    icon: FaIcon(
+                      state.isSearch == false ? FontAwesomeIcons.magnifyingGlass : FontAwesomeIcons.xmark,
+                      color: ColorManager.primary,
+                      size: 20,
+                    ),
+                  ),
+                ],
               ),
               body: ListView.builder(
                 itemCount: successState.postList.length,

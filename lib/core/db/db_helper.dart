@@ -43,9 +43,15 @@ class DatabaseHelper {
     });
   }
 
-  static Future<List<PostModel>> findPosts(String title) async {
+  static Future<List<PostModel>> findPosts(String value) async {
+    String searchString1 = '$value%';
+    String searchString2 = '$value%';
     final db = await DatabaseHelper.db();
-    final List<Map<String, dynamic>> maps = await db.query('post', where: 'title = ?', whereArgs: [title]);
+    final List<Map<String, dynamic>> maps = await db.query(
+      'post',
+      where: 'title LIKE  ? OR content LIKE ?',
+      whereArgs: [searchString1, searchString2],
+    );
     return List.generate(maps.length, (i) {
       return PostModel(
         id: maps[i]['id'],

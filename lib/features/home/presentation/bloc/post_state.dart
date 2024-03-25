@@ -1,4 +1,3 @@
- 
 import '../../../../core/entities/post.dart';
 
 abstract class PostState {}
@@ -10,10 +9,11 @@ class PostInitialState extends PostState {}
 class PostLoadingState extends PostState {}
 
 class PostLoadedSuccessState extends PostState {
+  bool isSearch;
   final List<Post> postList;
-  PostLoadedSuccessState(this.postList);
+  PostLoadedSuccessState(this.postList, this.isSearch);
   PostLoadedSuccessState copyWith({List<Post>? postList}) {
-    return PostLoadedSuccessState(postList ?? this.postList);
+    return PostLoadedSuccessState(postList ?? this.postList, isSearch);
   }
 }
 
@@ -34,3 +34,8 @@ class PostItemDeletedActionState extends PostActionState {}
 class PostItemSelectedActionState extends PostActionState {}
 
 class PostItemsDeletedActionState extends PostActionState {}
+
+class PostSearchIconClickedState extends PostActionState {
+  bool isSearch;
+  PostSearchIconClickedState(this.isSearch);
+}

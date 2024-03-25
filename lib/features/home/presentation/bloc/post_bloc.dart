@@ -40,7 +40,7 @@ class PostBloc extends Bloc<PostEvent, PostState> {
           selectedPosts.add(post);
         }
       }
-      emit(PostLoadedSuccessState(postList));
+      emit(PostLoadedSuccessState(postList, false));
     });
   }
 
@@ -49,7 +49,7 @@ class PostBloc extends Bloc<PostEvent, PostState> {
   FutureOr<void> postDeleteButtonClickedEvent(PostDeleteButtonClickedEvent event, Emitter<PostState> emit) async {
     await DatabaseHelper.deletePost(event.post.id!);
     List<PostModel> postList = await DatabaseHelper.getPosts();
-    emit(PostLoadedSuccessState(postList));
+    emit(PostLoadedSuccessState(postList, false));
   }
 
   FutureOr<void> postDeleteAllButtonClickedEvent(PostDeleteAllButtonClickedEvent event, Emitter<PostState> emit) async {
@@ -57,7 +57,7 @@ class PostBloc extends Bloc<PostEvent, PostState> {
       await DatabaseHelper.deletePost(element.id!);
     }
     List<PostModel> postList = await DatabaseHelper.getPosts();
-    emit(PostLoadedSuccessState(postList));
+    emit(PostLoadedSuccessState(postList, false));
   }
 
   FutureOr<void> postAddButtonClickedEvent(PostAddButtonClickedEvent event, Emitter<PostState> emit) {
@@ -82,12 +82,28 @@ class PostBloc extends Bloc<PostEvent, PostState> {
     postList!.fold((failure) {
       // emit(Error(message: _mapFailureToMessage(failure)));
     }, (post) {
-      emit(PostLoadedSuccessState(post));
+      emit(PostLoadedSuccessState(post, false));
     });
   }
 
   FutureOr<void> postSearchIconClickedEvent(PostSearchIconClickedEvent event, Emitter<PostState> emit) async {
-    List<PostModel> postList = await DatabaseHelper.findPosts(event.value);
-    emit(PostLoadedSuccessState(postList));
+    if (event.isSearch) {
+      List<PostModel> postList = await DatabaseHelper.findPosts(event.value);
+      emit(PostLoadedSuccessState(postList, event.isSearch));
+    } else {
+      emit(PostLoadingState());
+      final postModelList = await getPosts(NoParams());
+
+      postModelList!.fold((failure) {
+        // emit(Error(message: _mapFailureToMessage(failure)));
+      }, (postList) {
+        for (var post in postList) {
+          if (post.isSelected == 1) {
+            selectedPosts.add(post);
+          }
+        }
+        emit(PostLoadedSuccessState(postList, false));
+      });
+    }
   }
 }

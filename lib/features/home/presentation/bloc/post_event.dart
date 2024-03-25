@@ -15,7 +15,8 @@ class PostDeleteAllButtonClickedEvent extends PostEvent {}
 
 class PostSearchIconClickedEvent extends PostEvent {
   final String value;
-  PostSearchIconClickedEvent(this.value);
+  bool isSearch = false;
+  PostSearchIconClickedEvent(this.value, this.isSearch);
 }
 
 class PostAddButtonClickedEvent extends PostEvent {}
