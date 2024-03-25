@@ -22,6 +22,7 @@ class PostBloc extends Bloc<PostEvent, PostState> {
     on<PostEditButtonClickedEvent>(postEditButtonClickedEvent);
     on<PostDeleteButtonClickedEvent>(postDeleteButtonClickedEvent);
     on<PostDeleteAllButtonClickedEvent>(postDeleteAllButtonClickedEvent);
+    on<PostSearchIconClickedEvent>(postSearchIconClickedEvent);
     on<PostAddButtonClickedEvent>(postAddButtonClickedEvent);
     on<PostTileNavigateEvent>(postTileNavigateEvent);
     on<PostTileLongPressEvent>(postTileLongPressEvent);
@@ -83,5 +84,10 @@ class PostBloc extends Bloc<PostEvent, PostState> {
     }, (post) {
       emit(PostLoadedSuccessState(post));
     });
+  }
+
+  FutureOr<void> postSearchIconClickedEvent(PostSearchIconClickedEvent event, Emitter<PostState> emit) async {
+    List<PostModel> postList = await DatabaseHelper.findPosts(event.value);
+    emit(PostLoadedSuccessState(postList));
   }
 }

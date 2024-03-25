@@ -45,6 +45,9 @@ dependencies:
   font_awesome_flutter: ^10.7.0
   image_picker: ^1.0.7
   path_provider: ^2.0.9
+  share_plus: ^7.2.2
+  another_flushbar: ^1.12.29
+  fluttertoast: ^8.2.1
 
 dev_dependencies:
   flutter_test:

@@ -1,4 +1,3 @@
- 
 import '../../../../core/entities/post.dart';
 
 abstract class PostEvent {}
@@ -13,6 +12,11 @@ class PostDeleteButtonClickedEvent extends PostEvent {
 }
 
 class PostDeleteAllButtonClickedEvent extends PostEvent {}
+
+class PostSearchIconClickedEvent extends PostEvent {
+  final String value;
+  PostSearchIconClickedEvent(this.value);
+}
 
 class PostAddButtonClickedEvent extends PostEvent {}
 

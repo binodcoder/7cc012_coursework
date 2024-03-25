@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:my_blog_bloc/core/entities/post.dart';
+import 'package:share_plus/share_plus.dart';
 import '../../../../resources/colour_manager.dart';
 import '../../../../resources/font_manager.dart';
 import '../../../../resources/values_manager.dart';
@@ -66,7 +67,11 @@ class _PostDetailsPageState extends State<PostDetailsPage> {
               decoration: BoxDecoration(
                 border: Border.all(color: Colors.grey),
               ),
-              child: Image.file(File(widget.post!.imagePath!)),
+              child: widget.post!.imagePath == null
+                  ? Image.asset('assets/images/noimage.jpg')
+                  : Image.file(
+                      File(widget.post!.imagePath!),
+                    ),
             ),
             SizedBox(
               height: AppHeight.h10,
@@ -82,8 +87,20 @@ class _PostDetailsPageState extends State<PostDetailsPage> {
                 ),
               ),
               subtitle: Text(
-                widget.post!.title,
+                widget.post!.content,
                 style: const TextStyle(fontSize: FontSize.s14),
+              ),
+              trailing: IconButton(
+                onPressed: () async {
+                  widget.post!.imagePath != null
+                      ? await Share.shareXFiles(
+                          [XFile(widget.post!.imagePath!)],
+                          text: widget.post!.content,
+                          subject: widget.post!.title,
+                        )
+                      : Share.share(widget.post!.content, subject: widget.post!.title);
+                },
+                icon: const Icon(Icons.share),
               ),
             ),
             SizedBox(

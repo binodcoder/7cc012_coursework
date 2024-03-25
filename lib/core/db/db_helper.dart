@@ -43,6 +43,21 @@ class DatabaseHelper {
     });
   }
 
+  static Future<List<PostModel>> findPosts(String title) async {
+    final db = await DatabaseHelper.db();
+    final List<Map<String, dynamic>> maps = await db.query('post', where: 'title = ?', whereArgs: [title]);
+    return List.generate(maps.length, (i) {
+      return PostModel(
+        id: maps[i]['id'],
+        title: maps[i]['title'],
+        content: maps[i]['content'],
+        imagePath: maps[i]['imagePath'],
+        isSelected: maps[i]['isSelected'],
+        createdAt: DateTime.parse(maps[i]['createdAt']),
+      );
+    });
+  }
+
   static Future<int> updatePost(PostModel post) async {
     final db = await DatabaseHelper.db();
     return await db.update(

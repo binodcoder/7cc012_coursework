@@ -20,6 +20,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final DatabaseHelper dbHelper = DatabaseHelper();
+  TextEditingController searchMenuController = TextEditingController();
 
   Widget _imageDisplay(String? imagePath) {
     return Container(
@@ -96,23 +97,57 @@ class _HomeScreenState extends State<HomeScreen> {
                 },
               ),
               appBar: AppBar(
-                title: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Text(AppStrings.titleLabel),
-                    TextButton(
-                      onPressed: () async {
-                        postBloc.add(PostDeleteAllButtonClickedEvent());
-                      },
-                      child: Text(
-                        'Delete',
-                        style: TextStyle(
-                          color: ColorManager.white,
-                        ),
-                      ),
-                    )
-                  ],
+                //        title: Obx(() => menuListController.isSearch.value
+                // ?
+                title: TextField(
+                  autofocus: true,
+                  controller: searchMenuController,
+                  style: TextStyle(color: ColorManager.primary),
+                  decoration: InputDecoration(
+                    fillColor: ColorManager.primary,
+                    hintText: 'Search',
+                    focusColor: ColorManager.primary,
+                    hintStyle: TextStyle(
+                      color: ColorManager.primary,
+                    ),
+                  ),
+                  onChanged: (value) => postBloc.add(PostSearchIconClickedEvent(value)),
                 ),
+                //     : Text(
+                //         'Menus',
+                //         style: TextStyle(color: ColorManager.primary, fontWeight: FontWeight.bold),
+                //       )),
+                centerTitle: true,
+                // title: Row(
+                //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //   children: [
+                //     const Text(AppStrings.titleLabel),
+                //     TextButton(
+                //       onPressed: () async {
+                //         postBloc.add(PostDeleteAllButtonClickedEvent());
+                //       },
+                //       child: Text(
+                //         'Delete',
+                //         style: TextStyle(
+                //           color: ColorManager.white,
+                //         ),
+                //       ),
+                //     )
+                //   ],
+                // ),
+                //      actions: [
+                // IconButton(
+                //   onPressed: () {
+                //     menuListController.isSearch.value = !menuListController.isSearch.value;
+                //     searchMenuController.clear();
+                //   },
+                //   icon: FaIcon(
+                //     menuListController.isSearch.isFalse ? FontAwesomeIcons.magnifyingGlass : FontAwesomeIcons.xmark,
+                //     color: ColorManager.primary,
+                //     size: 20,
+                //   ),
+                // ),
+                //],
               ),
               body: ListView.builder(
                 itemCount: successState.postList.length,

@@ -83,7 +83,7 @@ class _AddPostState extends State<AddPost> {
           appBar: AppBar(
             title: const Text(AppStrings.titleLabel),
           ),
-          body: Column(children: [
+          body: ListView(children: [
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: TextField(
@@ -100,16 +100,18 @@ class _AddPostState extends State<AddPost> {
             ),
             _imagePickerButtons(postAddBloc),
             const SizedBox(height: 20),
-            state.imagePath == null
-                ? const Text('no image')
-                : Container(
-                    width: 50,
-                    height: 50,
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.grey),
+            Container(
+              width: 100,
+              height: 100,
+              decoration: BoxDecoration(
+                border: Border.all(color: Colors.grey),
+              ),
+              child: state.imagePath == null
+                  ? Image.asset('assets/images/noimage.jpg')
+                  : Image.file(
+                      File(state.imagePath!),
                     ),
-                    child: Image.file(File(state.imagePath!)),
-                  ),
+            ),
             ElevatedButton(
               onPressed: () async {
                 var title = titleController.text;
@@ -121,7 +123,7 @@ class _AddPostState extends State<AddPost> {
                       id: widget.post!.id,
                       title: titleController.text,
                       content: contentController.text,
-                      imagePath: imagePath!,
+                      imagePath: imagePath,
                       isSelected: 0,
                     );
                     postAddBloc.add(PostAddUpdateButtonPressEvent(updatedPost));

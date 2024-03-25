@@ -14,6 +14,7 @@ class UpdatePostRepositoriesImpl implements UpdatePostRepository {
   @override
   Future<Either<Failure, int>>? updatePost(Post post) async {
     PostModel postModel = PostModel(
+      id: post.id,
       title: post.title,
       content: post.content,
       imagePath: post.imagePath,
