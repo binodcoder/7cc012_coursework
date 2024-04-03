@@ -1,10 +1,10 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:my_blog_bloc/resources/colour_manager.dart';
 import 'package:my_blog_bloc/resources/font_manager.dart';
-import 'package:my_blog_bloc/resources/strings_manager.dart';
 import '../../../../core/db/db_helper.dart';
 import '../bloc/post_bloc.dart';
 import '../bloc/post_event.dart';
@@ -23,27 +23,6 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final DatabaseHelper dbHelper = DatabaseHelper();
   TextEditingController searchMenuController = TextEditingController();
-
-  // Widget _imageDisplay(String? imagePath, Size size) {
-  //   return Container(
-  //     width: size.width,
-  //     height: size.height * 0.3,
-  //     decoration: BoxDecoration(
-  //       border: Border.all(),
-  //       borderRadius: BorderRadius.circular(15),
-  //     ),
-  //     child: FittedBox(
-  //       fit: BoxFit.fill,
-  //       child: imagePath == null
-  //           ? Image.asset(
-  //               'assets/images/noimage.jpg',
-  //             )
-  //           : Image.file(
-  //               File(imagePath),
-  //             ),
-  //     ),
-  //   );
-  // }
 
   Widget _imageDisplay(String? imagePath, Size size) {
     return Container(
@@ -185,72 +164,88 @@ class _HomeScreenState extends State<HomeScreen> {
                 itemCount: successState.postList.length,
                 itemBuilder: (context, index) {
                   var postModel = successState.postList[index];
-                  return Container(
-                    decoration: BoxDecoration(
-                      border: Border.all(color: ColorManager.darkPrimary),
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                    margin: const EdgeInsets.all(10),
-                    child: ListTile(
-                      tileColor: postModel.isSelected == 0 ? ColorManager.white : ColorManager.lightGrey,
-                      onLongPress: () async {
-                        postBloc.add(PostTileLongPressEvent(postModel));
-                      },
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (BuildContext context) => PostDetailsPage(
-                              post: postModel,
-                            ),
-                          ),
-                        );
-                      },
-                      title: Text(
-                        postModel.title.toUpperCase(),
-                        textAlign: TextAlign.center,
-                        style: const TextStyle(
-                          fontSize: FontSize.s20,
+                  return Card(
+                    margin: const EdgeInsets.all(15),
+                    elevation: 5,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: postModel.isSelected == 0 ? ColorManager.white : ColorManager.lightGrey,
                         ),
+                        borderRadius: BorderRadius.circular(15),
                       ),
-                      subtitle: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          SizedBox(
-                            height: size.height * 0.02,
-                          ),
-                          _imageDisplay(postModel.imagePath, size),
-                          Text(postModel.content),
-                          Align(
-                            alignment: Alignment.bottomRight,
-                            child: SizedBox(
-                              width: size.width * 0.63,
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  SizedBox(
-                                    width: size.width * 0.3,
-                                    child: ElevatedButton(
-                                      onPressed: () {
-                                        postBloc.add(PostTileNavigateEvent(postModel));
-                                      },
-                                      child: const Text(AppStrings.edit),
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    width: size.width * 0.3,
-                                    child: ElevatedButton(
-                                      onPressed: () {
-                                        postBloc.add(PostDeleteButtonClickedEvent(postModel));
-                                      },
-                                      child: const Text(AppStrings.delete),
-                                    ),
-                                  ),
-                                ],
-                              ),
+                      margin: const EdgeInsets.all(15),
+                      child: Slidable(
+                        endActionPane: ActionPane(
+                          extentRatio: 0.46,
+                          motion: const ScrollMotion(),
+                          children: [
+                            SlidableAction(
+                              onPressed: (context) {
+                                postBloc.add(PostTileNavigateEvent(postModel));
+                              },
+                              backgroundColor: const Color(0xFF21B7CA),
+                              foregroundColor: Colors.white,
+                              icon: Icons.edit,
+                              label: 'Edit',
                             ),
+                            SlidableAction(
+                              onPressed: (context) {
+                                postBloc.add(PostDeleteButtonClickedEvent(postModel));
+                              },
+                              backgroundColor: const Color(0xFF21B7CA),
+                              foregroundColor: Colors.white,
+                              icon: Icons.delete,
+                              label: 'Delete',
+                            )
+                          ],
+                        ),
+                        child: ListTile(
+                          onLongPress: () async {
+                            postBloc.add(PostTileLongPressEvent(postModel));
+                          },
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (BuildContext context) => PostDetailsPage(
+                                  post: postModel,
+                                ),
+                              ),
+                            );
+                          },
+                          title: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                postModel.title.toUpperCase(),
+                                // textAlign: TextAlign.center,
+                                style: const TextStyle(
+                                  fontSize: FontSize.s20,
+                                ),
+                              ),
+                              postModel.isSelected == 0
+                                  ? const SizedBox()
+                                  : Icon(
+                                      Icons.check_circle,
+                                      color: ColorManager.darkGreen,
+                                    ),
+                            ],
                           ),
-                        ],
+                          subtitle: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SizedBox(
+                                height: size.height * 0.02,
+                              ),
+                              postModel.imagePath != null ? _imageDisplay(postModel.imagePath, size) : const SizedBox(),
+                              SizedBox(
+                                height: size.height * 0.01,
+                              ),
+                              Text(postModel.content),
+                            ],
+                          ),
+                        ),
                       ),
                     ),
                   );
