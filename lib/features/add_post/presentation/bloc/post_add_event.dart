@@ -1,10 +1,16 @@
+import 'package:flutter/material.dart';
+
 import '../../../../core/entities/post.dart';
 
 abstract class PostAddEvent {}
 
 class PostAddInitialEvent extends PostAddEvent {}
 
-class PostAddPickFromGalaryButtonPressEvent extends PostAddEvent {}
+class PostAddPickFromGalaryButtonPressEvent extends PostAddEvent {
+  BuildContext context;
+
+  PostAddPickFromGalaryButtonPressEvent(this.context);
+}
 
 class PostAddPickFromCameraButtonPressEvent extends PostAddEvent {}
 

@@ -48,6 +48,7 @@ dependencies:
   share_plus: ^7.2.2
   another_flushbar: ^1.12.29
   fluttertoast: ^8.2.1
+  image_cropper: ^5.0.1
 
 dev_dependencies:
   flutter_test:

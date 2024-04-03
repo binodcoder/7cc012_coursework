@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:my_blog_bloc/resources/colour_manager.dart';
+import 'package:my_blog_bloc/resources/font_manager.dart';
 import 'package:my_blog_bloc/resources/strings_manager.dart';
 import '../../../../core/db/db_helper.dart';
 import '../bloc/post_bloc.dart';
@@ -23,18 +24,51 @@ class _HomeScreenState extends State<HomeScreen> {
   final DatabaseHelper dbHelper = DatabaseHelper();
   TextEditingController searchMenuController = TextEditingController();
 
-  Widget _imageDisplay(String? imagePath) {
+  // Widget _imageDisplay(String? imagePath, Size size) {
+  //   return Container(
+  //     width: size.width,
+  //     height: size.height * 0.3,
+  //     decoration: BoxDecoration(
+  //       border: Border.all(),
+  //       borderRadius: BorderRadius.circular(15),
+  //     ),
+  //     child: FittedBox(
+  //       fit: BoxFit.fill,
+  //       child: imagePath == null
+  //           ? Image.asset(
+  //               'assets/images/noimage.jpg',
+  //             )
+  //           : Image.file(
+  //               File(imagePath),
+  //             ),
+  //     ),
+  //   );
+  // }
+
+  Widget _imageDisplay(String? imagePath, Size size) {
     return Container(
-      width: 50,
-      height: 50,
+      width: size.width,
+      height: size.height * 0.3,
       decoration: BoxDecoration(
-        border: Border.all(color: Colors.grey),
+        border: Border.all(color: ColorManager.white),
+        borderRadius: BorderRadius.circular(15),
       ),
-      child: imagePath == null
-          ? Image.asset('assets/images/noimage.jpg')
-          : Image.file(
-              File(imagePath),
-            ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(15),
+        child: SizedBox(
+          width: size.width,
+          height: size.height * 0.3,
+          child: imagePath == null
+              ? Image.asset(
+                  'assets/images/noimage.jpg',
+                  fit: BoxFit.cover,
+                )
+              : Image.file(
+                  File(imagePath),
+                  fit: BoxFit.cover,
+                ),
+        ),
+      ),
     );
   }
 
@@ -52,6 +86,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return BlocConsumer<PostBloc, PostState>(
       bloc: postBloc,
       listenWhen: (previous, current) => current is PostActionState,
@@ -99,11 +134,8 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               appBar: AppBar(
                 iconTheme: IconThemeData(color: ColorManager.primary),
-                elevation: 0,
+                elevation: 2,
                 backgroundColor: ColorManager.white,
-                //        title: Obx(() => menuListController.isSearch.value
-                // ?
-
                 title: state.isSearch
                     ? TextField(
                         autofocus: true,
@@ -124,31 +156,25 @@ class _HomeScreenState extends State<HomeScreen> {
                         style: TextStyle(color: ColorManager.primary, fontWeight: FontWeight.bold),
                       ),
                 centerTitle: true,
-                // title: Row(
-                //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //   children: [
-                //     const Text(AppStrings.titleLabel),
-                //     TextButton(
-                //       onPressed: () async {
-                //         postBloc.add(PostDeleteAllButtonClickedEvent());
-                //       },
-                //       child: Text(
-                //         'Delete',
-                //         style: TextStyle(
-                //           color: ColorManager.white,
-                //         ),
-                //       ),
-                //     )
-                //   ],
-                // ),
                 actions: [
                   IconButton(
-                    onPressed: () {
-                      postBloc.add(PostSearchIconClickedEvent("", !state.isSearch));
-                      searchMenuController.clear();
+                    onPressed: () async {
+                      if (postBloc.selectedPosts.isEmpty) {
+                        postBloc.add(PostSearchIconClickedEvent("", !state.isSearch));
+                        searchMenuController.clear();
+                      } else {
+                        postBloc.add(PostDeleteAllButtonClickedEvent());
+                        Future.delayed(const Duration(microseconds: 1000), () {
+                          postBloc.selectedPosts = [];
+                        });
+                      }
                     },
                     icon: FaIcon(
-                      state.isSearch == false ? FontAwesomeIcons.magnifyingGlass : FontAwesomeIcons.xmark,
+                      postBloc.selectedPosts.isEmpty
+                          ? state.isSearch == false
+                              ? FontAwesomeIcons.magnifyingGlass
+                              : FontAwesomeIcons.xmark
+                          : FontAwesomeIcons.xmark,
                       color: ColorManager.primary,
                       size: 20,
                     ),
@@ -159,45 +185,73 @@ class _HomeScreenState extends State<HomeScreen> {
                 itemCount: successState.postList.length,
                 itemBuilder: (context, index) {
                   var postModel = successState.postList[index];
-                  return ListTile(
-                    tileColor: postModel.isSelected == 0 ? ColorManager.white : ColorManager.grey,
-                    onLongPress: () async {
-                      postBloc.add(PostTileLongPressEvent(postModel));
-                    },
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (BuildContext context) => PostDetailsPage(
-                            post: postModel,
+                  return Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(color: ColorManager.darkPrimary),
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    margin: const EdgeInsets.all(10),
+                    child: ListTile(
+                      tileColor: postModel.isSelected == 0 ? ColorManager.white : ColorManager.lightGrey,
+                      onLongPress: () async {
+                        postBloc.add(PostTileLongPressEvent(postModel));
+                      },
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (BuildContext context) => PostDetailsPage(
+                              post: postModel,
+                            ),
                           ),
+                        );
+                      },
+                      title: Text(
+                        postModel.title.toUpperCase(),
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(
+                          fontSize: FontSize.s20,
                         ),
-                      );
-                    },
-                    title: Text(postModel.title),
-                    subtitle: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(postModel.content),
-                        _imageDisplay(postModel.imagePath),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            TextButton(
-                              onPressed: () {
-                                postBloc.add(PostTileNavigateEvent(postModel));
-                              },
-                              child: const Text(AppStrings.edit),
+                      ),
+                      subtitle: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(
+                            height: size.height * 0.02,
+                          ),
+                          _imageDisplay(postModel.imagePath, size),
+                          Text(postModel.content),
+                          Align(
+                            alignment: Alignment.bottomRight,
+                            child: SizedBox(
+                              width: size.width * 0.63,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  SizedBox(
+                                    width: size.width * 0.3,
+                                    child: ElevatedButton(
+                                      onPressed: () {
+                                        postBloc.add(PostTileNavigateEvent(postModel));
+                                      },
+                                      child: const Text(AppStrings.edit),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: size.width * 0.3,
+                                    child: ElevatedButton(
+                                      onPressed: () {
+                                        postBloc.add(PostDeleteButtonClickedEvent(postModel));
+                                      },
+                                      child: const Text(AppStrings.delete),
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
-                            TextButton(
-                              onPressed: () {
-                                postBloc.add(PostDeleteButtonClickedEvent(postModel));
-                              },
-                              child: const Text(AppStrings.delete),
-                            ),
-                          ],
-                        ),
-                      ],
+                          ),
+                        ],
+                      ),
                     ),
                   );
                 },

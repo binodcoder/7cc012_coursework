@@ -4,7 +4,6 @@ import 'package:my_blog_bloc/core/entities/post.dart';
 import 'package:share_plus/share_plus.dart';
 import '../../../../resources/colour_manager.dart';
 import '../../../../resources/font_manager.dart';
-import '../../../../resources/values_manager.dart';
 
 class PostDetailsPage extends StatefulWidget {
   const PostDetailsPage({
@@ -31,7 +30,7 @@ class _PostDetailsPageState extends State<PostDetailsPage> {
 
   @override
   Widget build(BuildContext context) {
-    // Size size = MediaQuery.of(context).size;
+    Size size = MediaQuery.of(context).size;
 
     return Scaffold(
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
@@ -47,7 +46,7 @@ class _PostDetailsPageState extends State<PostDetailsPage> {
           ),
         ),
         backgroundColor: ColorManager.white,
-        elevation: 0,
+        elevation: 2,
         title: Text(
           'Post Details',
           style: TextStyle(
@@ -61,36 +60,57 @@ class _PostDetailsPageState extends State<PostDetailsPage> {
         padding: const EdgeInsets.all(14.0),
         child: Column(
           children: [
-            Container(
-              width: 150,
-              height: 150,
-              decoration: BoxDecoration(
-                border: Border.all(color: Colors.grey),
-              ),
-              child: widget.post!.imagePath == null
-                  ? Image.asset('assets/images/noimage.jpg')
-                  : Image.file(
-                      File(widget.post!.imagePath!),
-                    ),
-            ),
-            SizedBox(
-              height: AppHeight.h10,
-            ),
             ListTile(
               dense: true,
               contentPadding: const EdgeInsets.only(left: 0.0, right: 0.0),
               tileColor: ColorManager.white,
               title: Text(
                 widget.post!.title,
+                textAlign: TextAlign.center,
                 style: const TextStyle(
                   fontSize: FontSize.s20,
                 ),
               ),
-              subtitle: Text(
-                widget.post!.content,
-                style: const TextStyle(fontSize: FontSize.s14),
+              subtitle: Column(
+                children: [
+                  Container(
+                    width: size.width,
+                    height: size.height * 0.3,
+                    decoration: BoxDecoration(
+                      border: Border.all(color: ColorManager.white),
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(15),
+                      child: SizedBox(
+                        width: size.width,
+                        height: size.height * 0.3,
+                        child: widget.post!.imagePath == null
+                            ? Image.asset(
+                                'assets/images/noimage.jpg',
+                                fit: BoxFit.cover,
+                              )
+                            : Image.file(
+                                File(widget.post!.imagePath!),
+                                fit: BoxFit.cover,
+                              ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: size.height * 0.02,
+                  ),
+                  Text(
+                    widget.post!.content,
+                    style: const TextStyle(fontSize: FontSize.s14),
+                  ),
+                ],
               ),
-              trailing: IconButton(
+              isThreeLine: true,
+            ),
+            Align(
+              alignment: Alignment.bottomRight,
+              child: ElevatedButton(
                 onPressed: () async {
                   widget.post!.imagePath != null
                       ? await Share.shareXFiles(
@@ -100,22 +120,18 @@ class _PostDetailsPageState extends State<PostDetailsPage> {
                         )
                       : Share.share(widget.post!.content, subject: widget.post!.title);
                 },
-                icon: const Icon(Icons.share),
+                child: SizedBox(
+                  width: size.width * 0.2,
+                  child: const Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text("Share"),
+                      Icon(Icons.share),
+                    ],
+                  ),
+                ),
               ),
             ),
-            SizedBox(
-              height: AppHeight.h20,
-            ),
-            SizedBox(
-              height: AppHeight.h20,
-            ),
-            const Align(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                '',
-                style: TextStyle(fontSize: FontSize.s12),
-              ),
-            )
           ],
         ),
       ),
