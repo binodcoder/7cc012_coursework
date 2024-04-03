@@ -19,6 +19,12 @@ class ColorManager {
   static Color darkGreen = HexColor.fromHex("#09B44D");
   static Color lightGreen = HexColor.fromHex("#D0F1DD");
   static Color shiningGreen = HexColor.fromHex("#7AF176");
+
+  static Color black = HexColor.fromHex("#000000");
+  static Color red = HexColor.fromHex("#FF0000");
+  static Color redAccent = HexColor.fromHex("#ED5565");
+  static Color warning = HexColor.fromHex("#ffd6cc");
+  static Color success = HexColor.fromHex("#198754");
 }
 
 extension HexColor on Color {

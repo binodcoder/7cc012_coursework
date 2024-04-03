@@ -1,12 +1,12 @@
+import 'package:blog_app/resources/strings_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:my_blog_bloc/resources/strings_manager.dart';
-import 'features/add_post/presentation/bloc/post_add_bloc.dart';
-import 'features/home/presentation/bloc/post_bloc.dart';
-import 'features/home/presentation/ui/post.dart';
 import 'injection_container.dart';
 import 'injection_container.dart' as di;
+import 'layers/presentation/post/add_update_post/bloc/create_post_bloc.dart';
+import 'layers/presentation/post/read_posts/bloc/read_posts_bloc.dart';
+import 'layers/presentation/post/read_posts/ui/read_posts_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -21,18 +21,18 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider<PostBloc>(
-          create: (BuildContext context) => sl<PostBloc>(),
+        BlocProvider<ReadPostsBloc>(
+          create: (BuildContext context) => sl<ReadPostsBloc>(),
         ),
-        BlocProvider<PostAddBloc>(
-          create: (BuildContext context) => sl<PostAddBloc>(),
+        BlocProvider<CreatePostBloc>(
+          create: (BuildContext context) => sl<CreatePostBloc>(),
         ),
       ],
       child: const ScreenUtilInit(
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
           title: AppStrings.titleLabel,
-          home: HomeScreen(),
+          home: ReadPostsPage(),
         ),
       ),
     );
