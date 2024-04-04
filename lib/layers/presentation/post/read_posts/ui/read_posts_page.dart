@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../../injection_container.dart';
 import '../../../../../resources/colour_manager.dart';
 import '../../../../../resources/font_manager.dart';
@@ -61,6 +62,7 @@ class _ReadPostsPageState extends State<ReadPostsPage> {
   }
 
   ReadPostsBloc postBloc = sl<ReadPostsBloc>();
+  SharedPreferences sharedPreferences = sl<SharedPreferences>();
 
   @override
   Widget build(BuildContext context) {
@@ -119,13 +121,15 @@ class _ReadPostsPageState extends State<ReadPostsPage> {
               extendBodyBehindAppBar: true, // Extend gradient behind app bar
               extendBody: true,
               drawer: const MyDrawer(),
-              // floatingActionButton: FloatingActionButton(
-              //   backgroundColor: Colors.blue,
-              //   child: const Icon(Icons.add),
-              //   onPressed: () {
-              //     postBloc.add(PostAddButtonClickedEvent());
-              //   },
-              // ),
+              floatingActionButton: sharedPreferences.getString("role") == "admin"
+                  ? FloatingActionButton(
+                      backgroundColor: Colors.blue,
+                      child: const Icon(Icons.add),
+                      onPressed: () {
+                        postBloc.add(PostAddButtonClickedEvent());
+                      },
+                    )
+                  : null,
               appBar: AppBar(
                 flexibleSpace: Container(
                   decoration: BoxDecoration(
@@ -182,10 +186,35 @@ class _ReadPostsPageState extends State<ReadPostsPage> {
                         postBloc.add(PostSearchIconClickedEvent("", !successState.isSearch));
                         searchMenuController.clear();
                       } else {
-                        postBloc.add(PostDeleteAllButtonClickedEvent());
-                        Future.delayed(const Duration(microseconds: 1000), () {
-                          postBloc.selectedPosts = [];
-                        });
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return Expanded(
+                              child: AlertDialog(
+                                title: Text('Delete'),
+                                content: Text('Are you sure?'),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                    child: Text('CANCEL'),
+                                  ),
+                                  TextButton(
+                                    onPressed: () {
+                                      postBloc.add(PostDeleteAllButtonClickedEvent());
+                                      Future.delayed(const Duration(microseconds: 1000), () {
+                                        postBloc.selectedPosts = [];
+                                      });
+                                      Navigator.pop(context);
+                                    },
+                                    child: Text('ACCEPT'),
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
+                        );
                       }
                     },
                     icon: FaIcon(
@@ -193,7 +222,9 @@ class _ReadPostsPageState extends State<ReadPostsPage> {
                           ? state.isSearch == false
                               ? FontAwesomeIcons.magnifyingGlass
                               : FontAwesomeIcons.xmark
-                          : FontAwesomeIcons.trash,
+                          : sharedPreferences.getString("role") == "admin"
+                              ? FontAwesomeIcons.trash
+                              : null,
                       color: successState.selectedPosts.isEmpty
                           ? state.isSearch == false
                               ? ColorManager.primary
@@ -237,6 +268,7 @@ class _ReadPostsPageState extends State<ReadPostsPage> {
                         ),
                         margin: const EdgeInsets.all(15),
                         child: Slidable(
+                          enabled: sharedPreferences.getString("role") == "admin" ? true : false,
                           endActionPane: ActionPane(
                             extentRatio: 0.60,
                             motion: const ScrollMotion(),
@@ -263,7 +295,9 @@ class _ReadPostsPageState extends State<ReadPostsPage> {
                           ),
                           child: ListTile(
                             onLongPress: () async {
-                              postBloc.add(PostTileLongPressEvent(postModel));
+                              if (sharedPreferences.getString("role") == "admin") {
+                                postBloc.add(PostTileLongPressEvent(postModel));
+                              }
                             },
                             onTap: () {
                               Navigator.push(

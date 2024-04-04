@@ -1,11 +1,17 @@
-import 'package:blog_app/layers/presentation/login/login_page.dart';
+import 'package:blog_app/layers/presentation/about_us/about_us.dart';
+import 'package:blog_app/layers/presentation/login/ui/login_page.dart';
 import 'package:blog_app/layers/presentation/post/add_update_post/ui/create_post_page.dart';
+import 'package:blog_app/layers/presentation/post/read_posts/ui/read_posts_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import '../../../injection_container.dart';
 import '../../../resources/colour_manager.dart';
 import '../../../resources/font_manager.dart';
 import '../../../resources/strings_manager.dart';
 import '../../../resources/styles_manager.dart';
+import '../post/read_posts/bloc/read_posts_bloc.dart';
+import '../post/read_posts/bloc/read_posts_event.dart';
 
 class MyDrawer extends StatefulWidget {
   const MyDrawer({Key? key}) : super(key: key);
@@ -14,7 +20,8 @@ class MyDrawer extends StatefulWidget {
 }
 
 class _MyDrawerState extends State<MyDrawer> {
-  @override
+  final SharedPreferences sharedPreferences = sl<SharedPreferences>();
+
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -55,63 +62,53 @@ class _MyDrawerState extends State<MyDrawer> {
               currentAccountPicture: const CircleAvatar(backgroundImage: AssetImage('assets/images/image.jpg')),
             ),
           ),
-          ListTile(
-            leading: Icon(
-              CupertinoIcons.add_circled,
-              color: ColorManager.darkGrey,
-            ),
-            title: Text(
-              AppStrings.addPost,
-              textScaleFactor: 1.2,
-              style: getSemiBoldStyle(
-                color: ColorManager.darkGrey,
-                fontSize: FontSize.s14,
-              ),
-            ),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (BuildContext context) => const CreatePostPage(),
-                  fullscreenDialog: true,
-                ),
-              );
-            },
-          ),
-          ListTile(
-            leading: Icon(
-              Icons.logout_outlined,
-              color: ColorManager.darkGrey,
-            ),
-            title: const Text(
-              "Login",
-              style: TextStyle(
-                color: Colors.black,
-              ),
-            ),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (BuildContext context) => const LoginPage(),
-                  fullscreenDialog: true,
-                ),
-              );
-            },
-          ),
-          ListTile(
-            leading: Icon(
-              Icons.logout_outlined,
-              color: ColorManager.darkGrey,
-            ),
-            title: const Text(
-              "Log out",
-              style: TextStyle(
-                color: Colors.black,
-              ),
-            ),
-            onTap: () {},
-          ),
+          sharedPreferences.getBool("login") == null
+              ? ListTile(
+                  leading: Icon(
+                    Icons.logout_outlined,
+                    color: ColorManager.darkGrey,
+                  ),
+                  title: const Text(
+                    "Login",
+                    style: TextStyle(
+                      color: Colors.black,
+                    ),
+                  ),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (BuildContext context) => const LoginPage(),
+                        fullscreenDialog: true,
+                      ),
+                    );
+                  },
+                )
+              : const SizedBox(),
+          sharedPreferences.getBool("login") == true
+              ? ListTile(
+                  leading: Icon(
+                    Icons.logout_outlined,
+                    color: ColorManager.darkGrey,
+                  ),
+                  title: const Text(
+                    "Log out",
+                    style: TextStyle(
+                      color: Colors.black,
+                    ),
+                  ),
+                  onTap: () {
+                    sharedPreferences.clear();
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (BuildContext context) => const LoginPage(),
+                        fullscreenDialog: true,
+                      ),
+                    );
+                  },
+                )
+              : const SizedBox(),
           ListTile(
             leading: Icon(
               CupertinoIcons.building_2_fill,
@@ -125,7 +122,15 @@ class _MyDrawerState extends State<MyDrawer> {
                 fontSize: FontSize.s14,
               ),
             ),
-            onTap: () {},
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (BuildContext context) => const About(),
+                  fullscreenDialog: true,
+                ),
+              );
+            },
           ),
         ],
       ),

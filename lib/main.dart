@@ -1,3 +1,5 @@
+import 'package:blog_app/core/db/db_helper.dart';
+import 'package:blog_app/core/model/user_model.dart';
 import 'package:blog_app/resources/strings_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -11,7 +13,18 @@ import 'layers/presentation/post/read_posts/ui/read_posts_page.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await di.init();
+  register();
   runApp(const MyApp());
+}
+
+void register() async {
+  await DatabaseHelper.register(UserModel(
+    email: "root",
+    name: "Binod Bhandari",
+    password: "root",
+    phone: 9807434858,
+    role: "admin",
+  ));
 }
 
 class MyApp extends StatelessWidget {

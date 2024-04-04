@@ -1,6 +1,10 @@
 import 'dart:async';
+import 'package:blog_app/core/entities/login.dart';
+
 import '../model/post_model.dart';
 import 'package:sqflite/sqflite.dart' as sql;
+
+import '../model/user_model.dart';
 
 class DatabaseHelper {
   static Future<sql.Database> db() async {
@@ -21,11 +25,27 @@ class DatabaseHelper {
       isSelected INTEGER,
       createdAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
     )""");
+
+    await database.execute("""CREATE TABLE user(
+      id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+      email TEXT  NOT NULL,
+      name TEXT NOT NULL,
+      phone INTEGER,
+      password TEXT NOT NULL,
+      role TEXT,
+      createdAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+ 
+    )""");
   }
 
   static Future<int> insertPost(PostModel post) async {
     final db = await DatabaseHelper.db();
     return await db.insert('post', post.toMap());
+  }
+
+  static Future<int> createUser(UserModel userModel) async {
+    final db = await DatabaseHelper.db();
+    return await db.insert('user', userModel.toMap());
   }
 
   static Future<List<PostModel>> getPosts() async {
@@ -77,5 +97,39 @@ class DatabaseHelper {
   static Future<int> deletePost(int postId) async {
     final db = await DatabaseHelper.db();
     return await db.delete('post', where: 'id = ?', whereArgs: [postId]);
+  }
+
+  //register
+  static Future<int> register(UserModel userModel) async {
+    final db = await DatabaseHelper.db();
+    return await db.insert('user', userModel.toMap());
+  }
+
+  //login
+  static Future<List<UserModel>> login(LoginModel loginModel) async {
+    String email = loginModel.email;
+    String password = loginModel.password;
+    final db = await DatabaseHelper.db();
+    final List<Map<String, dynamic>> maps = await db.query(
+      'user',
+      where: 'email = ? AND password = ?',
+      whereArgs: [email, password],
+    );
+
+    if (maps.isNotEmpty) {
+      return List.generate(maps.length, (i) {
+        return UserModel(
+          id: maps[i]['id'],
+          email: maps[i]['email'],
+          name: maps[i]['name'],
+          phone: maps[i]['phone'],
+          password: maps[i]['password'],
+          role: maps[i]['role'],
+          createdAt: DateTime.parse(maps[i]['createdAt']),
+        );
+      });
+    } else {
+      return [];
+    }
   }
 }

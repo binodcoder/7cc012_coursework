@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:blog_app/layers/presentation/post/read_posts/bloc/read_posts_event.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../../core/db/db_helper.dart';
@@ -8,6 +9,7 @@ import '../../../../../injection_container.dart';
 import '../../../../../resources/colour_manager.dart';
 import '../../../../../resources/strings_manager.dart';
 import '../../../../../resources/values_manager.dart';
+import '../../read_posts/bloc/read_posts_bloc.dart';
 import '../bloc/create_post_bloc.dart';
 import '../bloc/create_post_bloc_event.dart';
 import '../bloc/create_post_bloc_state.dart';
@@ -90,6 +92,7 @@ class _CreatePostPageState extends State<CreatePostPage> {
   }
 
   final CreatePostBloc postAddBloc = sl<CreatePostBloc>();
+  ReadPostsBloc postBloc = sl<ReadPostsBloc>();
   final _formKey = GlobalKey<FormState>();
 
   @override

@@ -1,4 +1,5 @@
 class AppStrings {
+  static const String email = "B.Bhandari5@wlv.ac.uk";
   static const String noRouteFound = "No Route Found";
   static const String titleLabel = "Flutter BLoC";
   static const String title = "Title";
@@ -12,4 +13,9 @@ class AppStrings {
   static const String editPost = "Edit Post";
   static const String cancel = "Cancel";
   static const String save = "Save";
+  static const String poweredByWebbook = "Powered By binodcoder";
+  static const String softwareCompany = "BinodSoft";
+  static const String youtube = "Youtube";
+
+  static const String facebook = "Facebook";
 }
