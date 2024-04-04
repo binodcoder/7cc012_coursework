@@ -25,6 +25,30 @@ class ColorManager {
   static Color redAccent = HexColor.fromHex("#ED5565");
   static Color warning = HexColor.fromHex("#ffd6cc");
   static Color success = HexColor.fromHex("#198754");
+
+  //new colors
+  //note: please change the colors according to the app need
+
+  static Color lightBlue = HexColor.fromHex("#23C6C8");
+  static Color amber = HexColor.fromHex("#FFBF00");
+  static Color yellowAccent = HexColor.fromHex("#F8AC59");
+
+  static Color pink = HexColor.fromHex('#CD0E52');
+
+  static Color grey3 = HexColor.fromHex("#D3D3D3");
+  static Color blueGrey = HexColor.fromHex("#FFECEFF1");
+
+  static Color yellowBright = HexColor.fromHex("#FFADFF02");
+
+  static Color darkWhite = HexColor.fromHex("#FFE6E6E6");
+  static Color blue = HexColor.fromHex("#FF14279B");
+
+  static Color darkPurple = HexColor.fromHex("#240046");
+  static Color deepPurple = HexColor.fromHex("#8A2BE2");
+  static Color middleBlue = HexColor.fromHex("#59BED4");
+  static Color blackOpacity87 = HexColor.fromHex("#000000").withOpacity(0.87);
+  static Color blackOpacity54 = HexColor.fromHex("#000000").withOpacity(0.54);
+  static Color blackOpacity38 = HexColor.fromHex("#000000").withOpacity(0.38);
 }
 
 extension HexColor on Color {

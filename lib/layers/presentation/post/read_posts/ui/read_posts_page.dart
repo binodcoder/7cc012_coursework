@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:blog_app/layers/presentation/widgets.dart/drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
@@ -114,31 +115,60 @@ class _ReadPostsPageState extends State<ReadPostsPage> {
           case PostLoadedSuccessState:
             final successState = state as PostLoadedSuccessState;
             return Scaffold(
-              floatingActionButton: FloatingActionButton(
-                backgroundColor: Colors.blue,
-                child: const Icon(Icons.add),
-                onPressed: () {
-                  postBloc.add(PostAddButtonClickedEvent());
-                },
-              ),
+              backgroundColor: Colors.transparent,
+              extendBodyBehindAppBar: true, // Extend gradient behind app bar
+              extendBody: true,
+              drawer: const MyDrawer(),
+              // floatingActionButton: FloatingActionButton(
+              //   backgroundColor: Colors.blue,
+              //   child: const Icon(Icons.add),
+              //   onPressed: () {
+              //     postBloc.add(PostAddButtonClickedEvent());
+              //   },
+              // ),
               appBar: AppBar(
+                flexibleSpace: Container(
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [
+                        Color(0xFF64B5F6), // Light blue
+                        Color.fromRGBO(235, 242, 249, 1), // Sky blue
+                        Color.fromARGB(255, 235, 241, 246), // Pale blue
+                        Color.fromARGB(255, 154, 208, 247), // Very pale blue
+                      ],
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      stops: [0.1, 0.4, 0.7, 1.0],
+                    ),
+                  ),
+                ),
                 iconTheme: IconThemeData(color: ColorManager.primary),
-                elevation: 2,
-                backgroundColor: ColorManager.white,
+                // elevation: 2,
+                // backgroundColor: ColorManager.white,
                 title: successState.isSearch
-                    ? TextField(
-                        autofocus: true,
-                        controller: searchMenuController,
-                        style: TextStyle(color: ColorManager.primary),
-                        decoration: InputDecoration(
-                          fillColor: ColorManager.primary,
-                          hintText: 'Search',
-                          focusColor: ColorManager.primary,
-                          hintStyle: TextStyle(
-                            color: ColorManager.primary,
-                          ),
+                    ? Container(
+                        padding: EdgeInsets.symmetric(horizontal: size.width * 0.04),
+                        width: size.width,
+                        height: size.height * 0.054,
+                        decoration: BoxDecoration(
+                          border: Border.all(color: ColorManager.grey), // Set border color to white
+                          borderRadius: BorderRadius.circular(20),
                         ),
-                        onChanged: (value) => postBloc.add(PostSearchIconClickedEvent(value, true)),
+                        child: TextField(
+                          autofocus: true,
+                          controller: searchMenuController,
+                          style: TextStyle(color: ColorManager.primary),
+                          decoration: InputDecoration(
+                            border: InputBorder.none,
+                            fillColor: ColorManager.primary,
+                            hintText: 'Search',
+                            focusColor: ColorManager.primary,
+                            hintStyle: TextStyle(
+                              color: ColorManager.primary,
+                            ),
+                          ),
+                          onChanged: (value) => postBloc.add(PostSearchIconClickedEvent(value, true)),
+                        ),
                       )
                     : Text(
                         'Posts',
@@ -174,98 +204,113 @@ class _ReadPostsPageState extends State<ReadPostsPage> {
                   ),
                 ],
               ),
-              body: ListView.builder(
-                itemCount: successState.postList.length,
-                itemBuilder: (context, index) {
-                  var postModel = successState.postList[index];
-                  return Card(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15.0),
-                    ),
-                    margin: const EdgeInsets.all(15),
-                    elevation: 5,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          color: postModel.isSelected == 0 ? ColorManager.white : ColorManager.lightGrey,
-                        ),
-                        borderRadius: BorderRadius.circular(15),
+              body: Container(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [
+                      Color.fromARGB(255, 185, 223, 254), // Light blue
+                      Color(0xFF90CAF9), // Sky blue
+                      Color(0xFFBBDEFB), // Pale blue
+                      Color(0xFFE3F2FD), // Very pale blue
+                    ],
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    stops: [0.1, 0.4, 0.7, 1.0],
+                  ),
+                ),
+                child: ListView.builder(
+                  itemCount: successState.postList.length,
+                  itemBuilder: (context, index) {
+                    var postModel = successState.postList[index];
+                    return Card(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15.0),
                       ),
                       margin: const EdgeInsets.all(15),
-                      child: Slidable(
-                        endActionPane: ActionPane(
-                          extentRatio: 0.46,
-                          motion: const ScrollMotion(),
-                          children: [
-                            SlidableAction(
-                              onPressed: (context) {
-                                postBloc.add(PostEditButtonClickedEvent(postModel));
-                              },
-                              backgroundColor: const Color(0xFF21B7CA),
-                              foregroundColor: Colors.white,
-                              icon: Icons.edit,
-                              label: 'Edit',
-                            ),
-                            SlidableAction(
-                              onPressed: (context) {
-                                postBloc.add(PostDeleteButtonClickedEvent(postModel));
-                              },
-                              backgroundColor: const Color(0xFF21B7CA),
-                              foregroundColor: Colors.white,
-                              icon: Icons.delete,
-                              label: 'Delete',
-                            )
-                          ],
+                      elevation: 5,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: postModel.isSelected == 0 ? ColorManager.white : ColorManager.lightGrey,
+                          ),
+                          borderRadius: BorderRadius.circular(15),
                         ),
-                        child: ListTile(
-                          onLongPress: () async {
-                            postBloc.add(PostTileLongPressEvent(postModel));
-                          },
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (BuildContext context) => PostDetailsPage(
-                                  post: postModel,
-                                ),
-                              ),
-                            );
-                          },
-                          title: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        margin: const EdgeInsets.all(15),
+                        child: Slidable(
+                          endActionPane: ActionPane(
+                            extentRatio: 0.60,
+                            motion: const ScrollMotion(),
                             children: [
-                              Text(
-                                postModel.title.toUpperCase(),
-                                style: const TextStyle(
-                                  fontSize: FontSize.s20,
-                                ),
+                              SlidableAction(
+                                onPressed: (context) {
+                                  postBloc.add(PostEditButtonClickedEvent(postModel));
+                                },
+                                backgroundColor: Color.fromARGB(255, 113, 205, 217),
+                                foregroundColor: Colors.white,
+                                icon: Icons.edit,
+                                label: 'Edit',
                               ),
-                              postModel.isSelected == 0
-                                  ? const SizedBox()
-                                  : Icon(
-                                      Icons.check_circle,
-                                      color: ColorManager.darkGreen,
-                                    ),
+                              SlidableAction(
+                                onPressed: (context) {
+                                  postBloc.add(PostDeleteButtonClickedEvent(postModel));
+                                },
+                                backgroundColor: Color.fromARGB(255, 201, 32, 46),
+                                foregroundColor: Colors.white,
+                                icon: Icons.delete,
+                                label: 'Delete',
+                              )
                             ],
                           ),
-                          subtitle: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              SizedBox(
-                                height: size.height * 0.02,
-                              ),
-                              postModel.imagePath != null ? _imageDisplay(postModel.imagePath, size) : const SizedBox(),
-                              SizedBox(
-                                height: size.height * 0.01,
-                              ),
-                              Text(postModel.content),
-                            ],
+                          child: ListTile(
+                            onLongPress: () async {
+                              postBloc.add(PostTileLongPressEvent(postModel));
+                            },
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (BuildContext context) => PostDetailsPage(
+                                    post: postModel,
+                                  ),
+                                ),
+                              );
+                            },
+                            title: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  postModel.title.toUpperCase(),
+                                  style: const TextStyle(
+                                    fontSize: FontSize.s20,
+                                  ),
+                                ),
+                                postModel.isSelected == 0
+                                    ? const SizedBox()
+                                    : Icon(
+                                        Icons.check_circle,
+                                        color: ColorManager.darkGreen,
+                                      ),
+                              ],
+                            ),
+                            subtitle: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                SizedBox(
+                                  height: size.height * 0.02,
+                                ),
+                                postModel.imagePath != null ? _imageDisplay(postModel.imagePath, size) : const SizedBox(),
+                                SizedBox(
+                                  height: size.height * 0.01,
+                                ),
+                                Text(postModel.content),
+                              ],
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  );
-                },
+                    );
+                  },
+                ),
               ),
             );
           case PostErrorState:
