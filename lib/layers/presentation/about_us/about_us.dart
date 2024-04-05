@@ -42,7 +42,7 @@ class About extends StatelessWidget {
               padding: const EdgeInsets.only(top: 3.0, bottom: 5.0),
               height: 20,
               child: const Text(
-                AppStrings.poweredByWebbook,
+                AppStrings.poweredBybinodcoder,
                 textAlign: TextAlign.center,
                 style: TextStyle(color: Colors.white, fontSize: 10),
               ),
@@ -82,9 +82,9 @@ class About extends StatelessWidget {
                     height: AppHeight.h10,
                   ),
                   AboutUsContact(
-                    onTap: () => launch('http://www.webbook.com.np/'),
+                    onTap: () => launch('https://binodcoder.github.io/binodcoder/'),
                     icon: FontAwesomeIcons.internetExplorer,
-                    contactName: AppStrings.email,
+                    contactName: AppStrings.website,
                     iconColor: ColorManager.lightBlue,
                   ),
                   AboutUsContact(

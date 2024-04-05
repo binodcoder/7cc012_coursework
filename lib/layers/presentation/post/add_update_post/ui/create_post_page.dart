@@ -116,98 +116,103 @@ class _CreatePostPageState extends State<CreatePostPage> {
       builder: (context, state) {
         return Scaffold(
           appBar: AppBar(
-            title: const Text(AppStrings.addPost),
+            title: const Text(
+              AppStrings.addPost,
+            ),
           ),
           body: Form(
             key: _formKey,
-            child: ListView(children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: TextFormField(
-                  validator: (value) {
-                    if (value == null || value == '') {
-                      return '*Required';
-                    }
-                    return null;
-                  },
-                  controller: titleController,
-                  decoration: const InputDecoration(labelText: AppStrings.title),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: TextFormField(
-                  maxLines: 5,
-                  minLines: 3,
-                  validator: (value) {
-                    if (value == null || value == '') {
-                      return '*Required';
-                    }
-                    return null;
-                  },
-                  controller: contentController,
-                  decoration: const InputDecoration(labelText: AppStrings.content),
-                ),
-              ),
-              _imagePickerButtons(postAddBloc, context),
-              const SizedBox(height: 20),
-              Container(
-                width: size.width,
-                height: size.height * 0.3,
-                decoration: BoxDecoration(
-                  border: Border.all(color: ColorManager.white),
-                  borderRadius: BorderRadius.circular(15),
-                ),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(15),
-                  child: SizedBox(
-                    width: size.width,
-                    height: size.height * 0.3,
-                    child: state.imagePath == null
-                        ? Image.asset(
-                            'assets/images/noimage.jpg',
-                            fit: BoxFit.cover,
-                          )
-                        : Image.file(
-                            File(state.imagePath!),
-                            fit: BoxFit.cover,
-                          ),
+            child: Container(
+              margin: const EdgeInsets.all(10),
+              child: ListView(children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextFormField(
+                    validator: (value) {
+                      if (value == null || value == '') {
+                        return '*Required';
+                      }
+                      return null;
+                    },
+                    controller: titleController,
+                    decoration: const InputDecoration(labelText: AppStrings.title),
                   ),
                 ),
-              ),
-              ElevatedButton(
-                onPressed: () async {
-                  if (_formKey.currentState!.validate()) {
-                    var title = titleController.text;
-                    var content = contentController.text;
-                    var imagePath = state.imagePath;
-                    if (title.isNotEmpty && content.isNotEmpty) {
-                      if (widget.post != null) {
-                        var updatedPost = PostModel(
-                          id: widget.post!.id,
-                          title: titleController.text,
-                          content: contentController.text,
-                          imagePath: imagePath,
-                          isSelected: 0,
-                        );
-                        postAddBloc.add(PostAddUpdateButtonPressEvent(updatedPost));
-                      } else {
-                        var newPost = PostModel(
-                          title: title,
-                          content: content,
-                          imagePath: imagePath,
-                          isSelected: 0,
-                        );
-                        postAddBloc.add(PostAddSaveButtonPressEvent(newPost));
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextFormField(
+                    maxLines: 5,
+                    minLines: 1,
+                    validator: (value) {
+                      if (value == null || value == '') {
+                        return '*Required';
+                      }
+                      return null;
+                    },
+                    controller: contentController,
+                    decoration: const InputDecoration(labelText: AppStrings.content),
+                  ),
+                ),
+                _imagePickerButtons(postAddBloc, context),
+                const SizedBox(height: 20),
+                Container(
+                  width: size.width,
+                  height: size.height * 0.3,
+                  decoration: BoxDecoration(
+                    border: Border.all(color: ColorManager.white),
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(15),
+                    child: SizedBox(
+                      width: size.width,
+                      height: size.height * 0.3,
+                      child: state.imagePath == null
+                          ? Image.asset(
+                              'assets/images/noimage.jpg',
+                              fit: BoxFit.cover,
+                            )
+                          : Image.file(
+                              File(state.imagePath!),
+                              fit: BoxFit.cover,
+                            ),
+                    ),
+                  ),
+                ),
+                ElevatedButton(
+                  onPressed: () async {
+                    if (_formKey.currentState!.validate()) {
+                      var title = titleController.text;
+                      var content = contentController.text;
+                      var imagePath = state.imagePath;
+                      if (title.isNotEmpty && content.isNotEmpty) {
+                        if (widget.post != null) {
+                          var updatedPost = PostModel(
+                            id: widget.post!.id,
+                            title: titleController.text,
+                            content: contentController.text,
+                            imagePath: imagePath,
+                            isSelected: 0,
+                          );
+                          postAddBloc.add(PostAddUpdateButtonPressEvent(updatedPost));
+                        } else {
+                          var newPost = PostModel(
+                            title: title,
+                            content: content,
+                            imagePath: imagePath,
+                            isSelected: 0,
+                          );
+                          postAddBloc.add(PostAddSaveButtonPressEvent(newPost));
+                        }
                       }
                     }
-                  }
-                },
-                child: Text(
-                  widget.post == null ? AppStrings.addPost : AppStrings.updatePost,
+                  },
+                  child: Text(
+                    widget.post == null ? AppStrings.addPost : AppStrings.updatePost,
+                  ),
                 ),
-              ),
-            ]),
+              ]),
+            ),
           ),
         );
       },

@@ -37,7 +37,14 @@ class _LoginPageState extends State<LoginPage> {
       listenWhen: (previous, current) => current is LoginActionState,
       buildWhen: (previous, current) => current is! LoginActionState,
       listener: (context, state) {
-        if (state is LoggedState) {
+        if (state is LoginLoadingState) {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return const Center(child: CircularProgressIndicator());
+            },
+          );
+        } else if (state is LoggedState) {
           userNameController.clear();
           passwordController.clear();
           Navigator.of(context).pushReplacement(
@@ -46,13 +53,14 @@ class _LoginPageState extends State<LoginPage> {
             ),
           );
         } else if (state is LoginErrorState) {
-          Fluttertoast.cancel();
-          Fluttertoast.showToast(
-            msg: 'Username or Password is Incorrect.',
-            toastLength: Toast.LENGTH_LONG,
-            gravity: ToastGravity.BOTTOM,
-            backgroundColor: ColorManager.error,
-          );
+          Future.delayed(const Duration(milliseconds: 500), () {
+            Navigator.pop(context);
+          }).then((value) => Fluttertoast.showToast(
+                msg: state.message,
+                toastLength: Toast.LENGTH_LONG,
+                gravity: ToastGravity.BOTTOM,
+                backgroundColor: ColorManager.error,
+              ));
         }
       },
       builder: (context, state) {

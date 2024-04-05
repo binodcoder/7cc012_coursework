@@ -19,6 +19,8 @@ class LoginRepositoryImpl implements LoginRepository {
       return Right(response);
     } on CacheException {
       return Left(CacheFailure());
+    } on LoginException {
+      return Left(LoginFailure());
     }
   }
 }
