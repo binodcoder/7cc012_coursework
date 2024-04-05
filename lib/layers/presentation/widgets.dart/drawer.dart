@@ -44,7 +44,7 @@ class _MyDrawerState extends State<MyDrawer> {
             padding: EdgeInsets.zero,
             child: UserAccountsDrawerHeader(
               accountEmail: Text(
-                'binodcoder@wlv.ac.uk',
+                sharedPreferences.getString("user_email") ?? '',
                 style: getRegularStyle(
                   color: ColorManager.white,
                   fontSize: FontSize.s12,
@@ -52,7 +52,7 @@ class _MyDrawerState extends State<MyDrawer> {
               ),
               margin: EdgeInsets.zero,
               accountName: Text(
-                'Binod Bhandari',
+                sharedPreferences.getString("role") ?? '',
                 maxLines: 2,
                 style: getBoldStyle(
                   color: ColorManager.white,

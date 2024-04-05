@@ -224,11 +224,13 @@ class _LoginPageState extends State<LoginPage> {
                           const SizedBox(height: 20),
                           GestureDetector(
                             onTap: () {
-                              LoginModel loginModel = LoginModel(
-                                email: userNameController.text,
-                                password: passwordController.text,
-                              );
-                              loginBloc.add(LoginButtonPressEvent(loginModel));
+                              if (_formKey.currentState!.validate()) {
+                                LoginModel loginModel = LoginModel(
+                                  email: userNameController.text,
+                                  password: passwordController.text,
+                                );
+                                loginBloc.add(LoginButtonPressEvent(loginModel));
+                              }
                             },
                             child: Container(
                               width: size.width,

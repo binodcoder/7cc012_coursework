@@ -312,10 +312,12 @@ class _ReadPostsPageState extends State<ReadPostsPage> {
                             title: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Text(
-                                  postModel.title.toUpperCase(),
-                                  style: const TextStyle(
-                                    fontSize: FontSize.s20,
+                                Expanded(
+                                  child: Text(
+                                    postModel.title.toUpperCase(),
+                                    style: const TextStyle(
+                                      fontSize: FontSize.s20,
+                                    ),
                                   ),
                                 ),
                                 postModel.isSelected == 0

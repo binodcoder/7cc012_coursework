@@ -58,21 +58,26 @@ class _PostDetailsPageState extends State<PostDetailsPage> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(14.0),
-        child: Column(
+        child: ListView(
           children: [
             ListTile(
               dense: true,
               contentPadding: const EdgeInsets.only(left: 0.0, right: 0.0),
               tileColor: ColorManager.white,
-              title: Text(
-                widget.post!.title,
-                textAlign: TextAlign.center,
-                style: const TextStyle(
-                  fontSize: FontSize.s20,
+              title: Expanded(
+                child: Text(
+                  widget.post!.title.toUpperCase(),
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    fontSize: FontSize.s20,
+                  ),
                 ),
               ),
               subtitle: Column(
                 children: [
+                  SizedBox(
+                    height: size.height * 0.02,
+                  ),
                   Container(
                     width: size.width,
                     height: size.height * 0.3,

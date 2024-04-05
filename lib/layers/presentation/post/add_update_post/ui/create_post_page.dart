@@ -116,8 +116,8 @@ class _CreatePostPageState extends State<CreatePostPage> {
       builder: (context, state) {
         return Scaffold(
           appBar: AppBar(
-            title: const Text(
-              AppStrings.addPost,
+            title: Text(
+              widget.post == null ? AppStrings.addPost : AppStrings.updatePost,
             ),
           ),
           body: Form(
