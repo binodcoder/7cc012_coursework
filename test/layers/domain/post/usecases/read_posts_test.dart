@@ -27,7 +27,7 @@ void main() {
     )
   ];
   test(
-    'should get blog post for the number from the repository',
+    'should get all blog post from the repository',
     () async {
       // "On the fly" implementation of the Repository using the Mockito package.
       // When readPost is called with any argument, always answer with

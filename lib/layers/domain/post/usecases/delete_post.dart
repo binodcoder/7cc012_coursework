@@ -5,12 +5,12 @@ import '../../../../core/errors/failures.dart';
 import '../repositories/post_repositories.dart';
 
 class DeletePost implements UseCase<int, Post> {
-  PostRepository deletePostRepository;
+  PostRepository postRepository;
 
-  DeletePost(this.deletePostRepository);
+  DeletePost(this.postRepository);
 
   @override
   Future<Either<Failure, int>?> call(Post post) async {
-    return await deletePostRepository.deletePost(post);
+    return await postRepository.deletePost(post);
   }
 }
