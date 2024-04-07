@@ -15,8 +15,6 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
   final SharedPreferences sharedPreferences = sl<SharedPreferences>();
 
-  final DatabaseHelper dbHelper = DatabaseHelper();
-
   LoginBloc({required this.login}) : super(LoginInitialState()) {
     on<LoginInitialEvent>(loginInitialEvent);
     on<LoginButtonPressEvent>(loginButtonPressEvent);

@@ -5,12 +5,12 @@ import '../../../../core/usecases/usecase.dart';
 import '../repositories/post_repositories.dart';
 
 class UpdatePost implements UseCase<int, Post> {
-  PostRepository updatePostRepository;
+  PostRepository postRepository;
 
-  UpdatePost(this.updatePostRepository);
+  UpdatePost(this.postRepository);
 
   @override
   Future<Either<Failure, int>?> call(Post post) async {
-    return await updatePostRepository.updatePost(post);
+    return await postRepository.updatePost(post);
   }
 }

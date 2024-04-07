@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:blog_app/core/entities/login.dart';
 import 'package:blog_app/core/errors/exceptions.dart';
-
 import '../model/post_model.dart';
 import 'package:sqflite/sqflite.dart' as sql;
 
