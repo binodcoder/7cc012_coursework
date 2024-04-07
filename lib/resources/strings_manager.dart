@@ -18,10 +18,13 @@ class AppStrings {
   static const String youtube = "Youtube";
   static const String facebook = "Facebook";
   static const String website = "Website";
+  static const String areYouSure = "Are you sure?";
+  static const String yes = "Yes";
+  static const String no = "No";
 
   //failure messages
-  static const String SERVER_FAILURE_MESSAGE = 'Server Failure';
-  static const String CACHE_FAILURE_MESSAGE = 'Cache Failure';
-  static const String LOGIN_FAILURE_MESSAGE = 'Invalid Username or Password';
-  static const String INVALID_INPUT_FAILURE_MESSAGE = 'Invalid Input - The number must be a positive integer or zero.';
+  static const String serverFailureMessage = 'Server Failure';
+  static const String cacheFailureMessage = 'Cache Failure';
+  static const String loginFailureMessage = 'Invalid Username or Password';
+  static const String invalidInputFailureMessage = 'Invalid Input - The number must be a positive integer or zero.';
 }

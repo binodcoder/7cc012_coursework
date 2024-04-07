@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'package:blog_app/layers/presentation/post/read_posts/bloc/read_posts_event.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../../core/db/db_helper.dart';

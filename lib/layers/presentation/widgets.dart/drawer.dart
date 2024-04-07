@@ -1,17 +1,12 @@
 import 'package:blog_app/layers/presentation/about_us/about_us.dart';
 import 'package:blog_app/layers/presentation/login/ui/login_page.dart';
-import 'package:blog_app/layers/presentation/post/add_update_post/ui/create_post_page.dart';
-import 'package:blog_app/layers/presentation/post/read_posts/ui/read_posts_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../injection_container.dart';
 import '../../../resources/colour_manager.dart';
 import '../../../resources/font_manager.dart';
-import '../../../resources/strings_manager.dart';
 import '../../../resources/styles_manager.dart';
-import '../post/read_posts/bloc/read_posts_bloc.dart';
-import '../post/read_posts/bloc/read_posts_event.dart';
 
 class MyDrawer extends StatefulWidget {
   const MyDrawer({Key? key}) : super(key: key);
@@ -28,7 +23,7 @@ class _MyDrawerState extends State<MyDrawer> {
       child: ListView(
         children: [
           DrawerHeader(
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               gradient: LinearGradient(
                 colors: [
                   Color.fromARGB(255, 230, 242, 251), // Light blue

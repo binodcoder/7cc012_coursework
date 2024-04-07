@@ -1,5 +1,4 @@
 import 'package:dartz/dartz.dart';
-
 import '../errors/failures.dart';
 
 class InputConverter {
@@ -16,6 +15,5 @@ class InputConverter {
 
 class InvalidInputFailure extends Failure {
   @override
-  // TODO: implement props
   List<Object?> get props => [];
 }

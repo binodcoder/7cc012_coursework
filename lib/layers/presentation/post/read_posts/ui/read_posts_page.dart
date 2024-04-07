@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:blog_app/layers/presentation/widgets.dart/drawer.dart';
+import 'package:blog_app/resources/strings_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
@@ -133,7 +134,7 @@ class _ReadPostsPageState extends State<ReadPostsPage> {
                   : null,
               appBar: AppBar(
                 flexibleSpace: Container(
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     gradient: LinearGradient(
                       colors: [
                         Color(0xFF64B5F6), // Light blue
@@ -192,14 +193,14 @@ class _ReadPostsPageState extends State<ReadPostsPage> {
                           builder: (BuildContext context) {
                             return Expanded(
                               child: AlertDialog(
-                                title: Text('Delete'),
-                                content: Text('Are you sure?'),
+                                title: const Text(AppStrings.delete),
+                                content: const Text(AppStrings.areYouSure),
                                 actions: [
                                   TextButton(
                                     onPressed: () {
                                       Navigator.pop(context);
                                     },
-                                    child: Text('CANCEL'),
+                                    child: const Text(AppStrings.no),
                                   ),
                                   TextButton(
                                     onPressed: () {
@@ -209,7 +210,7 @@ class _ReadPostsPageState extends State<ReadPostsPage> {
                                       });
                                       Navigator.pop(context);
                                     },
-                                    child: Text('ACCEPT'),
+                                    child: const Text(AppStrings.yes),
                                   ),
                                 ],
                               ),
@@ -237,13 +238,13 @@ class _ReadPostsPageState extends State<ReadPostsPage> {
                 ],
               ),
               body: Container(
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   gradient: LinearGradient(
                     colors: [
-                      Color.fromARGB(255, 185, 223, 254), // Light blue
-                      Color(0xFF90CAF9), // Sky blue
-                      Color(0xFFBBDEFB), // Pale blue
-                      Color(0xFFE3F2FD), // Very pale blue
+                      Color.fromARGB(255, 185, 223, 254),
+                      Color(0xFF90CAF9),
+                      Color(0xFFBBDEFB),
+                      Color(0xFFE3F2FD),
                     ],
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
@@ -278,19 +279,19 @@ class _ReadPostsPageState extends State<ReadPostsPage> {
                                 onPressed: (context) {
                                   postBloc.add(PostEditButtonClickedEvent(postModel));
                                 },
-                                backgroundColor: Color.fromARGB(255, 113, 205, 217),
+                                backgroundColor: const Color.fromARGB(255, 113, 205, 217),
                                 foregroundColor: Colors.white,
                                 icon: Icons.edit,
-                                label: 'Edit',
+                                label: AppStrings.edit,
                               ),
                               SlidableAction(
                                 onPressed: (context) {
                                   postBloc.add(PostDeleteButtonClickedEvent(postModel));
                                 },
-                                backgroundColor: Color.fromARGB(255, 201, 32, 46),
+                                backgroundColor: const Color.fromARGB(255, 201, 32, 46),
                                 foregroundColor: Colors.white,
                                 icon: Icons.delete,
-                                label: 'Delete',
+                                label: AppStrings.delete,
                               )
                             ],
                           ),
@@ -371,7 +372,7 @@ class _ReadPostsPageState extends State<ReadPostsPage> {
               ),
             );
           case PostErrorState:
-            return const Scaffold(body: Center(child: Text('Error')));
+            return const Scaffold(body: Center(child: Text(AppStrings.error)));
           default:
             return const SizedBox();
         }

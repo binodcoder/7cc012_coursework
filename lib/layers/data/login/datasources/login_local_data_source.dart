@@ -9,9 +9,9 @@ abstract class LoginLocalDataSource {
 
 class LoginLocalDataSourceImpl implements LoginLocalDataSource {
   Future<UserModel> _login(LoginModel loginModel) async {
-    List<UserModel> userModel = await DatabaseHelper.login(loginModel);
-    if (userModel != null) {
-      return userModel.first;
+    List<UserModel> userModels = await DatabaseHelper.login(loginModel);
+    if (userModels.isNotEmpty) {
+      return userModels.first;
     } else {
       throw LoginException();
     }

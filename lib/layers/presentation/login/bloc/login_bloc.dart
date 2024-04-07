@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../../../../core/db/db_helper.dart';
 import '../../../../core/entities/user.dart';
 import '../../../../core/errors/failures.dart';
 import '../../../../injection_container.dart';
@@ -51,11 +50,11 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   String _mapFailureToMessage(Failure failure) {
     switch (failure.runtimeType) {
       case ServerFailure:
-        return AppStrings.SERVER_FAILURE_MESSAGE;
+        return AppStrings.serverFailureMessage;
       case CacheFailure:
-        return AppStrings.CACHE_FAILURE_MESSAGE;
+        return AppStrings.cacheFailureMessage;
       case LoginFailure:
-        return AppStrings.LOGIN_FAILURE_MESSAGE;
+        return AppStrings.loginFailureMessage;
       default:
         return 'Unexpected error';
     }

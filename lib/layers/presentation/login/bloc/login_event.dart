@@ -1,7 +1,5 @@
 import 'package:blog_app/core/entities/login.dart';
 
-import '../../../../core/entities/user.dart';
-
 abstract class LoginEvent {}
 
 class LoginInitialEvent extends LoginEvent {}
