@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:share_plus/share_plus.dart';
 import '../../../../../core/entities/post.dart';
 import '../../../../../resources/colour_manager.dart';
@@ -69,7 +70,8 @@ class _PostDetailsPageState extends State<PostDetailsPage> {
                   widget.post!.title.toUpperCase(),
                   textAlign: TextAlign.center,
                   style: const TextStyle(
-                    fontSize: FontSize.s20,
+                    fontSize: FontSize.s18,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
               ),
@@ -78,40 +80,56 @@ class _PostDetailsPageState extends State<PostDetailsPage> {
                   SizedBox(
                     height: size.height * 0.02,
                   ),
-                  Container(
-                    width: size.width,
-                    height: size.height * 0.3,
-                    decoration: BoxDecoration(
-                      border: Border.all(color: ColorManager.white),
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(15),
-                      child: SizedBox(
-                        width: size.width,
-                        height: size.height * 0.3,
-                        child: widget.post!.imagePath == null
-                            ? Image.asset(
-                                'assets/images/noimage.jpg',
-                                fit: BoxFit.cover,
-                              )
-                            : Image.file(
+                  widget.post!.imagePath == null
+                      ? const SizedBox()
+                      : Container(
+                          width: size.width,
+                          height: size.height * 0.3,
+                          decoration: BoxDecoration(
+                            border: Border.all(color: ColorManager.white),
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(15),
+                            child: SizedBox(
+                              width: size.width,
+                              height: size.height * 0.3,
+                              child: Image.file(
                                 File(widget.post!.imagePath!),
                                 fit: BoxFit.cover,
                               ),
-                      ),
-                    ),
-                  ),
+                            ),
+                          ),
+                        ),
                   SizedBox(
                     height: size.height * 0.02,
                   ),
                   Text(
                     widget.post!.content,
-                    style: const TextStyle(fontSize: FontSize.s14),
+                    style: TextStyle(
+                      fontSize: FontSize.s14,
+                      color: ColorManager.black,
+                    ),
+                  ),
+                  SizedBox(
+                    height: size.height * 0.01,
+                  ),
+                  Align(
+                    alignment: Alignment.bottomRight,
+                    child: Text(
+                      DateFormat.yMEd().add_jm().format(widget.post!.createdAt!),
+                      style: TextStyle(
+                        fontSize: FontSize.s12,
+                        color: ColorManager.blue,
+                      ),
+                    ),
                   ),
                 ],
               ),
               isThreeLine: true,
+            ),
+            SizedBox(
+              height: size.height * 0.01,
             ),
             Align(
               alignment: Alignment.bottomRight,

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../../injection_container.dart';
 import '../../../../../resources/colour_manager.dart';
@@ -316,7 +317,8 @@ class _ReadPostsPageState extends State<ReadPostsPage> {
                                   child: Text(
                                     postModel.title.toUpperCase(),
                                     style: const TextStyle(
-                                      fontSize: FontSize.s20,
+                                      fontSize: FontSize.s18,
+                                      fontWeight: FontWeight.bold,
                                     ),
                                   ),
                                 ),
@@ -338,7 +340,26 @@ class _ReadPostsPageState extends State<ReadPostsPage> {
                                 SizedBox(
                                   height: size.height * 0.01,
                                 ),
-                                Text(postModel.content),
+                                Text(
+                                  postModel.content,
+                                  style: TextStyle(
+                                    fontSize: FontSize.s14,
+                                    color: ColorManager.black,
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: size.height * 0.01,
+                                ),
+                                Align(
+                                  alignment: Alignment.bottomRight,
+                                  child: Text(
+                                    DateFormat.yMEd().add_jm().format(postModel.createdAt!),
+                                    style: TextStyle(
+                                      fontSize: FontSize.s12,
+                                      color: ColorManager.blue,
+                                    ),
+                                  ),
+                                ),
                               ],
                             ),
                           ),
