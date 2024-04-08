@@ -58,106 +58,104 @@ class _PostDetailsPageState extends State<PostDetailsPage> {
         centerTitle: true,
       ),
       body: Padding(
-        padding: const EdgeInsets.all(14.0),
-        child: ListView(
-          children: [
-            ListTile(
-              dense: true,
-              contentPadding: const EdgeInsets.only(left: 0.0, right: 0.0),
-              tileColor: ColorManager.white,
-              title: Expanded(
-                child: Text(
-                  widget.post!.title.toUpperCase(),
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(
-                    fontSize: FontSize.s18,
-                    fontWeight: FontWeight.bold,
-                  ),
+          padding: const EdgeInsets.all(14.0),
+          child: ListView(
+            children: [
+              Text(
+                widget.post!.title.toUpperCase(),
+                textAlign: TextAlign.center,
+                overflow: TextOverflow.clip,
+                style: const TextStyle(
+                  fontSize: FontSize.s18,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
-              subtitle: Column(
-                children: [
-                  SizedBox(
-                    height: size.height * 0.02,
-                  ),
-                  widget.post!.imagePath == null
-                      ? const SizedBox()
-                      : Container(
-                          width: size.width,
-                          height: size.height * 0.3,
-                          decoration: BoxDecoration(
-                            border: Border.all(color: ColorManager.white),
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(15),
-                            child: SizedBox(
-                              width: size.width,
-                              height: size.height * 0.3,
-                              child: Image.file(
-                                File(widget.post!.imagePath!),
-                                fit: BoxFit.cover,
+              ListTile(
+                dense: true,
+                contentPadding: const EdgeInsets.only(left: 0.0, right: 0.0),
+                tileColor: ColorManager.white,
+                subtitle: Column(
+                  children: [
+                    SizedBox(
+                      height: size.height * 0.02,
+                    ),
+                    widget.post!.imagePath == null
+                        ? const SizedBox()
+                        : Container(
+                            width: size.width,
+                            height: size.height * 0.3,
+                            decoration: BoxDecoration(
+                              border: Border.all(color: ColorManager.white),
+                              borderRadius: BorderRadius.circular(15),
+                            ),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(15),
+                              child: SizedBox(
+                                width: size.width,
+                                height: size.height * 0.3,
+                                child: Image.file(
+                                  File(widget.post!.imagePath!),
+                                  fit: BoxFit.cover,
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                  SizedBox(
-                    height: size.height * 0.02,
-                  ),
-                  Text(
-                    widget.post!.content,
-                    style: TextStyle(
-                      fontSize: FontSize.s14,
-                      color: ColorManager.black,
+                    SizedBox(
+                      height: size.height * 0.02,
                     ),
-                  ),
-                  SizedBox(
-                    height: size.height * 0.01,
-                  ),
-                  Align(
-                    alignment: Alignment.bottomRight,
-                    child: Text(
-                      DateFormat.yMEd().add_jm().format(widget.post!.createdAt!),
+                    Text(
+                      widget.post!.content,
                       style: TextStyle(
-                        fontSize: FontSize.s12,
-                        color: ColorManager.blue,
+                        fontSize: FontSize.s14,
+                        color: ColorManager.black,
                       ),
                     ),
-                  ),
-                ],
+                    SizedBox(
+                      height: size.height * 0.01,
+                    ),
+                    Align(
+                      alignment: Alignment.bottomRight,
+                      child: Text(
+                        DateFormat.yMEd().add_jm().format(widget.post!.createdAt!),
+                        style: TextStyle(
+                          fontSize: FontSize.s12,
+                          color: ColorManager.blue,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                isThreeLine: true,
               ),
-              isThreeLine: true,
-            ),
-            SizedBox(
-              height: size.height * 0.01,
-            ),
-            Align(
-              alignment: Alignment.bottomRight,
-              child: ElevatedButton(
-                onPressed: () async {
-                  widget.post!.imagePath != null
-                      ? await Share.shareXFiles(
-                          [XFile(widget.post!.imagePath!)],
-                          text: widget.post!.content,
-                          subject: widget.post!.title,
-                        )
-                      : Share.share(widget.post!.content, subject: widget.post!.title);
-                },
-                child: SizedBox(
-                  width: size.width * 0.2,
-                  child: const Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text("Share"),
-                      Icon(Icons.share),
-                    ],
+              SizedBox(
+                height: size.height * 0.01,
+              ),
+              Align(
+                alignment: Alignment.bottomRight,
+                child: ElevatedButton(
+                  onPressed: () async {
+                    widget.post!.imagePath != null
+                        ? await Share.shareXFiles(
+                            [XFile(widget.post!.imagePath!)],
+                            text: widget.post!.content,
+                            subject: widget.post!.title,
+                          )
+                        : Share.share(widget.post!.content, subject: widget.post!.title);
+                  },
+                  child: SizedBox(
+                    width: size.width * 0.2,
+                    child: const Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text("Share"),
+                        Icon(Icons.share),
+                      ],
+                    ),
                   ),
                 ),
               ),
-            ),
-          ],
-        ),
-      ),
+            ],
+          )),
     );
   }
 }

@@ -127,6 +127,8 @@ class _CreatePostPageState extends State<CreatePostPage> {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: TextFormField(
+                    maxLines: 2,
+                    minLines: 1,
                     validator: (value) {
                       if (value == null || value == '') {
                         return '*Required';
