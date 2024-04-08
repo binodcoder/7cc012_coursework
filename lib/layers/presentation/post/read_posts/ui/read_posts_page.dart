@@ -191,29 +191,27 @@ class _ReadPostsPageState extends State<ReadPostsPage> {
                         showDialog(
                           context: context,
                           builder: (BuildContext context) {
-                            return Expanded(
-                              child: AlertDialog(
-                                title: const Text(AppStrings.delete),
-                                content: const Text(AppStrings.areYouSure),
-                                actions: [
-                                  TextButton(
-                                    onPressed: () {
-                                      Navigator.pop(context);
-                                    },
-                                    child: const Text(AppStrings.no),
-                                  ),
-                                  TextButton(
-                                    onPressed: () {
-                                      postBloc.add(PostDeleteAllButtonClickedEvent());
-                                      Future.delayed(const Duration(microseconds: 1000), () {
-                                        postBloc.selectedPosts = [];
-                                      });
-                                      Navigator.pop(context);
-                                    },
-                                    child: const Text(AppStrings.yes),
-                                  ),
-                                ],
-                              ),
+                            return AlertDialog(
+                              title: const Text(AppStrings.delete),
+                              content: const Text(AppStrings.areYouSure),
+                              actions: [
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                  child: const Text(AppStrings.no),
+                                ),
+                                TextButton(
+                                  onPressed: () {
+                                    postBloc.add(PostDeleteAllButtonClickedEvent());
+                                    Future.delayed(const Duration(microseconds: 1000), () {
+                                      postBloc.selectedPosts = [];
+                                    });
+                                    Navigator.pop(context);
+                                  },
+                                  child: const Text(AppStrings.yes),
+                                ),
+                              ],
                             );
                           },
                         );
@@ -321,6 +319,7 @@ class _ReadPostsPageState extends State<ReadPostsPage> {
                                       fontSize: FontSize.s18,
                                       fontWeight: FontWeight.bold,
                                     ),
+                                    overflow: TextOverflow.clip,
                                   ),
                                 ),
                                 postModel.isSelected == 0
