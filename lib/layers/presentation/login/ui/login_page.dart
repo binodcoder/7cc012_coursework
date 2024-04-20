@@ -31,7 +31,6 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-
     return BlocConsumer<LoginBloc, LoginState>(
       bloc: loginBloc,
       listenWhen: (previous, current) => current is LoginActionState,

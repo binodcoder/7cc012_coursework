@@ -61,7 +61,7 @@ class _ReadPostsPageState extends State<ReadPostsPage> {
 
   void refreshPage() {
     postBloc.add(PostInitialEvent());
-  }
+  } 
 
   ReadPostsBloc postBloc = sl<ReadPostsBloc>();
   SharedPreferences sharedPreferences = sl<SharedPreferences>();
