@@ -34,4 +34,6 @@ class PostModel extends Post {
         isSelected: json["isSelected"],
         createdAt: json["createdAt"],
       );
+
+ 
 }

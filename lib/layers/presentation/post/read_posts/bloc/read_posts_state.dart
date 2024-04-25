@@ -18,7 +18,10 @@ class PostLoadedSuccessState extends ReadPostsState {
   }
 }
 
-class PostErrorState extends ReadPostsState {}
+class PostErrorState extends ReadPostsState {
+  String message;
+  PostErrorState(this.message);
+}
 
 class PostNavigateToAddPostActionState extends PostActionState {}
 

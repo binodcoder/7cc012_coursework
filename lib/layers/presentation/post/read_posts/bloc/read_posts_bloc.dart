@@ -15,6 +15,7 @@ class ReadPostsBloc extends Bloc<ReadPostsEvent, ReadPostsState> {
   final DeletePost deletePost;
   final FindPosts findPosts;
   List<Post> selectedPosts = [];
+  ReadPostsState get initialState => PostInitialState();
   ReadPostsBloc({
     required this.getPosts,
     required this.updatePost,
