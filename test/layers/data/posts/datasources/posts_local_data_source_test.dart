@@ -11,7 +11,7 @@ import '../../../../fixtures/fixture_reader.dart';
 @GenerateMocks([
   DatabaseHelper
 ], customMocks: [
-  MockSpec<DatabaseHelper>(as: #MockDatabaseHelperForTest, returnNullOnMissingStub: true),
+  MockSpec<DatabaseHelper>(as: #MockDatabaseHelperForTest, onMissingStub:OnMissingStub.returnDefault),
 ])
 void main() {
   late PostLocalDataSourceImpl dataSource;

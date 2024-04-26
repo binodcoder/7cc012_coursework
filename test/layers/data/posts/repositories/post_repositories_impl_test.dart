@@ -11,7 +11,7 @@ class MockPostLocalDataSource extends Mock implements PostLocalDataSource {}
 @GenerateMocks([
   PostLocalDataSource
 ], customMocks: [
-  MockSpec<PostLocalDataSource>(as: #MockPostRemoteDataSourceForTest, returnNullOnMissingStub: true),
+  MockSpec<PostLocalDataSource>(as: #MockPostRemoteDataSourceForTest, onMissingStub: OnMissingStub.returnDefault),
 ])
 void main() {
   late PostRepositoryImpl repository;
