@@ -1,4 +1,11 @@
-abstract class LoginState {}
+import 'package:equatable/equatable.dart';
+
+abstract class LoginState extends Equatable {
+  const LoginState();
+
+  @override
+  List<Object> get props => [];
+}
 
 abstract class LoginActionState extends LoginState {}
 

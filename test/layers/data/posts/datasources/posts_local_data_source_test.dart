@@ -11,7 +11,7 @@ import '../../../../fixtures/fixture_reader.dart';
 @GenerateMocks([
   DatabaseHelper
 ], customMocks: [
-  MockSpec<DatabaseHelper>(as: #MockDatabaseHelperForTest, onMissingStub:OnMissingStub.returnDefault),
+  MockSpec<DatabaseHelper>(as: #MockDatabaseHelperForTest, onMissingStub: OnMissingStub.returnDefault),
 ])
 void main() {
   late PostLocalDataSourceImpl dataSource;
@@ -44,12 +44,14 @@ void main() {
 
   group('cachePostModel', () {
     final tPostModel = PostModel(
-      id: 37,
       content: '',
       isSelected: 0,
+      imagePath: null,
       title: '',
     );
     test('should call db to cache the data', () async {
+      //arrange
+      when(await DatabaseHelper.insertPost(tPostModel)).thenReturn(1);
       //act
       dataSource.createPost(tPostModel);
       //assert

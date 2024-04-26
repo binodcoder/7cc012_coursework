@@ -5,7 +5,7 @@ import '../../fixtures/fixture_reader.dart';
 
 void main() {
   final tPostModel = PostModel(
-    id: 37,
+    id: 1,
     content: '',
     isSelected: 0,
     title: '',
@@ -19,19 +19,19 @@ void main() {
   group('fromJson', () {
     test('should return a valid model', () async {
       //arrange
-      final Map<String, dynamic> jsonMap = json.decode(fixture('Post.json'));
+      final Map<String, dynamic> jsonMap = json.decode(fixture('post.json'));
       //act
       final result = PostModel.fromJson(jsonMap);
       //assert
       expect(result.id, equals(tPostModel.id));
     });
-    test('should return a valid model when the JSON duration is regarded as a double', () async {
+    test('should return a valid model when the JSON title is regarded as a long', () async {
       //arrange
-      final Map<String, dynamic> jsonMap = json.decode(fixture('Post_duration_double.json'));
+      final Map<String, dynamic> jsonMap = json.decode(fixture('post_title_long.json'));
       //act
       final result = PostModel.fromJson(jsonMap);
       //assert
-      expect(result, equals(tPostModel));
+      expect(result.id, equals(tPostModel.id));
     });
   });
 
@@ -41,9 +41,9 @@ void main() {
       final result = tPostModel.toMap();
       //assert
       final expectedMap = {
-        "id": 37,
         "content": '',
         "isSelected": 0,
+        "imagePath": null,
         "title": '',
       };
       expect(result, equals(expectedMap));

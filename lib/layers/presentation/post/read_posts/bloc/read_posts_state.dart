@@ -1,6 +1,13 @@
+import 'package:equatable/equatable.dart';
+
 import '../../../../../core/entities/post.dart';
 
-abstract class ReadPostsState {}
+abstract class ReadPostsState extends Equatable {
+  const ReadPostsState();
+
+  @override
+  List<Object> get props => [];
+}
 
 abstract class PostActionState extends ReadPostsState {}
 
@@ -9,18 +16,18 @@ class PostInitialState extends ReadPostsState {}
 class PostLoadingState extends ReadPostsState {}
 
 class PostLoadedSuccessState extends ReadPostsState {
-  bool isSearch;
+  final bool isSearch;
   final List<Post> postList;
-  List<Post> selectedPosts;
-  PostLoadedSuccessState(this.postList, this.isSearch, this.selectedPosts);
+  final List<Post> selectedPosts;
+  const PostLoadedSuccessState(this.postList, this.isSearch, this.selectedPosts);
   PostLoadedSuccessState copyWith({List<Post>? postList}) {
     return PostLoadedSuccessState(postList ?? this.postList, isSearch, selectedPosts);
   }
 }
 
 class PostErrorState extends ReadPostsState {
-  String message;
-  PostErrorState(this.message);
+  final String message;
+  const PostErrorState(this.message);
 }
 
 class PostNavigateToAddPostActionState extends PostActionState {}
@@ -44,7 +51,7 @@ class PostItemSelectedActionState extends PostActionState {}
 class PostItemsDeletedActionState extends PostActionState {}
 
 class PostSearchIconClickedState extends PostActionState {
-  bool isSearch;
+  final bool isSearch;
   PostSearchIconClickedState(this.isSearch);
 }
 

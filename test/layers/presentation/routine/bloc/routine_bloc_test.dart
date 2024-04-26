@@ -63,7 +63,7 @@ void main() {
       when(mockGetPosts(any)).thenAnswer((_) async => Right(tPostModel));
 
       //assert later
-      final expected = [PostInitialState(), PostLoadingState(), PostLoadedSuccessState(tPostModel, false, [])];
+      final expected = [PostInitialState(), PostLoadingState(), PostLoadedSuccessState(tPostModel, false, const [])];
       expectLater(bloc, emitsInOrder(expected));
       //act
       bloc.add(PostInitialEvent());
@@ -74,7 +74,7 @@ void main() {
       when(mockGetPosts(any)).thenAnswer((_) async => Left(ServerFailure()));
 
       //assert later
-      final expected = [PostInitialState(), PostLoadingState(), PostErrorState(AppStrings.serverFailureMessage)];
+      final expected = [PostInitialState(), PostLoadingState(), const PostErrorState(AppStrings.serverFailureMessage)];
       expectLater(bloc, emitsInOrder(expected));
       //act
       bloc.add(PostInitialEvent());
@@ -86,7 +86,7 @@ void main() {
       when(mockGetPosts(any)).thenAnswer((_) async => Left(CacheFailure()));
 
       //assert later
-      final expected = [PostInitialState(), PostLoadingState(), PostErrorState(AppStrings.cacheFailureMessage)];
+      final expected = [PostInitialState(), PostLoadingState(), const PostErrorState(AppStrings.cacheFailureMessage)];
       expectLater(bloc, emitsInOrder(expected));
       //act
       bloc.add(PostInitialEvent());
@@ -119,7 +119,7 @@ void main() {
       final expected = [
         PostInitialState(),
         PostLoadingState(),
-        PostLoadedSuccessState([tPost], false, [])
+        PostLoadedSuccessState([tPost], false, const [])
       ];
       expectLater(bloc, emitsInOrder(expected));
       //act
@@ -130,7 +130,7 @@ void main() {
       when(mockDeletePost(tPost)).thenAnswer((_) async => Left(ServerFailure()));
 
       //assert later
-      final expected = [PostInitialState(), PostLoadingState(), PostErrorState(AppStrings.serverFailureMessage)];
+      final expected = [PostInitialState(), PostLoadingState(), const PostErrorState(AppStrings.serverFailureMessage)];
       expectLater(bloc, emitsInOrder(expected));
       //act
       bloc.add(PostDeleteButtonClickedEvent(tPost));
@@ -141,7 +141,7 @@ void main() {
       when(mockDeletePost(tPost)).thenAnswer((_) async => Left(CacheFailure()));
 
       //assert later
-      final expected = [PostInitialState(), PostLoadingState(), PostErrorState(AppStrings.cacheFailureMessage)];
+      final expected = [PostInitialState(), PostLoadingState(), const PostErrorState(AppStrings.cacheFailureMessage)];
       expectLater(bloc, emitsInOrder(expected));
       //act
       bloc.add(PostDeleteButtonClickedEvent(tPost));
