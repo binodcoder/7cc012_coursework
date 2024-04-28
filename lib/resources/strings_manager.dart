@@ -21,6 +21,13 @@ class AppStrings {
   static const String areYouSure = "Are you sure?";
   static const String yes = "Yes";
   static const String no = "No";
+  static const String enterUsername = "Enter Username";
+  static const String username = "Username";
+  static const String password = "Password";
+  static const String login = "Login";
+  static const String now = "  Now";
+  static const String pickGalary = "Pick Galary";
+  static const String camera = "Camera";
 
   //failure messages
   static const String serverFailureMessage = 'Server Failure';

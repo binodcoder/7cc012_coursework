@@ -1,7 +1,6 @@
 import 'package:blog_app/resources/styles_manager.dart';
 import 'package:blog_app/resources/values_manager.dart';
 import 'package:flutter/material.dart';
-
 import 'colour_manager.dart';
 import 'font_manager.dart';
 

@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:blog_app/layers/presentation/widgets.dart/drawer.dart';
+import 'package:blog_app/layers/presentation/widgets.dart/image_frame.dart';
 import 'package:blog_app/resources/strings_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -61,7 +62,7 @@ class _ReadPostsPageState extends State<ReadPostsPage> {
 
   void refreshPage() {
     postBloc.add(PostInitialEvent());
-  } 
+  }
 
   ReadPostsBloc postBloc = sl<ReadPostsBloc>();
   SharedPreferences sharedPreferences = sl<SharedPreferences>();
@@ -336,7 +337,12 @@ class _ReadPostsPageState extends State<ReadPostsPage> {
                                 SizedBox(
                                   height: size.height * 0.02,
                                 ),
-                                postModel.imagePath != null ? _imageDisplay(postModel.imagePath, size) : const SizedBox(),
+                                postModel.imagePath != null
+                                    ? ImageFrame(
+                                        imagePath: postModel.imagePath,
+                                        size: size,
+                                      )
+                                    : const SizedBox(),
                                 SizedBox(
                                   height: size.height * 0.01,
                                 ),

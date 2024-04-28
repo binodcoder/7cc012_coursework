@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:blog_app/layers/presentation/widgets.dart/image_frame.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:share_plus/share_plus.dart';
@@ -81,24 +82,9 @@ class _PostDetailsPageState extends State<PostDetailsPage> {
                     ),
                     widget.post!.imagePath == null
                         ? const SizedBox()
-                        : Container(
-                            width: size.width,
-                            height: size.height * 0.3,
-                            decoration: BoxDecoration(
-                              border: Border.all(color: ColorManager.white),
-                              borderRadius: BorderRadius.circular(15),
-                            ),
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(15),
-                              child: SizedBox(
-                                width: size.width,
-                                height: size.height * 0.3,
-                                child: Image.file(
-                                  File(widget.post!.imagePath!),
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                            ),
+                        : ImageFrame(
+                            size: size,
+                            imagePath: widget.post!.imagePath,
                           ),
                     SizedBox(
                       height: size.height * 0.02,

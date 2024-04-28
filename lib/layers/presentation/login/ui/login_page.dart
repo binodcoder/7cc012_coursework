@@ -5,12 +5,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import '../../../../injection_container.dart';
 import '../../../../resources/colour_manager.dart';
+import '../../../../resources/strings_manager.dart';
 import '../../../../resources/styles_manager.dart';
 import '../../post/read_posts/ui/read_posts_page.dart';
+import '../../widgets.dart/custom_button.dart';
 import '../bloc/login_bloc.dart';
 import '../bloc/login_event.dart';
 import '../bloc/login_state.dart';
 import '../widgets/custom_clipper.dart';
+import '../../widgets.dart/custom_input_field.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -108,14 +111,14 @@ class _LoginPageState extends State<LoginPage> {
                           RichText(
                             textAlign: TextAlign.center,
                             text: TextSpan(
-                              text: 'Login',
+                              text: AppStrings.login,
                               style: getSemiBoldStyle(
                                 fontSize: 30,
                                 color: ColorManager.blue,
                               ),
                               children: [
                                 TextSpan(
-                                  text: ' Now',
+                                  text: AppStrings.now,
                                   style: getSemiBoldStyle(
                                     color: ColorManager.black,
                                     fontSize: 30,
@@ -133,7 +136,7 @@ class _LoginPageState extends State<LoginPage> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
                                     Text(
-                                      "Username",
+                                      AppStrings.username,
                                       style: getBoldStyle(
                                         fontSize: 15,
                                         color: ColorManager.black,
@@ -142,35 +145,21 @@ class _LoginPageState extends State<LoginPage> {
                                     const SizedBox(
                                       height: 10,
                                     ),
-                                    TextFormField(
+                                    CustomTextFormField(
                                       controller: userNameController,
+                                      hintText: AppStrings.enterUsername,
                                       validator: (value) {
                                         if (value == null || value.isEmpty) {
                                           return '*Required';
                                         }
                                         return null;
                                       },
-                                      decoration: InputDecoration(
-                                        border: InputBorder.none,
-                                        fillColor: ColorManager.redWhite,
-                                        filled: true,
-                                        hintText: 'Enter Username',
-                                        enabledBorder: OutlineInputBorder(
-                                          borderSide: BorderSide(color: ColorManager.blueGrey),
-                                        ),
-                                        focusedBorder: OutlineInputBorder(
-                                          borderSide: BorderSide(color: ColorManager.red),
-                                        ),
-                                        errorBorder: OutlineInputBorder(
-                                          borderSide: BorderSide(color: ColorManager.red),
-                                        ),
-                                      ),
                                     ),
                                     const SizedBox(
                                       height: 10,
                                     ),
                                     Text(
-                                      "Password",
+                                      AppStrings.password,
                                       style: getBoldStyle(
                                         fontSize: 15,
                                         color: ColorManager.black,
@@ -179,41 +168,27 @@ class _LoginPageState extends State<LoginPage> {
                                     const SizedBox(
                                       height: 10,
                                     ),
-                                    TextFormField(
+                                    CustomTextFormField(
+                                      suffixIcon: IconButton(
+                                        icon: Icon(
+                                          isPasswordVisible ? Icons.visibility : Icons.visibility_off,
+                                          color: Theme.of(context).primaryColorDark,
+                                        ),
+                                        onPressed: () {
+                                          setState(() {
+                                            isPasswordVisible = !isPasswordVisible;
+                                          });
+                                        },
+                                      ),
                                       obscureText: !isPasswordVisible,
                                       controller: passwordController,
+                                      hintText: AppStrings.enterUsername,
                                       validator: (value) {
                                         if (value == null || value.isEmpty) {
                                           return '*Required';
                                         }
                                         return null;
                                       },
-                                      decoration: InputDecoration(
-                                        suffixIcon: IconButton(
-                                          icon: Icon(
-                                            isPasswordVisible ? Icons.visibility : Icons.visibility_off,
-                                            color: Theme.of(context).primaryColorDark,
-                                          ),
-                                          onPressed: () {
-                                            setState(() {
-                                              isPasswordVisible = !isPasswordVisible;
-                                            });
-                                          },
-                                        ),
-                                        border: InputBorder.none,
-                                        fillColor: ColorManager.redWhite,
-                                        filled: true,
-                                        hintText: 'Enter Password',
-                                        enabledBorder: OutlineInputBorder(
-                                          borderSide: BorderSide(color: ColorManager.blueGrey),
-                                        ),
-                                        focusedBorder: OutlineInputBorder(
-                                          borderSide: BorderSide(color: ColorManager.red),
-                                        ),
-                                        errorBorder: OutlineInputBorder(
-                                          borderSide: BorderSide(color: ColorManager.red),
-                                        ),
-                                      ),
                                     ),
                                   ],
                                 ),
@@ -221,7 +196,7 @@ class _LoginPageState extends State<LoginPage> {
                             ],
                           ),
                           const SizedBox(height: 20),
-                          GestureDetector(
+                          CustomButton(
                             onTap: () {
                               if (_formKey.currentState!.validate()) {
                                 LoginModel loginModel = LoginModel(
@@ -231,38 +206,51 @@ class _LoginPageState extends State<LoginPage> {
                                 loginBloc.add(LoginButtonPressEvent(loginModel));
                               }
                             },
-                            child: Container(
-                              width: size.width,
-                              padding: const EdgeInsets.symmetric(vertical: 14),
-                              alignment: Alignment.center,
-                              decoration: BoxDecoration(
-                                borderRadius: const BorderRadius.all(Radius.circular(6)),
-                                boxShadow: <BoxShadow>[
-                                  BoxShadow(
-                                    color: Colors.grey.shade200,
-                                    offset: const Offset(2, 4),
-                                    blurRadius: 5,
-                                    spreadRadius: 2,
-                                  ),
-                                ],
-                                gradient: LinearGradient(
-                                  begin: Alignment.centerLeft,
-                                  end: Alignment.centerRight,
-                                  colors: [
-                                    ColorManager.blue,
-                                    ColorManager.blue,
-                                  ],
-                                ),
-                              ),
-                              child: Text(
-                                "Login",
-                                style: getRegularStyle(
-                                  color: ColorManager.white,
-                                  fontSize: 20,
-                                ),
-                              ),
-                            ),
+                            text: AppStrings.login,
+                            size: size,
                           ),
+                          // GestureDetector(
+                          //   onTap: () {
+                          //     if (_formKey.currentState!.validate()) {
+                          //       LoginModel loginModel = LoginModel(
+                          //         email: userNameController.text,
+                          //         password: passwordController.text,
+                          //       );
+                          //       loginBloc.add(LoginButtonPressEvent(loginModel));
+                          //     }
+                          //   },
+                          //   child: Container(
+                          //     width: size.width,
+                          //     padding: const EdgeInsets.symmetric(vertical: 14),
+                          //     alignment: Alignment.center,
+                          //     decoration: BoxDecoration(
+                          //       borderRadius: const BorderRadius.all(Radius.circular(6)),
+                          //       boxShadow: <BoxShadow>[
+                          //         BoxShadow(
+                          //           color: Colors.grey.shade200,
+                          //           offset: const Offset(2, 4),
+                          //           blurRadius: 5,
+                          //           spreadRadius: 2,
+                          //         ),
+                          //       ],
+                          //       gradient: LinearGradient(
+                          //         begin: Alignment.centerLeft,
+                          //         end: Alignment.centerRight,
+                          //         colors: [
+                          //           ColorManager.blue,
+                          //           ColorManager.blue,
+                          //         ],
+                          //       ),
+                          //     ),
+                          //     child: Text(
+                          //       AppStrings.login,
+                          //       style: getRegularStyle(
+                          //         color: ColorManager.white,
+                          //         fontSize: 20,
+                          //       ),
+                          //     ),
+                          //   ),
+                          // ),
                         ],
                       ),
                     ),

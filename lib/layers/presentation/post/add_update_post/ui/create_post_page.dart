@@ -1,4 +1,4 @@
-import 'dart:io';
+import 'package:blog_app/layers/presentation/widgets.dart/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../../core/db/db_helper.dart';
@@ -8,6 +8,8 @@ import '../../../../../injection_container.dart';
 import '../../../../../resources/colour_manager.dart';
 import '../../../../../resources/strings_manager.dart';
 import '../../../../../resources/values_manager.dart';
+import '../../../widgets.dart/custom_input_field.dart';
+import '../../../widgets.dart/image_frame.dart';
 import '../../read_posts/bloc/read_posts_bloc.dart';
 import '../bloc/create_post_bloc.dart';
 import '../bloc/create_post_bloc_event.dart';
@@ -29,54 +31,6 @@ class _CreatePostPageState extends State<CreatePostPage> {
   final TextEditingController titleController = TextEditingController();
   final TextEditingController contentController = TextEditingController();
   final DatabaseHelper dbHelper = DatabaseHelper();
-
-  Widget _imagePickerButtons(CreatePostBloc postBloc, BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(color: Colors.green[100], borderRadius: BorderRadius.circular(AppRadius.r4)),
-      margin: const EdgeInsets.only(bottom: 10.0),
-      padding: const EdgeInsets.only(bottom: 8.0, top: 8.0, right: 10.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          TextButton(
-            onPressed: () async {
-              postBloc.add(PostAddPickFromGalaryButtonPressEvent());
-            },
-            child: Text(
-              'Pick Galary',
-              style: TextStyle(color: Colors.red[900], fontWeight: FontWeight.bold),
-            ),
-          ),
-          const Text(
-            '|',
-            style: TextStyle(
-              fontSize: 30,
-            ),
-          ),
-          InkWell(
-            onTap: () async {
-              postBloc.add(PostAddPickFromCameraButtonPressEvent());
-            },
-            child: Row(
-              children: [
-                const Icon(
-                  Icons.camera_enhance_outlined,
-                  color: Colors.blue,
-                ),
-                const SizedBox(
-                  width: 6.0,
-                ),
-                Text(
-                  'Camera',
-                  style: TextStyle(color: Colors.red[900], fontWeight: FontWeight.bold),
-                )
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
 
   @override
   void initState() {
@@ -124,64 +78,41 @@ class _CreatePostPageState extends State<CreatePostPage> {
             child: Container(
               margin: const EdgeInsets.all(10),
               child: ListView(children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: TextFormField(
-                    maxLines: 2,
-                    minLines: 1,
-                    validator: (value) {
-                      if (value == null || value == '') {
-                        return '*Required';
-                      }
-                      return null;
-                    },
-                    controller: titleController,
-                    decoration: const InputDecoration(labelText: AppStrings.title),
-                  ),
+                CustomTextFormField(
+                  maxLines: 2,
+                  minLines: 1,
+                  controller: titleController,
+                  hintText: AppStrings.title,
+                  validator: (value) {
+                    if (value == null || value == '') {
+                      return '*Required';
+                    }
+                    return null;
+                  },
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: TextFormField(
-                    maxLines: 5,
-                    minLines: 1,
-                    validator: (value) {
-                      if (value == null || value == '') {
-                        return '*Required';
-                      }
-                      return null;
-                    },
-                    controller: contentController,
-                    decoration: const InputDecoration(labelText: AppStrings.content),
-                  ),
+                SizedBox(height: size.height * 0.02),
+                CustomTextFormField(
+                  maxLines: 5,
+                  minLines: 1,
+                  controller: contentController,
+                  hintText: AppStrings.content,
+                  validator: (value) {
+                    if (value == null || value == '') {
+                      return '*Required';
+                    }
+                    return null;
+                  },
                 ),
-                _imagePickerButtons(postAddBloc, context),
-                const SizedBox(height: 20),
-                Container(
-                  width: size.width,
-                  height: size.height * 0.3,
-                  decoration: BoxDecoration(
-                    border: Border.all(color: ColorManager.white),
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(15),
-                    child: SizedBox(
-                      width: size.width,
-                      height: size.height * 0.3,
-                      child: state.imagePath == null
-                          ? Image.asset(
-                              'assets/images/noimage.jpg',
-                              fit: BoxFit.cover,
-                            )
-                          : Image.file(
-                              File(state.imagePath!),
-                              fit: BoxFit.cover,
-                            ),
-                    ),
-                  ),
+                SizedBox(height: size.height * 0.02),
+                _imagePickerButtons(postAddBloc, context, size),
+                SizedBox(height: size.height * 0.02),
+                ImageFrame(
+                  imagePath: state.imagePath,
+                  size: size,
                 ),
-                ElevatedButton(
-                  onPressed: () async {
+                SizedBox(height: size.height * 0.02),
+                CustomButton(
+                  onTap: () {
                     if (_formKey.currentState!.validate()) {
                       var title = titleController.text;
                       var content = contentController.text;
@@ -208,15 +139,73 @@ class _CreatePostPageState extends State<CreatePostPage> {
                       }
                     }
                   },
-                  child: Text(
-                    widget.post == null ? AppStrings.addPost : AppStrings.updatePost,
-                  ),
+                  text: widget.post == null ? AppStrings.addPost : AppStrings.updatePost,
+                  size: size,
                 ),
               ]),
             ),
           ),
         );
       },
+    );
+  }
+
+  Widget _imagePickerButtons(CreatePostBloc postBloc, BuildContext context, Size size) {
+    return Container(
+      decoration: BoxDecoration(color: ColorManager.redWhite, borderRadius: BorderRadius.circular(AppRadius.r4)),
+      margin: const EdgeInsets.only(bottom: 10.0),
+      padding: EdgeInsets.all(size.height * 0.02),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          InkWell(
+            onTap: () async {
+              postBloc.add(PostAddPickFromGalaryButtonPressEvent());
+            },
+            child: Row(
+              children: [
+                const Icon(
+                  Icons.file_copy_outlined,
+                  color: Colors.blue,
+                ),
+                const SizedBox(
+                  width: 6.0,
+                ),
+                Text(
+                  AppStrings.pickGalary,
+                  style: TextStyle(color: Colors.red[900], fontWeight: FontWeight.bold),
+                )
+              ],
+            ),
+          ),
+          const Text(
+            '|',
+            style: TextStyle(
+              fontSize: 30,
+            ),
+          ),
+          InkWell(
+            onTap: () async {
+              postBloc.add(PostAddPickFromCameraButtonPressEvent());
+            },
+            child: Row(
+              children: [
+                const Icon(
+                  Icons.camera_enhance_outlined,
+                  color: Colors.blue,
+                ),
+                const SizedBox(
+                  width: 6.0,
+                ),
+                Text(
+                  AppStrings.camera,
+                  style: TextStyle(color: Colors.red[900], fontWeight: FontWeight.bold),
+                )
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
