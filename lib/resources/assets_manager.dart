@@ -2,7 +2,7 @@ const String imagePath = "assets/images";
 
 class ImageAssets {
   static const String background = "$imagePath/image.jpg";
-  static const String splashLogo = "$imagePath/appicon.png";
+  static const String splashLogo = "$imagePath/splashlogo.gif";
   static const String onBoardingLogo1 = "$imagePath/pic1.png";
   static const String onBoardingLogo2 = "$imagePath/pic2.jpg";
   static const String onBoardingLogo3 = "$imagePath/pic3.jpg";
