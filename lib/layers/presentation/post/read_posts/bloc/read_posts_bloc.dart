@@ -101,7 +101,7 @@ class ReadPostsBloc extends Bloc<ReadPostsEvent, ReadPostsState> {
 
   FutureOr<void> postSearchIconClickedEvent(PostSearchIconClickedEvent event, Emitter<ReadPostsState> emit) async {
     if (event.isSearch) {
-      //emit(PostLoadingState());
+      emit(PostLoadingState());
       final postModelList = await findPosts(event.value);
 
       postModelList!.fold((failure) {
@@ -110,7 +110,7 @@ class ReadPostsBloc extends Bloc<ReadPostsEvent, ReadPostsState> {
         emit(PostLoadedSuccessState(postList, true, selectedPosts));
       });
     } else {
-      // emit(PostLoadingState());
+      emit(PostLoadingState());
       final postModelList = await getPosts(NoParams());
 
       postModelList!.fold((failure) {

@@ -76,8 +76,9 @@ class _CreatePostPageState extends State<CreatePostPage> {
           body: Form(
             key: _formKey,
             child: Container(
-              margin: const EdgeInsets.all(10),
+              margin: const EdgeInsets.all(AppSize.s14),
               child: ListView(children: [
+                SizedBox(height: size.height * 0.02),
                 CustomTextFormField(
                   maxLines: 2,
                   minLines: 1,

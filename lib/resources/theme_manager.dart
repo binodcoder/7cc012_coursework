@@ -26,15 +26,32 @@ ThemeData getApplicationTheme() {
 
     //App bar theme
     appBarTheme: AppBarTheme(
+      iconTheme: IconThemeData(color: ColorManager.primary),
       centerTitle: true,
-      color: ColorManager.primary,
+      color: ColorManager.white,
       elevation: AppSize.s4,
       shadowColor: ColorManager.primaryOpacity70,
-      titleTextStyle: getRegularStyle(
-        color: ColorManager.white,
+      titleTextStyle: getBoldStyle(
+        color: ColorManager.primary,
         fontSize: FontSize.s16,
       ),
     ),
+    //outline button theme
+    outlinedButtonTheme: OutlinedButtonThemeData(
+      style: OutlinedButton.styleFrom(
+        foregroundColor: ColorManager.primary,
+        side: BorderSide(
+          color: ColorManager.primary,
+          width: 1.0,
+        ),
+        enableFeedback: true,
+        textStyle: const TextStyle(fontWeight: FontWeight.bold),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(AppSize.s12),
+        ),
+      ),
+    ),
+
     //button theme
     buttonTheme: ButtonThemeData(
       shape: const StadiumBorder(),
@@ -45,15 +62,24 @@ ThemeData getApplicationTheme() {
     //elevated button theme
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
-        textStyle: getRegularStyle(
+        textStyle: getBoldStyle(
           color: ColorManager.white,
         ),
-        backgroundColor: ColorManager.primary,
+        // backgroundColor: ColorManager.primary,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(AppSize.s12),
         ),
       ),
     ),
+
+    //floating action buton theme
+    floatingActionButtonTheme: FloatingActionButtonThemeData(
+      backgroundColor: ColorManager.primary,
+      foregroundColor: ColorManager.white,
+      elevation: 10,
+      enableFeedback: true,
+    ),
+
     //text theme
 
     textTheme: TextTheme(

@@ -83,7 +83,7 @@ class _OnBoardingViewState extends State<OnBoardingView> {
                     alignment: Alignment.centerRight,
                     child: TextButton(
                       onPressed: () {
-                        Navigator.pushNamed(context, Routes.readPostRoute);
+                        Navigator.pushReplacementNamed(context, Routes.readPostRoute);
                       },
                       child: Text(
                         AppStrings.skip,

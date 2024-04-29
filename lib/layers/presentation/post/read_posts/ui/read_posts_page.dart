@@ -98,7 +98,6 @@ class _ReadPostsPageState extends State<ReadPostsPage> {
               drawer: const MyDrawer(),
               floatingActionButton: sharedPreferences.getString("role") == "admin"
                   ? FloatingActionButton(
-                      backgroundColor: Colors.blue,
                       child: const Icon(Icons.add),
                       onPressed: () {
                         postBloc.add(PostAddButtonClickedEvent());
@@ -106,22 +105,7 @@ class _ReadPostsPageState extends State<ReadPostsPage> {
                     )
                   : null,
               appBar: AppBar(
-                flexibleSpace: Container(
-                  decoration: const BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: [
-                        Color(0xFF64B5F6), // Light blue
-                        Color.fromRGBO(235, 242, 249, 1), // Sky blue
-                        Color.fromARGB(255, 235, 241, 246), // Pale blue
-                        Color.fromARGB(255, 154, 208, 247), // Very pale blue
-                      ],
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      stops: [0.1, 0.4, 0.7, 1.0],
-                    ),
-                  ),
-                ),
-                iconTheme: IconThemeData(color: ColorManager.primary),
+                // iconTheme: IconThemeData(color: ColorManager.primary),
                 // elevation: 2,
                 // backgroundColor: ColorManager.white,
                 title: successState.isSearch
@@ -130,7 +114,7 @@ class _ReadPostsPageState extends State<ReadPostsPage> {
                         width: size.width,
                         height: size.height * 0.054,
                         decoration: BoxDecoration(
-                          border: Border.all(color: ColorManager.grey), // Set border color to white
+                          border: Border.all(color: ColorManager.primary), // Set border color to white
                           borderRadius: BorderRadius.circular(20),
                         ),
                         child: TextField(
@@ -138,7 +122,7 @@ class _ReadPostsPageState extends State<ReadPostsPage> {
                           controller: searchMenuController,
                           style: TextStyle(color: ColorManager.primary),
                           decoration: InputDecoration(
-                            border: InputBorder.none,
+                            focusedBorder: InputBorder.none,
                             fillColor: ColorManager.primary,
                             hintText: 'Search',
                             focusColor: ColorManager.primary,
@@ -149,11 +133,10 @@ class _ReadPostsPageState extends State<ReadPostsPage> {
                           onChanged: (value) => postBloc.add(PostSearchIconClickedEvent(value, true)),
                         ),
                       )
-                    : Text(
+                    : const Text(
                         'Posts',
-                        style: TextStyle(color: ColorManager.primary, fontWeight: FontWeight.bold),
+                        style: TextStyle(fontWeight: FontWeight.bold),
                       ),
-                centerTitle: true,
                 actions: [
                   IconButton(
                     onPressed: () async {
