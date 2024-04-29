@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:blog_app/layers/presentation/widgets.dart/drawer.dart';
 import 'package:blog_app/layers/presentation/widgets.dart/image_frame.dart';
 import 'package:blog_app/resources/strings_manager.dart';
@@ -26,33 +25,6 @@ class ReadPostsPage extends StatefulWidget {
 
 class _ReadPostsPageState extends State<ReadPostsPage> {
   TextEditingController searchMenuController = TextEditingController();
-
-  Widget _imageDisplay(String? imagePath, Size size) {
-    return Container(
-      width: size.width,
-      height: size.height * 0.3,
-      decoration: BoxDecoration(
-        border: Border.all(color: ColorManager.white),
-        borderRadius: BorderRadius.circular(15),
-      ),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(15),
-        child: SizedBox(
-          width: size.width,
-          height: size.height * 0.3,
-          child: imagePath == null
-              ? Image.asset(
-                  'assets/images/noimage.jpg',
-                  fit: BoxFit.cover,
-                )
-              : Image.file(
-                  File(imagePath),
-                  fit: BoxFit.cover,
-                ),
-        ),
-      ),
-    );
-  }
 
   @override
   void initState() {

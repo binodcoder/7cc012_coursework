@@ -209,48 +209,6 @@ class _LoginPageState extends State<LoginPage> {
                             text: AppStrings.login,
                             size: size,
                           ),
-                          // GestureDetector(
-                          //   onTap: () {
-                          //     if (_formKey.currentState!.validate()) {
-                          //       LoginModel loginModel = LoginModel(
-                          //         email: userNameController.text,
-                          //         password: passwordController.text,
-                          //       );
-                          //       loginBloc.add(LoginButtonPressEvent(loginModel));
-                          //     }
-                          //   },
-                          //   child: Container(
-                          //     width: size.width,
-                          //     padding: const EdgeInsets.symmetric(vertical: 14),
-                          //     alignment: Alignment.center,
-                          //     decoration: BoxDecoration(
-                          //       borderRadius: const BorderRadius.all(Radius.circular(6)),
-                          //       boxShadow: <BoxShadow>[
-                          //         BoxShadow(
-                          //           color: Colors.grey.shade200,
-                          //           offset: const Offset(2, 4),
-                          //           blurRadius: 5,
-                          //           spreadRadius: 2,
-                          //         ),
-                          //       ],
-                          //       gradient: LinearGradient(
-                          //         begin: Alignment.centerLeft,
-                          //         end: Alignment.centerRight,
-                          //         colors: [
-                          //           ColorManager.blue,
-                          //           ColorManager.blue,
-                          //         ],
-                          //       ),
-                          //     ),
-                          //     child: Text(
-                          //       AppStrings.login,
-                          //       style: getRegularStyle(
-                          //         color: ColorManager.white,
-                          //         fontSize: 20,
-                          //       ),
-                          //     ),
-                          //   ),
-                          // ),
                         ],
                       ),
                     ),
