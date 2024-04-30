@@ -2,6 +2,7 @@ import 'package:blog_app/layers/presentation/about_us/about_us.dart';
 import 'package:blog_app/layers/presentation/login/ui/login_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../injection_container.dart';
 import '../../../resources/colour_manager.dart';
@@ -23,21 +24,9 @@ class _MyDrawerState extends State<MyDrawer> {
       child: ListView(
         children: [
           DrawerHeader(
-            decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  Color.fromARGB(255, 230, 242, 251), // Light blue
-                  Color(0xFF90CAF9), // Sky blue
-                  Color(0xFFBBDEFB), // Pale blue
-                  Color(0xFFE3F2FD), // Very pale blue
-                ],
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                stops: [0.1, 0.4, 0.7, 1.0],
-              ),
-            ),
             padding: EdgeInsets.zero,
             child: UserAccountsDrawerHeader(
+              decoration: BoxDecoration(color: ColorManager.primary),
               accountEmail: Text(
                 sharedPreferences.getString("user_email") ?? '',
                 style: getRegularStyle(

@@ -24,6 +24,9 @@ ThemeData getApplicationTheme() {
       elevation: AppSize.s4,
     ),
 
+    //drawer theme
+    drawerTheme: const DrawerThemeData(),
+
     //App bar theme
     appBarTheme: AppBarTheme(
       iconTheme: IconThemeData(color: ColorManager.primary),
