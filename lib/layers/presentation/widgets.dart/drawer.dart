@@ -61,14 +61,13 @@ class _MyDrawerState extends State<MyDrawer> {
               ? ListTile(
                   leading: Icon(
                     Icons.logout_outlined,
-                    color: ColorManager.darkGrey,
+                    color: ColorManager.primary,
                   ),
-                  title: const Text(
-                    "Login",
-                    style: TextStyle(
-                      color: Colors.black,
-                    ),
-                  ),
+                  title: Text("Login",
+                      style: getMediumStyle(
+                        color: ColorManager.primary,
+                        fontSize: FontSize.s14,
+                      )),
                   onTap: () {
                     Navigator.push(
                       context,
@@ -84,12 +83,13 @@ class _MyDrawerState extends State<MyDrawer> {
               ? ListTile(
                   leading: Icon(
                     Icons.logout_outlined,
-                    color: ColorManager.darkGrey,
+                    color: ColorManager.primary,
                   ),
-                  title: const Text(
+                  title: Text(
                     "Log out",
-                    style: TextStyle(
-                      color: Colors.black,
+                    style: getMediumStyle(
+                      color: ColorManager.primary,
+                      fontSize: FontSize.s14,
                     ),
                   ),
                   onTap: () {
@@ -107,13 +107,13 @@ class _MyDrawerState extends State<MyDrawer> {
           ListTile(
             leading: Icon(
               CupertinoIcons.building_2_fill,
-              color: ColorManager.darkGrey,
+              color: ColorManager.primary,
             ),
             title: Text(
               "About Us",
               textScaleFactor: 1.2,
-              style: getSemiBoldStyle(
-                color: ColorManager.darkGrey,
+              style: getMediumStyle(
+                color: ColorManager.primary,
                 fontSize: FontSize.s14,
               ),
             ),

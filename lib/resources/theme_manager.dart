@@ -45,7 +45,7 @@ ThemeData getApplicationTheme() {
           width: 1.0,
         ),
         enableFeedback: true,
-        textStyle: const TextStyle(fontWeight: FontWeight.bold),
+        textStyle: getBoldStyle(color: ColorManager.primary),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(AppSize.s12),
         ),

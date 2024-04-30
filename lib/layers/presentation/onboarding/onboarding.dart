@@ -6,6 +6,7 @@ import '../../../resources/assets_manager.dart';
 import '../../../resources/colour_manager.dart';
 import '../../../resources/routes_manager.dart';
 import '../../../resources/strings_manager.dart';
+import '../../../resources/styles_manager.dart';
 import '../../../resources/values_manager.dart';
 import 'onboarding_viewmodel.dart';
 
@@ -68,8 +69,10 @@ class _OnBoardingViewState extends State<OnBoardingView> {
               },
               itemBuilder: (context, index) {
                 //return OnBoarding Page
-                return OnBoardingPage(
-                  sliderObject: sliderViewObject.sliderObject!,
+                return SingleChildScrollView(
+                  child: OnBoardingPage(
+                    sliderObject: sliderViewObject.sliderObject!,
+                  ),
                 );
               },
             ),
@@ -88,7 +91,7 @@ class _OnBoardingViewState extends State<OnBoardingView> {
                       child: Text(
                         AppStrings.skip,
                         textAlign: TextAlign.end,
-                        style: Theme.of(context).textTheme.titleSmall,
+                        style: getBoldStyle(color: ColorManager.primary),
                       ),
                     ),
                   ),

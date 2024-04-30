@@ -10,6 +10,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../../injection_container.dart';
 import '../../../../../resources/colour_manager.dart';
 import '../../../../../resources/font_manager.dart';
+import '../../../../../resources/styles_manager.dart';
 import '../../add_update_post/ui/create_post_page.dart';
 import '../bloc/read_posts_bloc.dart';
 import '../bloc/read_posts_event.dart';
@@ -120,22 +121,19 @@ class _ReadPostsPageState extends State<ReadPostsPage> {
                         child: TextField(
                           autofocus: true,
                           controller: searchMenuController,
-                          style: TextStyle(color: ColorManager.primary),
+                          style: getBoldStyle(color: ColorManager.primary),
                           decoration: InputDecoration(
                             focusedBorder: InputBorder.none,
                             fillColor: ColorManager.primary,
                             hintText: 'Search',
                             focusColor: ColorManager.primary,
-                            hintStyle: TextStyle(
-                              color: ColorManager.primary,
-                            ),
+                            hintStyle: getRegularStyle(color: ColorManager.primary),
                           ),
                           onChanged: (value) => postBloc.add(PostSearchIconClickedEvent(value, true)),
                         ),
                       )
                     : const Text(
                         'Posts',
-                        style: TextStyle(fontWeight: FontWeight.bold),
                       ),
                 actions: [
                   IconButton(
