@@ -6,6 +6,11 @@ class AppStrings {
   static const String content = "Content";
   static const String imageURL = "Image URL";
   static const String addPost = "Add Post";
+  static const String post = "Post";
+  static const String share = "Share";
+  static const String required = '*Required';
+  static const String postDetails = "Post Details";
+  static const String search = "Search";
   static const String updatePost = "Update Post";
   static const String error = "Error";
   static const String edit = "Edit";
@@ -30,6 +35,11 @@ class AppStrings {
   static const String now = "  Now";
   static const String pickGalary = "Pick Galary";
   static const String camera = "Camera";
+  static const String myWebsite = "https://binodcoder.github.io/binodcoder/";
+  static const String myFacebook = "https://www.facebook.com/binod.bhandari.75685962";
+  static const String myYoutube = "https://www.youtube.com/@code4you36";
+  static const String myTel = 'tel: 014168260';
+  static const String myNumber = '014168260';
 
   //failure messages
   static const String serverFailureMessage = 'Server Failure';

@@ -86,7 +86,7 @@ class _CreatePostPageState extends State<CreatePostPage> {
                   hintText: AppStrings.title,
                   validator: (value) {
                     if (value == null || value == '') {
-                      return '*Required';
+                      return AppStrings.required;
                     }
                     return null;
                   },
@@ -99,7 +99,7 @@ class _CreatePostPageState extends State<CreatePostPage> {
                   hintText: AppStrings.content,
                   validator: (value) {
                     if (value == null || value == '') {
-                      return '*Required';
+                      return AppStrings.required;
                     }
                     return null;
                   },
@@ -150,6 +150,11 @@ class _CreatePostPageState extends State<CreatePostPage> {
       },
     );
   }
+
+  /*
+  This function _imagePickerButtons returns a widget that displays two buttons:
+  one for picking an image from the device's gallery and another for capturing an image using the device's camera.
+   */
 
   Widget _imagePickerButtons(CreatePostBloc postBloc, BuildContext context, Size size) {
     return Container(

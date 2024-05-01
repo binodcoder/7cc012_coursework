@@ -11,7 +11,10 @@ class LoginRepositoryImpl implements LoginRepository {
   LoginRepositoryImpl({
     required this.localDataSource,
   });
-
+/*
+Either is class from dartz package which helps to do functional programming
+when login is success Right side will return otherwise left.
+ */
   @override
   Future<Either<Failure, User>>? login(LoginModel loginModel) async {
     try {

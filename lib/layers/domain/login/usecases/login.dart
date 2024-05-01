@@ -10,6 +10,7 @@ class Login implements UseCase<User, LoginModel> {
 
   Login(this.loginRepository);
 
+  //this is from dartz package used to initiate a login process using the provided.
   @override
   Future<Either<Failure, User>?> call(LoginModel loginModel) async {
     return await loginRepository.login(loginModel);

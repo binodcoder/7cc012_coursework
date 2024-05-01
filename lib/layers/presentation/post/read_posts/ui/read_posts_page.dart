@@ -122,7 +122,7 @@ class _ReadPostsPageState extends State<ReadPostsPage> {
                           decoration: InputDecoration(
                             focusedBorder: InputBorder.none,
                             fillColor: ColorManager.primary,
-                            hintText: 'Search',
+                            hintText: AppStrings.search,
                             focusColor: ColorManager.primary,
                             hintStyle: getRegularStyle(color: ColorManager.primary),
                           ),
@@ -130,7 +130,7 @@ class _ReadPostsPageState extends State<ReadPostsPage> {
                         ),
                       )
                     : const Text(
-                        'Posts',
+                        AppStrings.post,
                       ),
                 actions: [
                   IconButton(

@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
-
 import '../../../../../core/entities/post.dart';
 
+//These are the set of states.
 abstract class ReadPostsState extends Equatable {
   const ReadPostsState();
 

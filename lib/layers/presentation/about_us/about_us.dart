@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
+import '../../../resources/assets_manager.dart';
 import '../../../resources/colour_manager.dart';
 import '../../../resources/font_manager.dart';
 import '../../../resources/strings_manager.dart';
@@ -49,7 +50,6 @@ class About extends StatelessWidget {
             )),
         key: scaffoldState,
         backgroundColor: ColorManager.white,
-        //  drawer: const MyDrawer(),
         body: SingleChildScrollView(
           child: SafeArea(
             child: SizedBox(
@@ -59,7 +59,7 @@ class About extends StatelessWidget {
                   SizedBox(
                     height: size.height * 0.1,
                     child: Image.asset(
-                      'assets/images/logo.png',
+                      ImageAssets.logo,
                     ),
                   ),
                   SizedBox(
@@ -82,19 +82,19 @@ class About extends StatelessWidget {
                     height: AppHeight.h10,
                   ),
                   AboutUsContact(
-                    onTap: () => launchUrl(Uri.parse('https://binodcoder.github.io/binodcoder/')),
+                    onTap: () => launchUrl(Uri.parse(AppStrings.myWebsite)),
                     icon: FontAwesomeIcons.internetExplorer,
                     contactName: AppStrings.website,
                     iconColor: ColorManager.lightBlue,
                   ),
                   AboutUsContact(
-                    onTap: () => launchUrl(Uri.parse('tel: 014168260')),
+                    onTap: () => launchUrl(Uri.parse(AppStrings.myTel)),
                     icon: FontAwesomeIcons.phone,
-                    contactName: '014168260',
+                    contactName: AppStrings.myNumber,
                     iconColor: ColorManager.blue,
                   ),
                   AboutUsContact(
-                    onTap: () => launchUrl(Uri.parse("https://www.youtube.com/@code4you36")),
+                    onTap: () => launchUrl(Uri.parse(AppStrings.myYoutube)),
                     icon: FontAwesomeIcons.youtube,
                     contactName: AppStrings.youtube,
                     iconColor: ColorManager.red,
@@ -106,7 +106,7 @@ class About extends StatelessWidget {
                     iconColor: ColorManager.green,
                   ),
                   AboutUsContact(
-                    onTap: () => launchUrl(Uri.parse("https://www.facebook.com/binod.bhandari.75685962")),
+                    onTap: () => launchUrl(Uri.parse(AppStrings.myFacebook)),
                     icon: FontAwesomeIcons.facebook,
                     contactName: AppStrings.facebook,
                     iconColor: ColorManager.blue,

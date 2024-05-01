@@ -1,5 +1,6 @@
 import '../../../../../core/entities/post.dart';
 
+//These are the set of events.
 abstract class ReadPostsEvent {}
 
 class PostInitialEvent extends ReadPostsEvent {}

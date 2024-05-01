@@ -37,7 +37,6 @@ class OnBoardingViewModel extends BaseViewModel with OnBoardingViewModelInputs, 
     if (previousIndex == -1) {
       currentIndex = _list.length - 1; // infinite loop to go to the length of slider list
     }
-
     return currentIndex;
   }
 
