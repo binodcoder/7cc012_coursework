@@ -25,6 +25,8 @@ class AppStrings {
   static const String username = "Username";
   static const String password = "Password";
   static const String login = "Login";
+  static const String logOut = "Log out";
+  static const String aboutUs = "About Us";
   static const String now = "  Now";
   static const String pickGalary = "Pick Galary";
   static const String camera = "Camera";

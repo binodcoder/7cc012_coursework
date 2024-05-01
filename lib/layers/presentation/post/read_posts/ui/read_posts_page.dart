@@ -94,7 +94,7 @@ class _ReadPostsPageState extends State<ReadPostsPage> {
             final successState = state as PostLoadedSuccessState;
             return Scaffold(
               backgroundColor: Colors.transparent,
-              extendBodyBehindAppBar: true, // Extend gradient behind app bar
+              extendBodyBehindAppBar: true,
               extendBody: true,
               drawer: const MyDrawer(),
               floatingActionButton: sharedPreferences.getString("role") == "admin"
@@ -106,16 +106,13 @@ class _ReadPostsPageState extends State<ReadPostsPage> {
                     )
                   : null,
               appBar: AppBar(
-                // iconTheme: IconThemeData(color: ColorManager.primary),
-                // elevation: 2,
-                // backgroundColor: ColorManager.white,
                 title: successState.isSearch
                     ? Container(
                         padding: EdgeInsets.symmetric(horizontal: size.width * 0.04),
                         width: size.width,
                         height: size.height * 0.054,
                         decoration: BoxDecoration(
-                          border: Border.all(color: ColorManager.primary), // Set border color to white
+                          border: Border.all(color: ColorManager.primary),
                           borderRadius: BorderRadius.circular(20),
                         ),
                         child: TextField(

@@ -5,8 +5,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../injection_container.dart';
+import '../../../resources/assets_manager.dart';
 import '../../../resources/colour_manager.dart';
 import '../../../resources/font_manager.dart';
+import '../../../resources/strings_manager.dart';
 import '../../../resources/styles_manager.dart';
 
 class MyDrawer extends StatefulWidget {
@@ -43,7 +45,7 @@ class _MyDrawerState extends State<MyDrawer> {
                   fontSize: FontSize.s12,
                 ),
               ),
-              currentAccountPicture: const CircleAvatar(backgroundImage: AssetImage('assets/images/image.jpg')),
+              currentAccountPicture: const CircleAvatar(backgroundImage: AssetImage(ImageAssets.drawerHeaderLogo)),
             ),
           ),
           sharedPreferences.getBool("login") == null
@@ -52,7 +54,7 @@ class _MyDrawerState extends State<MyDrawer> {
                     Icons.logout_outlined,
                     color: ColorManager.primary,
                   ),
-                  title: Text("Login",
+                  title: Text(AppStrings.login,
                       style: getMediumStyle(
                         color: ColorManager.primary,
                         fontSize: FontSize.s14,
@@ -75,7 +77,7 @@ class _MyDrawerState extends State<MyDrawer> {
                     color: ColorManager.primary,
                   ),
                   title: Text(
-                    "Log out",
+                    AppStrings.logOut,
                     style: getMediumStyle(
                       color: ColorManager.primary,
                       fontSize: FontSize.s14,
@@ -99,7 +101,7 @@ class _MyDrawerState extends State<MyDrawer> {
               color: ColorManager.primary,
             ),
             title: Text(
-              "About Us",
+              AppStrings.aboutUs,
               textScaleFactor: 1.2,
               style: getMediumStyle(
                 color: ColorManager.primary,
@@ -120,6 +122,4 @@ class _MyDrawerState extends State<MyDrawer> {
       ),
     );
   }
-
-  void logout() {}
 }

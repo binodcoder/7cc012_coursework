@@ -26,23 +26,3 @@ class CustomButton extends StatelessWidget {
     );
   }
 }
-
-// decoration: BoxDecoration(
-// borderRadius: const BorderRadius.all(Radius.circular(6)),
-// boxShadow: <BoxShadow>[
-// BoxShadow(
-// color: Colors.grey.shade200,
-// offset: const Offset(2, 4),
-// blurRadius: 5,
-// spreadRadius: 2,
-// ),
-// ],
-// gradient: LinearGradient(
-// begin: Alignment.centerLeft,
-// end: Alignment.centerRight,
-// colors: [
-// ColorManager.lightBlue,
-// ColorManager.primary,
-// ],
-// ),
-// ),

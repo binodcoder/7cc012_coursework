@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:blog_app/resources/assets_manager.dart';
 import 'package:flutter/material.dart';
 import '../../../resources/colour_manager.dart';
 
@@ -35,7 +36,7 @@ class ImageFrame extends StatelessWidget {
   Widget _buildImage() {
     if (imagePath == null) {
       return Image.asset(
-        'assets/images/appicon.png',
+        ImageAssets.appIcon,
         fit: BoxFit.cover,
       );
     } else {
