@@ -43,7 +43,7 @@ class ReadPostsBloc extends Bloc<ReadPostsEvent, ReadPostsState> {
     final postModelList = await getPosts(NoParams());
 
     postModelList!.fold((failure) {
-      // emit(Error(message: _mapFailureToMessage(failure)));
+      emit(PostErrorState(message: mapFailureToMessage(failure)));
     }, (postList) {
       for (var post in postList) {
         if (post.isSelected == 1) {
@@ -107,9 +107,7 @@ a delete request to the server, processing it using the `fold` function, and emi
     } else {
       updatedPost.isSelected = 0;
     }
-
     final result = await updatePost(updatedPost);
-
     result!.fold((failure) {
       emit(PostErrorState(message: mapFailureToMessage(failure)));
     }, (post) {

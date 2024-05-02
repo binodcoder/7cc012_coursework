@@ -39,70 +39,99 @@ class DatabaseHelper {
   }
 
   static Future<int> insertPost(PostModel post) async {
-    final db = await DatabaseHelper.db();
-    return await db.insert('post', post.toMap());
+    try {
+      final db = await DatabaseHelper.db();
+      return await db.insert('post', post.toMap());
+    } catch (e) {
+      rethrow;
+    }
   }
 
   static Future<int> createUser(UserModel userModel) async {
-    final db = await DatabaseHelper.db();
-    return await db.insert('user', userModel.toMap());
+    try {
+      final db = await DatabaseHelper.db();
+      return await db.insert('user', userModel.toMap());
+    } catch (e) {
+      rethrow;
+    }
   }
 
   static Future<List<PostModel>> getPosts() async {
-    final db = await DatabaseHelper.db();
-    final List<Map<String, dynamic>> maps = await db.query('post');
-    return List.generate(maps.length, (i) {
-      return PostModel(
-        id: maps[i]['id'],
-        title: maps[i]['title'],
-        content: maps[i]['content'],
-        imagePath: maps[i]['imagePath'],
-        isSelected: maps[i]['isSelected'],
-        createdAt: DateTime.parse(maps[i]['createdAt']),
-      );
-    });
+    try {
+      final db = await DatabaseHelper.db();
+      final List<Map<String, dynamic>> maps = await db.query('post');
+      return List.generate(maps.length, (i) {
+        return PostModel(
+          id: maps[i]['id'],
+          title: maps[i]['title'],
+          content: maps[i]['content'],
+          imagePath: maps[i]['imagePath'],
+          isSelected: maps[i]['isSelected'],
+          createdAt: DateTime.parse(maps[i]['createdAt']),
+        );
+      });
+    } catch (e) {
+      rethrow;
+    }
   }
 
   static Future<List<PostModel>> findPosts(String value) async {
     String searchString1 = '$value%';
     String searchString2 = '$value%';
-    final db = await DatabaseHelper.db();
-    final List<Map<String, dynamic>> maps = await db.query(
-      'post',
-      where: 'title LIKE  ? OR content LIKE ?',
-      whereArgs: [searchString1, searchString2],
-    );
-    return List.generate(maps.length, (i) {
-      return PostModel(
-        id: maps[i]['id'],
-        title: maps[i]['title'],
-        content: maps[i]['content'],
-        imagePath: maps[i]['imagePath'],
-        isSelected: maps[i]['isSelected'],
-        createdAt: DateTime.parse(maps[i]['createdAt']),
+
+    try {
+      final db = await DatabaseHelper.db();
+      final List<Map<String, dynamic>> maps = await db.query(
+        'post',
+        where: 'title LIKE  ? OR content LIKE ?',
+        whereArgs: [searchString1, searchString2],
       );
-    });
+      return List.generate(maps.length, (i) {
+        return PostModel(
+          id: maps[i]['id'],
+          title: maps[i]['title'],
+          content: maps[i]['content'],
+          imagePath: maps[i]['imagePath'],
+          isSelected: maps[i]['isSelected'],
+          createdAt: DateTime.parse(maps[i]['createdAt']),
+        );
+      });
+    } catch (e) {
+      rethrow;
+    }
   }
 
   static Future<int> updatePost(PostModel post) async {
-    final db = await DatabaseHelper.db();
-    return await db.update(
-      'post',
-      post.toMap(),
-      where: 'id = ?',
-      whereArgs: [post.id],
-    );
+    try {
+      final db = await DatabaseHelper.db();
+      return await db.update(
+        'post',
+        post.toMap(),
+        where: 'id = ?',
+        whereArgs: [post.id],
+      );
+    } catch (e) {
+      rethrow;
+    }
   }
 
   static Future<int> deletePost(int postId) async {
-    final db = await DatabaseHelper.db();
-    return await db.delete('post', where: 'id = ?', whereArgs: [postId]);
+    try {
+      final db = await DatabaseHelper.db();
+      return await db.delete('post', where: 'id = ?', whereArgs: [postId]);
+    } catch (e) {
+      rethrow;
+    }
   }
 
   //register
   static Future<int> register(UserModel userModel) async {
-    final db = await DatabaseHelper.db();
-    return await db.insert('user', userModel.toMap());
+    try {
+      final db = await DatabaseHelper.db();
+      return await db.insert('user', userModel.toMap());
+    } catch (e) {
+      rethrow;
+    }
   }
 
   //login
