@@ -5,6 +5,7 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
+import '../../../../../core/mappers/map_failure_to_message.dart';
 import '../../../../domain/post/usecases/create_post.dart';
 import '../../../../domain/post/usecases/read_posts.dart';
 import '../../../../domain/post/usecases/update_post.dart';
@@ -94,8 +95,13 @@ class CreatePostBloc extends Bloc<CreatePostEvent, CreatePostState> {
   }
 
   FutureOr<void> addPostSaveButtonPressEvent(PostAddSaveButtonPressEvent event, Emitter<CreatePostState> emit) async {
-    await postPosts(event.newPost);
-    emit(AddPostSavedState());
+    emit(AddPostLoadingState());
+    final result = await postPosts(event.newPost);
+    result!.fold((failure) {
+      emit(AddPostErrorState(message: mapFailureToMessage(failure)));
+    }, (result) {
+      emit(AddPostSavedState());
+    });
   }
 
   FutureOr<void> postAddInitialEvent(PostAddInitialEvent event, Emitter<CreatePostState> emit) {

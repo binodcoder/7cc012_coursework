@@ -27,7 +27,6 @@ class ColorManager {
   static Color success = HexColor.fromHex("#198754");
 
   //new colors
-  //note: please change the colors according to the app need
 
   static Color lightBlue = HexColor.fromHex("#23C6C8");
   static Color amber = HexColor.fromHex("#FFBF00");

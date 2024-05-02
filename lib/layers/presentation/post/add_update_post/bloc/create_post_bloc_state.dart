@@ -21,6 +21,12 @@ class AddPostImagePickedFromCameraState extends CreatePostState {
 
 class AddPostSavedState extends PostAddActionState {}
 
+class AddPostLoadingState extends PostAddActionState {}
+
 class AddPostUpdatedState extends PostAddActionState {}
 
-class AddPostErrorState extends PostAddActionState {}
+class AddPostErrorState extends PostAddActionState {
+  final String message;
+
+  AddPostErrorState({required this.message});
+}

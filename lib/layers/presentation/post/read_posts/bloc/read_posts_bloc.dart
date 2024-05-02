@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:blog_app/layers/domain/post/usecases/find_posts.dart';
 import '../../../../../core/entities/post.dart';
+import '../../../../../core/mappers/map_failure_to_message.dart';
 import '../../../../../core/usecases/usecase.dart';
 import '../../../../domain/post/usecases/delete_post.dart';
 import '../../../../domain/post/usecases/read_posts.dart';
@@ -69,7 +70,7 @@ a delete request to the server, processing it using the `fold` function, and emi
     final result = await deletePost(event.post);
 
     result!.fold((failure) {
-      // emit(Error(message: _mapFailureToMessage(failure)));
+      emit(PostErrorState(message: mapFailureToMessage(failure)));
     }, (postList) {
       emit(PostItemDeletedActionState());
     });
@@ -84,7 +85,7 @@ a delete request to the server, processing it using the `fold` function, and emi
       final result = await deletePost(element);
 
       result!.fold((failure) {
-        // emit(Error(message: _mapFailureToMessage(failure)));
+        emit(PostErrorState(message: mapFailureToMessage(failure)));
       }, (postList) {
         emit(PostItemsDeletedActionState());
       });
@@ -110,7 +111,7 @@ a delete request to the server, processing it using the `fold` function, and emi
     final result = await updatePost(updatedPost);
 
     result!.fold((failure) {
-      // emit(Error(message: _mapFailureToMessage(failure)));
+      emit(PostErrorState(message: mapFailureToMessage(failure)));
     }, (post) {
       emit(PostItemsUpdatedState());
     });
@@ -128,7 +129,7 @@ a delete request to the server, processing it using the `fold` function, and emi
       final postModelList = await findPosts(event.value);
 
       postModelList!.fold((failure) {
-        // emit(Error(message: _mapFailureToMessage(failure)));
+        emit(PostErrorState(message: mapFailureToMessage(failure)));
       }, (postList) {
         emit(PostLoadedSuccessState(postList, true, selectedPosts));
       });
@@ -137,7 +138,7 @@ a delete request to the server, processing it using the `fold` function, and emi
       final postModelList = await getPosts(NoParams());
 
       postModelList!.fold((failure) {
-        // emit(Error(message: _mapFailureToMessage(failure)));
+        emit(PostErrorState(message: mapFailureToMessage(failure)));
       }, (postList) {
         for (var post in postList) {
           if (post.isSelected == 1) {

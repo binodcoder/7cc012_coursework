@@ -16,21 +16,17 @@ import 'layers/presentation/login/bloc/login_bloc.dart';
 import 'layers/presentation/post/add_update_post/bloc/create_post_bloc.dart';
 import 'layers/presentation/post/read_posts/bloc/read_posts_bloc.dart';
 
+/*
+It is a powerful dependency injection framework that enables registration and retrieval of dependencies,
+improving testability and decoupling components, allowing easy access to services and models.
+ */
+
 final sl = GetIt.instance;
 
 Future<void> init() async {
-  sl.registerFactory(() => ReadPostsBloc(
-        getPosts: sl(),
-        updatePost: sl(),
-        deletePost: sl(),
-        findPosts: sl(),
-      ));
+  sl.registerFactory(() => ReadPostsBloc(getPosts: sl(), updatePost: sl(), deletePost: sl(), findPosts: sl()));
 
-  sl.registerFactory(() => CreatePostBloc(
-        postPosts: sl(),
-        updatePost: sl(),
-        getPosts: sl(),
-      ));
+  sl.registerFactory(() => CreatePostBloc(postPosts: sl(), updatePost: sl(), getPosts: sl()));
 
   sl.registerLazySingleton(() => CreatePost(sl()));
   sl.registerLazySingleton(() => ReadPosts(sl()));
